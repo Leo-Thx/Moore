@@ -1,0 +1,37 @@
+{
+  "name": "moore",
+  "version": "1.0.0",
+  "description": "none",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leo-Thx/Moore.git"
+  },
+  "keywords": [
+    "Moore"
+  ],
+  "author": "leo.zeng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Leo-Thx/Moore/issues"
+  },
+  "homepage": "https://github.com/Leo-Thx/Moore#readme",
+  "devDependencies": {
+    "scss": "^0.2.4",
+    "tslint": "^6.1.2",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@types/react": "^16.9.38",
+    "@types/react-dom": "^16.9.8",
+    "normalize.css": "^8.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^3.9.5"
+  }
+}
