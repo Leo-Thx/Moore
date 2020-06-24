@@ -4,6 +4,9 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+        // "no-angle-bracket-type-assertion": false,
+        "only-arrow-functions": [false]
+    },
     "rulesDirectory": []
 }
