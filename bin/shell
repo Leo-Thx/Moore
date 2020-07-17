@@ -1,0 +1,43 @@
+#!/usr/bin/env node --harmony
+'use strict';
+
+const program = require('commander');
+const pck = require('./../package.json');
+const { prompt } = require('inquirer');
+const clear = require('clear');
+const chalk = require('chalk');
+const figlet = require('figlet');
+
+clear();
+
+console.log(
+    chalk.yellow(
+        figlet.textSync('Moore  CLI', {
+            horizontalLayout: 'fitted'
+        })
+    )
+);
+
+
+// 直接生成模板代码
+
+program.version(pck.version)
+    .usage('<command> [options]')
+
+    .option('-n, -new', '创建新的模板组件文件夹')
+    .command('new')
+    .alias('n')
+    
+    .action(async function(){
+        const answers = await prompt([
+            {type: 'input', message: '请输入名称', name: 'componentName'}
+        ]);
+        console.info(answers);
+    });
+
+program.parse(process.argv);
+
+console.log()
+process.on('exit', () => {
+    console.log()
+})

@@ -4,12 +4,16 @@
   "description": "none",
   "main": "index.ts",
   "jsnext:main": "",
+  "bin": {
+    "moore": "bin/shell"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:cli": "cross-env NODE_ENV=development webpack --config ",
     "dev": "node ./config/webpack.dev.js ",
     "build": "cross-env NODE_ENV=development webpack --config ./webpack.config.js",
-    "build:esm": "tsc && tsc -m es6 --outDir lib-esm"
+    "build:esm": "tsc && tsc -m es6 --outDir lib-esm",
+    "moore": "node ./bin/shell"
   },
   "repository": {
     "type": "git",
@@ -37,10 +41,14 @@
     "babel-loader": "^8.1.0",
     "chalk": "^4.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "clear": "^0.1.0",
+    "commander": "^5.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
+    "figlet": "^1.5.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^4.3.0",
+    "inquirer": "^7.3.2",
     "jest": "^26.1.0",
     "node-sass": "^4.14.1",
     "portfinder": "^1.0.26",

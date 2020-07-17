@@ -3,6 +3,13 @@
     "extends": [
         "tslint:recommended"
     ],
+    "linterOptions": {
+        "exclude": [
+            "bin/**",
+            ".template/**",
+            "node_modules/**"
+        ]
+    },
     "jsRules": {},
     "rules": {
         // "no-angle-bracket-type-assertion": false,
