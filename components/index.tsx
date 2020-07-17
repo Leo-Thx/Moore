@@ -1,3 +1,6 @@
+// import "core-js/stable";
+// import "regenerator-runtime/runtime";
+
 import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import './style/index';
@@ -13,7 +16,8 @@ class Parent extends React.Component<any> implements Test {
         this.name = Parent.name;
     }
     public render() : ReactNode {
-        return (<div className="test">df</div>) as ReactNode;
+        const array: string[] = Array.from<string>({length: 3}).fill("string");
+        return (<div className="test">{array.length}</div>) as ReactNode;
     }
 }
 

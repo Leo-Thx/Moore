@@ -7,7 +7,7 @@ const DEV = process.env.NODE_ENV === 'development' ? 'development' : 'production
 module.exports = {
     mode: DEV,
     entry: {
-        main: path.join(__dirname, './index.tsx')
+        main: path.join(__dirname, 'components/index.tsx')
     },
     output: {
         path: path.join(__dirname, './dist'),
@@ -15,13 +15,16 @@ module.exports = {
         // libraryTarget: 'commonjs'
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            '@style': path.resolve(__dirname, 'components', 'style'),
+        }
     },
     // devtool: '',
     // externals: /^(react)/,
     module: {
         rules: [
-            { test: /\.tsx?$/, use: ['ts-loader'] },
+            { test: /\.t|jsx?$/, use: ['babel-loader', 'ts-loader'], exclude: /node_modules/ },
             { test: /\.s?css$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
         ]
     },
@@ -29,11 +32,11 @@ module.exports = {
         hot: true
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.join('index.html'),
-            filename: `index.html`,
-            chunks: 'all'
-        }),
+        // new HtmlWebpackPlugin({
+        //     template: path.join('index.html'),
+        //     filename: `index.html`,
+        //     chunks: 'all'
+        // }),
         new CleanWebpackPlugin({
             cleanAfterEveryBuildPatterns: ['./dist']
         })

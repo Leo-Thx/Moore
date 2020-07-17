@@ -46,12 +46,15 @@ portfinder.getPort((error, port) => {
             filename: `${directory}.js`,
         },
         resolve: {
-            extensions: ['.tsx', '.ts', '.js']
+            extensions: ['.tsx', '.ts', '.js'],
+            alias: {
+                '@style': path.resolve(basePath, 'components', 'style'),
+            }
         },
         devtool: 'inline-source-map',
         module: {
             rules: [
-                { test: /\.tsx?$/, use: ['ts-loader'] },
+                { test: /\.t|jsx?$/, use: ['babel-loader', 'ts-loader'], exclude: /node_modules/ },
                 { test: /\.s?css$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
             ]
         },

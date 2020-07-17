@@ -1,21 +1,21 @@
 import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
-// import './style/index';
+import '@style/index';
 
-interface Test {
-    name:  string;
-}
 
-class Parent extends React.Component<any> implements Test {
-    public name: string;
-    public constructor(props?: any) {
-        super(props);
-        this.name = Parent.name;
-    }
-    public render() : ReactNode {
-        return (<div className="test">{this.name}d112</div>) as ReactNode;
-    }
-}
+const ButtonBase = () => {
+    const array: string[] = Array.from<string>({length: 3}).fill("string");
+    return (
+        <div>
+            {
+                React.Children.map(array, (item, index)=>{
+                    return <span key={index}>{item} - {index}</span>
+                })
+            }
+        </div>
+    );
+};
 
-ReactDOM.render(<Parent></Parent>, document.getElementById('app'));
+
+ReactDOM.render(<ButtonBase />, document.getElementById('app'));
 

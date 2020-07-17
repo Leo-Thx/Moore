@@ -6,8 +6,10 @@
   "jsnext:main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ppppp": "cross-env NODE_ENV=development",
-    "dev": "node ./config/webpack.dev.js"
+    "dev:cli": "cross-env NODE_ENV=development webpack --config ",
+    "dev": "node ./config/webpack.dev.js ",
+    "build": "cross-env NODE_ENV=development webpack --config ./webpack.config.js",
+    "build:esm": "tsc && tsc -m es6 --outDir lib-esm"
   },
   "repository": {
     "type": "git",
@@ -23,16 +25,23 @@
   },
   "homepage": "https://github.com/Leo-Thx/Moore#readme",
   "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@types/babel__generator": "^7.6.1",
     "@types/lodash": "^4.14.156",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.9.38",
     "@types/react-dom": "^16.9.8",
+    "babel-loader": "^8.1.0",
     "chalk": "^4.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.1.0",
     "node-sass": "^4.14.1",
     "portfinder": "^1.0.26",
     "react": "^16.13.1",
@@ -47,9 +56,12 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.10.5",
     "classnames": "^2.2.6",
+    "core-js": "^3.6.5",
     "lodash": "^4.17.15",
     "moment": "^2.27.0",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "regenerator-runtime": "^0.13.5"
   }
 }
