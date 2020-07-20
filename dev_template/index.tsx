@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import '@style/index';
 
 
-const ButtonBase = () => {
+const ButtonBase: React.FC<any> = () => {
     const array: string[] = Array.from<string>({length: 3}).fill("string");
     return (
         <div>

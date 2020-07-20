@@ -1,13 +1,14 @@
-const Webpack                       = require('webpack');
-const WebpackDevServer              = require('webpack-dev-server');
-const portfinder                    = require('portfinder');
-const os                            = require('os');
-const path                          = require('path');
-const fs                            = require('fs');
-const FriendlyErrorsWebpackPlugin   = require('friendly-errors-webpack-plugin');
-const chalk                         = require('chalk');
-const HtmlWebpackPlugin             = require('html-webpack-plugin');
-const { CleanWebpackPlugin }        = require('clean-webpack-plugin');
+const Webpack = require('webpack');
+const WebpackDevServer  = require('webpack-dev-server');
+const portfinder = require('portfinder');
+const os = require('os');
+const path = require('path');
+const fs = require('fs');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const chalk = require('chalk');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HappyPack = require('happypack');
 
 
 let { argv } = process, 
@@ -42,11 +43,12 @@ portfinder.getPort((error, port) => {
         mode: 'development',
         entry: path.resolve(directoryPath, 'index.tsx'),
         output: {
-            path: path.resolve(basePath, 'packages', directory),
+            path: path.resolve(basePath, 'lib', directory),
             filename: `${directory}.js`,
         },
         resolve: {
-            extensions: ['.tsx', '.ts', '.js'],
+            modules: [ 'node_modules' ],
+            extensions: ['.tsx', '.ts', '.js', '.jsx'],
             alias: {
                 '@style': path.resolve(basePath, 'components', 'style'),
             }
@@ -54,22 +56,22 @@ portfinder.getPort((error, port) => {
         devtool: 'inline-source-map',
         module: {
             rules: [
-                { test: /\.t|jsx?$/, use: ['babel-loader', 'ts-loader'], exclude: /node_modules/ },
+                { test: /\.t|jsx?$/, use: ['happypack/loader?id=happyBabel'], exclude: /node_modules/ },
                 { test: /\.s?css$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
             ]
         },
         devServer: {
-            hot: true,
+            stats: "errors-only",
             host,
             port,
-            compress: true,
-            quiet: true,
-            clientLogLevel: 'warning',
+            hot: true,
+            inline: true,
+            progress: true,
 
             historyApiFallback: true
         },
         plugins: [
-            new Webpack.HotModuleReplacementPlugin(),
+            // new Webpack.HotModuleReplacementPlugin(),
             new Webpack.NamedModulesPlugin(),
             new HtmlWebpackPlugin({
                 template: path.resolve(directoryPath, 'demo', 'index.html'),
@@ -93,7 +95,12 @@ portfinder.getPort((error, port) => {
 					]
 				},
 				clearConsole: true
-			})
+            }),
+            new HappyPack({
+                id: 'happyBabel',
+                loaders: ['babel-loader?cacheDirectory'],
+                threads: os.cpus().length
+            }),
         ]
     };
 
@@ -102,12 +109,5 @@ portfinder.getPort((error, port) => {
     const server = new WebpackDevServer(Webpack(config), config.devServer);
     server.listen(port, host, error => {
         if (error) console.info(chalk.red(error));
-        // else {
-        //     console.info(chalk.yellow(
-        //         `Project is running at \n
-        //             http://localhost:${port}/
-        //             http://${ipAddress}:${port}/
-        //     `));
-        // }
     });
 });

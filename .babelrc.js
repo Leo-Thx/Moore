@@ -5,7 +5,7 @@ module.exports = {
             "corejs": 3
         }],
         "@babel/preset-react",
-        // "@babel/preset-typescript"
+        "@babel/preset-typescript"
     ],
     "plugins": [
         ["@babel/plugin-transform-runtime"]
