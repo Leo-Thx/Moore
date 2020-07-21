@@ -39,6 +39,14 @@ for (let devName in interfaces) {
 
 portfinder.getPort((error, port) => {
     const host = '0.0.0.0';
+    const devServerConfig = {
+        stats: "errors-only",
+        host,
+        port,
+        hot: true,
+        inline: true,
+        progress: true
+    };
     const config = {
         mode: 'development',
         entry: path.resolve(directoryPath, 'index.tsx'),
@@ -57,21 +65,17 @@ portfinder.getPort((error, port) => {
         module: {
             rules: [
                 { test: /\.t|jsx?$/, use: ['happypack/loader?id=happyBabel'], exclude: /node_modules/ },
-                { test: /\.s?css$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
+                { 
+                    test: /\.s?css$/, 
+                    use: [
+                        { loader: 'style-loader' }, 
+                        { loader: 'css-loader', options: {modules: true} }, 
+                        { loader: 'sass-loader' }
+                    ]
+                }
             ]
         },
-        devServer: {
-            stats: "errors-only",
-            host,
-            port,
-            hot: true,
-            inline: true,
-            progress: true,
-
-            historyApiFallback: true
-        },
         plugins: [
-            // new Webpack.HotModuleReplacementPlugin(),
             new Webpack.NamedModulesPlugin(),
             new HtmlWebpackPlugin({
                 template: path.resolve(directoryPath, 'demo', 'index.html'),
@@ -81,7 +85,7 @@ portfinder.getPort((error, port) => {
             }),
             new CleanWebpackPlugin({
                 cleanAfterEveryBuildPatterns: [
-                    path.resolve(basePath, 'packages', directory)
+                    path.resolve(basePath, 'lib', directory)
                 ]
             }),
             new FriendlyErrorsWebpackPlugin({
@@ -103,10 +107,11 @@ portfinder.getPort((error, port) => {
             }),
         ]
     };
+    
+    const server = new WebpackDevServer(
+        Webpack(config), devServerConfig
+    );
 
-    // WebpackDevServer.addDevServerEntrypoints(config, {});
-
-    const server = new WebpackDevServer(Webpack(config), config.devServer);
     server.listen(port, host, error => {
         if (error) console.info(chalk.red(error));
     });

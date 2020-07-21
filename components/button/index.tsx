@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import '@style/index';
 
+import styles from './button.scss';
 
 const ButtonBase = () => {
     const array: string[] = Array.from<string>({length: 3}).fill("string");
@@ -9,7 +10,7 @@ const ButtonBase = () => {
         <div>
             {
                 React.Children.map(array, (item, index)=>{
-                    return <span key={index}>{item} - {index}</span>
+                    return <span className={styles.my_span} key={index}>{item} - {index}</span>
                 })
             }
         </div>

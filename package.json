@@ -10,8 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:cli": "cross-env NODE_ENV=development webpack --config ",
-    "dev": "node ./config/webpack.dev.js ",
-    "build": "cross-env NODE_ENV=development webpack --config ./webpack.config.js",
+    "dev": "cross-env NODE_ENV=development node ./config/webpack.config.js ",
+    "build": "",
     "build:esm": "tsc && tsc -m es6 --outDir lib-esm",
     "moore": "node ./bin/shell"
   },
