@@ -6,6 +6,9 @@ const pck = require('./../package.json');
 const { prompt } = require('inquirer');
 const chalk = require('chalk');
 const figlet = require('figlet');
+const path = require('path');
+const fs = require('fs');
+const ora = require('ora');
 
 console.log(
     chalk.yellow(
@@ -15,9 +18,7 @@ console.log(
     )
 );
 
-
 // 直接生成模板代码
-
 program.version(pck.version)
     .usage('<command> [options]')
 
@@ -28,8 +29,44 @@ program.version(pck.version)
     .action(async function(){
         const answers = await prompt([
             {type: 'input', message: '请输入名称', name: 'componentName'}
-        ]);
-        console.info(answers);
+        ]),
+        pageName = answers.componentName;
+        
+        if( pageName === '' ) return console.log(chalk.red('请输入组件名称...'));
+
+        const cwdPath = process.cwd(),
+            modulePath = path.join(cwdPath, 'components'),
+            tplPath = path.join(cwdPath, `dev_template`);
+        
+        const dirNameArray = fs.readdirSync(modulePath),
+            hasSame = dirNameArray.some(name=>name === pageName);
+        if( hasSame ) return console.log(chalk.red(`存在重复的模块名称 ${pageName} ....`));
+
+        const startLoading = ora('正在处理!').start();
+        fs.mkdirSync(path.join(modulePath, pageName));
+        
+        const destPath = path.join(modulePath, pageName);
+        
+        function copy(src, dest) {
+            let paths = fs.readdirSync(src);
+            paths.forEach(item=>{
+                var _src = path.resolve(src, item),
+                    _dest = path.resolve(dest, item),
+                    stats = fs.statSync(_src);
+
+                if( stats.isFile() ){
+                    let read = fs.createReadStream(_src);
+                    let write = fs.createWriteStream(_dest);
+                    read.pipe(write);
+                } else if( stats.isDirectory() ) {
+                    if( !fs.existsSync(_dest) ) fs.mkdirSync(_dest);
+                    copy(_src, _dest);
+                }
+            });
+        }
+
+        copy(tplPath, destPath);
+        startLoading.succeed('初始化完成!');
     });
 
 program.parse(process.argv);

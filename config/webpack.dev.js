@@ -50,6 +50,7 @@ portfinder.getPort((error, port) => {
     const config = {
         mode: 'development',
         entry: path.resolve(directoryPath, 'index.tsx'),
+        devtool: 'cheap-module-eval-source-map',
         output: {
             path: path.resolve(basePath, 'lib', directory),
             filename: `${directory}.js`,
@@ -61,14 +62,13 @@ portfinder.getPort((error, port) => {
                 '@style': path.resolve(basePath, 'components', 'style'),
             }
         },
-        devtool: 'inline-source-map',
         module: {
             rules: [
                 { test: /\.t|jsx?$/, use: ['happypack/loader?id=happyBabel'], exclude: /node_modules/ },
                 { 
                     test: /\.s?css$/, 
                     use: [
-                        { loader: 'style-loader' }, 
+                        { loader: 'style-loader' },     // 使用之后，可能打包不会编译出className
                         { loader: 'css-loader', options: {modules: true} }, 
                         { loader: 'sass-loader' }
                     ]
@@ -77,6 +77,7 @@ portfinder.getPort((error, port) => {
         },
         plugins: [
             new Webpack.NamedModulesPlugin(),
+            new Webpack.HashedModuleIdsPlugin(),
             new HtmlWebpackPlugin({
                 template: path.resolve(directoryPath, 'demo', 'index.html'),
                 filename: `index.html`,

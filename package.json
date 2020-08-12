@@ -9,11 +9,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:cli": "cross-env NODE_ENV=development webpack --config ",
-    "dev": "cross-env NODE_ENV=development node ./config/webpack.config.js ",
-    "build": "",
+    "dev": "cross-env NODE_ENV=development node ./config/webpack.dev.js",
+    "build": "cross-env NODE_ENV=production node ./config/webpack.prod.js",
     "build:esm": "tsc && tsc -m es6 --outDir lib-esm",
-    "moore": "node ./bin/shell"
+    "cli": "node ./bin/shell"
   },
   "repository": {
     "type": "git",
@@ -50,7 +49,9 @@
     "html-webpack-plugin": "^4.3.0",
     "inquirer": "^7.3.2",
     "jest": "^26.1.0",
+    "mini-css-extract-plugin": "^0.10.0",
     "node-sass": "^4.14.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "ora": "^4.0.4",
     "portfinder": "^1.0.26",
     "react": "^16.13.1",
