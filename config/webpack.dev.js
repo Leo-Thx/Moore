@@ -49,7 +49,7 @@ portfinder.getPort((error, port) => {
     };
     const config = {
         mode: 'development',
-        entry: path.resolve(directoryPath, 'index.tsx'),
+        entry: path.resolve(directoryPath, 'demo/demo.tsx'),
         devtool: 'cheap-module-eval-source-map',
         output: {
             path: path.resolve(basePath, 'lib', directory),
@@ -106,6 +106,29 @@ portfinder.getPort((error, port) => {
                 loaders: ['babel-loader?cacheDirectory'],
                 threads: os.cpus().length
             }),
+            // new class {
+            //     apply (compiler) {
+            //         compiler.hooks.emit.tapAsync('replaceModuleName', function(compilation, callback){
+            //             compilation.chunks.forEach(chunk=>{
+            //                 chunk.files.forEach(fileName=>{
+            //                     let assets = compilation.assets,
+            //                         asset = assets[ fileName ],
+            //                         source = asset.source();
+            //                     if( /%moduleName%/.test(source) ) {
+            //                         let newSource = source.replace(/%(moduleName)%/i, (input, $0, $1) => {
+            //                             return 'button';
+            //                         });
+            //                         assets[ fileName ] = Object.assign(asset, {
+            //                             source: ()=>newSource,
+            //                             size: ()=>Buffer.byteLength(newSource, 'utf-8')
+            //                         });
+            //                     }
+            //                 });
+            //             });
+            //             callback();
+            //         });
+            //     }
+            // }
         ]
     };
     

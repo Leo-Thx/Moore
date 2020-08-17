@@ -1,21 +1,13 @@
-import React, { ReactNode } from 'react';
-import ReactDOM from 'react-dom';
-import '@style/index';
+import React from 'react';
 
+export type CompProps = {
 
-const ButtonBase: React.FC<any> = () => {
-    const array: string[] = Array.from<string>({length: 3}).fill("string");
-    return (
-        <div>
-            {
-                React.Children.map(array, (item, index)=>{
-                    return <span key={index}>{item} - {index}</span>
-                })
-            }
-        </div>
-    );
 };
 
+const CompnentName: React.FC<CompProps> = (props: CompProps) => {
+    return (
+        <div>{CompnentName.name}</div>
+    )
+};
 
-ReactDOM.render(<ButtonBase />, document.getElementById('app'));
-
+export default CompnentName;

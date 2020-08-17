@@ -9,6 +9,7 @@ const figlet = require('figlet');
 const path = require('path');
 const fs = require('fs');
 const ora = require('ora');
+const { Duplex  } = require('stream');
 
 console.log(
     chalk.yellow(
