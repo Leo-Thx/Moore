@@ -8,7 +8,7 @@
     "moore": "bin/shell"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm test -- --watch",
     "dev": "cross-env NODE_ENV=development node ./config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production node ./config/webpack.prod.js",
     "build:esm": "tsc && tsc -m es6 --outDir lib-esm",
@@ -33,6 +33,7 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@types/classnames": "^2.2.10",
     "@types/lodash": "^4.14.156",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.9.43",
@@ -68,8 +69,6 @@
     "@babel/runtime": "^7.10.5",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
-    "lodash": "^4.17.15",
-    "moment": "^2.27.0",
     "normalize.css": "^8.0.1",
     "regenerator-runtime": "^0.13.5"
   }

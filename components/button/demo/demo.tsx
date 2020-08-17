@@ -1,7 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Component from './../index';
+import Component from './../button';
 
 
-ReactDOM.render(<Component />, document.getElementById('app'));
+ReactDOM.render(
+    <Component>
+        
+    </Component>, 
+    document.getElementById('app')
+);
 

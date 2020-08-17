@@ -1,6 +1,7 @@
-// 颜色、大小
-// 
+@import 'normalize.css';
 
-// 主色
-$primary-color: #123;
-// 辅色
+@import './variables';
+@import './mixins';
+@import './functions';
+
+
