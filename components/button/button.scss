@@ -1,7 +1,17 @@
-@import './../style/index.scss';
-
 .moore-btn {
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background-color: $primary;
+    color: white;
+
+    &:focus {
+        opacity: .85;
+        outline: none;
+    }
+
     &-disabled {
-        background-color: #fff;
+        background-color: #ccc;
+        cursor: not-allowed;
     }
 }

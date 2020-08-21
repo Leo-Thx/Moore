@@ -58,9 +58,9 @@ portfinder.getPort((error, port) => {
         resolve: {
             modules: [ 'node_modules' ],
             extensions: ['.tsx', '.ts', '.js', '.jsx'],
-            alias: {
-                '@style': path.resolve(basePath, 'components', 'style'),
-            }
+            // alias: {
+            //     '@style': path.resolve(basePath, 'components', 'style')
+            // }
         },
         module: {
             rules: [
@@ -69,7 +69,7 @@ portfinder.getPort((error, port) => {
                     test: /\.s?css$/, 
                     use: [
                         { loader: 'style-loader' },     // 使用之后，可能打包不会编译出className
-                        { loader: 'css-loader', options: {modules: true} }, 
+                        { loader: 'css-loader' }, 
                         { loader: 'sass-loader' }
                     ]
                 }

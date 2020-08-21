@@ -1,15 +1,13 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import styles from './button.scss';
-
-enum ButtonSize {
+export enum ButtonSize {
     Large = 'lg',
     Default = 'md',
     Small = 'sm'
 };
 
-enum ButtonType {
+export enum ButtonType {
     Primary = 'primary',
     Default = 'default',
     Danger = 'danger',
@@ -32,17 +30,25 @@ type ButtonBase = {
 };
 
 
-type ButtonProps = Partial<ButtonBase|HTMLElement>;
+type ButtonProps = Partial<ButtonBase>;
 
 
 const Button: React.FC<ButtonProps> = props => {
+    const { disabled } = props;
+    const classname = classnames('moore-btn', {
+        'moore-btn-disabled': disabled
+    });
+
     return (
-        <div>{ props.children }</div>
+        <button className={classname}>{props.children}</button>
     )
 };
 
 
-Button.defaultProps = {};
+Button.defaultProps = {
+    type: ButtonType.Default,
+    size: ButtonSize.Default
+};
 
 export default Button;
 
