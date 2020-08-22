@@ -1,17 +1,84 @@
-.moore-btn {
-    text-align: center;
-    border: 1px solid transparent;
-    border-radius: 2px;
-    background-color: $primary;
-    color: white;
+@import './../style/variables';
 
-    &:focus {
+
+.moore-btn {
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    box-shadow: 0 2px 0 rgba(0,0,0,.015);
+    outline: 0 ;
+    transition: all .2s cubic-bezier(.645,.045,.355,1);
+    background-color: white;
+    font-size: 14px;
+    height: 32px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    padding: 4px 16px;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: (22/14);
+    > span { display: inline-block; }
+
+    &:hover{
         opacity: .85;
-        outline: none;
+        border-color: $primary;
+        color: $primary;
+        &:active {
+            color: #096dd9;
+        }
+    }
+    
+    // 主要
+    &-primary {
+        background-color: $primary;
+        border-color: $primary;
+        color: white;
+        box-shadow: 0 2px 0 rgba(0,0,0,.045);
+
+        &:hover{
+            &:active {
+                border-color: #096dd9;
+                background-color: #096dd9;;
+                color: white;
+            }
+        }
+    }
+
+    // 
+    &-danger {
+        background-color: $danger;
+        border-color: $danger;
+        color: white;
+        &:hover{
+            border-color: $danger;
+            color: white;
+            &:active {
+                border-color: #d9363e;
+                background-color: #d9363e;;
+                color: white;
+            }
+        }
+    }
+
+    // 纯文本
+    &-text {
+        background-color: transparent;
+        border-color: transparent;
+    }
+    // 超链接
+    &-link {
+        
     }
 
     &-disabled {
-        background-color: #ccc;
+        background-color: #f5f5f5;
+        border-color: #d9d9d9;
+        color: rgba(0,0,0,.25);
         cursor: not-allowed;
+        > * {
+            pointer-events: none;
+        }
     }
 }

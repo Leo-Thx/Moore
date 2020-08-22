@@ -1,54 +1,55 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
-
-export enum ButtonSize {
-    Large = 'lg',
-    Default = 'md',
-    Small = 'sm'
-};
-
-export enum ButtonType {
-    Primary = 'primary',
-    Default = 'default',
-    Danger = 'danger',
-    Link = 'link',
-    Text = 'text',
-    Dashed = 'dashed'
-};
+import { getClsPrefix } from '../_utils/_style.util';
 
 
-type ButtonBase = {
-    classname: string;
-    size: ButtonSize;
-    disabled: boolean;
-    type: ButtonType;
-    href: string;
-    loading: boolean;
-    onClick: (event: MouseEvent) => void;
-    icon: React.ReactNode,
-    children: React.ReactNode
+interface BaseButtonProps {
+    type?     : 'primary' | 'danger' | 'link' | 'text';
+    size?     : 'sm' | 'lg';
+    classname?: string;
+    href?     : string;
+    loading?  : boolean;
+    block?    : boolean;
+    onClick?  : React.MouseEventHandler;
+    icon?     : React.ReactNode;
+    children  : React.ReactNode;
 };
 
 
-type ButtonProps = Partial<ButtonBase>;
+type NativeButtonProps = BaseButtonProps & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'|'onClick'>;
+type NativeAnchorProps = BaseButtonProps & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'type'|'onClick'>;
+type ButtonProps       = Partial<NativeAnchorProps & NativeButtonProps>;
 
 
 const Button: React.FC<ButtonProps> = props => {
-    const { disabled } = props;
-    const classname = classnames('moore-btn', {
-        'moore-btn-disabled': disabled
+    const { disabled, size, classname, type, block, onClick, ...restProps } = props;
+    const clsPrefix = getClsPrefix('btn');
+
+    let clname  = classnames(classname, clsPrefix, {
+        [`${clsPrefix}-${size}`] : !!size,
+        [`${clsPrefix}-${type}`] : !!type
     });
 
+    if( type === 'link' ) {
+        return (
+            <a className={clname} {...restProps}>
+                <span>{props.children}</span>
+            </a>
+        );
+    }
+
     return (
-        <button className={classname}>{props.children}</button>
-    )
+        <button type="button" disabled className={clname} {...restProps}>
+            <span>{props.children}</span>
+        </button>
+    );
 };
 
 
 Button.defaultProps = {
-    type: ButtonType.Default,
-    size: ButtonSize.Default
+    block: false
 };
 
-export default Button;
 
+export { ButtonProps };
+export default Button;
