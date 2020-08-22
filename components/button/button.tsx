@@ -5,14 +5,17 @@ import { getClsPrefix } from '../_utils/_style.util';
 
 interface BaseButtonProps {
     type?     : 'primary' | 'danger' | 'link' | 'text';
-    size?     : 'sm' | 'lg';
-    classname?: string;
-    href?     : string;
+    htmlType  : 'submit' | 'reset' | 'button';  // HTML原始按钮类型
+    size?     : 'sm' | 'lg';    //
+    ghost     : boolean;    // 是否是空心按钮 true表示没有背景色
+    danger    : boolean;
     loading?  : boolean;
     block?    : boolean;
-    onClick?  : React.MouseEventHandler;
+    classname?: string;
+    href?     : string;
     icon?     : React.ReactNode;
     children  : React.ReactNode;
+    onClick?  : React.MouseEventHandler;
 };
 
 
@@ -22,24 +25,23 @@ type ButtonProps       = Partial<NativeAnchorProps & NativeButtonProps>;
 
 
 const Button: React.FC<ButtonProps> = props => {
-    const { disabled, size, classname, type, block, onClick, ...restProps } = props;
+    const { disabled, ghost, size, danger, classname, type, block, onClick, ...restProps } = props;
     const clsPrefix = getClsPrefix('btn');
 
     let clname  = classnames(classname, clsPrefix, {
         [`${clsPrefix}-${size}`] : !!size,
-        [`${clsPrefix}-${type}`] : !!type
+        [`${clsPrefix}-${type}`] : !!type,
+        [`${clsPrefix}-ghost`]: ghost
     });
 
-    if( type === 'link' ) {
-        return (
-            <a className={clname} {...restProps}>
-                <span>{props.children}</span>
-            </a>
-        );
+    if( type === 'link' || type === 'text' ) {
+        if( danger ) clname = classnames(clname, {
+            [`${clsPrefix}-${type}-danger`] : true
+        });
     }
 
     return (
-        <button type="button" disabled className={clname} {...restProps}>
+        <button type="button" disabled={disabled} className={clname} {...restProps}>
             <span>{props.children}</span>
         </button>
     );
@@ -47,7 +49,9 @@ const Button: React.FC<ButtonProps> = props => {
 
 
 Button.defaultProps = {
-    block: false
+    block : false,
+    ghost : false,
+    danger: false
 };
 
 

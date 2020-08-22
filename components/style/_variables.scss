@@ -18,13 +18,13 @@ $dark: '' !default;
 
 // 内填充和外边距 这个要统一
 $lg-padding: '' !default;
-$md-padding: '' !default;
+$md-padding: 4px !default;
 $sm-padding: '' !default;
 
 $lg-margin: '' !default;
-$md-margin: '' !default;
+$md-margin: 4px !default;
 $sm-margin: '' !default;
 
 
 // 边框、字体
-$font_fmaily: 'Source Han Sans CN'
+$font_fmaily: 'Source Han Sans CN';

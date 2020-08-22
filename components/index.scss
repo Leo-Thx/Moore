@@ -9,3 +9,10 @@
 html, body {
     font-family: $font_fmaily;
 }
+
+
+@each $var in (block, inline, flex, inline-block) {
+    .#{$var} {
+        display: $var;
+    }
+}

@@ -1,84 +1,164 @@
 @import './../style/variables';
 
 
-.moore-btn {
+@mixin lg($lineHeight) {
+    font-size: 16px;
+    height: 40px;
+    padding: (40 - 2 - ($lineHeight * 16px))/2 16px;
+}
+
+@mixin sm($lineHeight) {
+    font-size: 12px;
+    height: 24px;
+    padding: 0px 8px;
+}
+
+.#{$cssPrefix}-btn {
+    margin: 15px;
     cursor: pointer;
     user-select: none;
-    text-align: center;
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    box-shadow: 0 2px 0 rgba(0,0,0,.015);
-    outline: 0 ;
-    transition: all .2s cubic-bezier(.645,.045,.355,1);
-    background-color: white;
-    font-size: 14px;
-    height: 32px;
-    box-sizing: border-box;
-    white-space: nowrap;
-    padding: 4px 16px;
+
     vertical-align: middle;
     display: inline-block;
-    line-height: (22/14);
+    
+    text-align: center; 
+    font-size: 14px;
+    $lineHeight: round((22/14) * 10000) / 10000;
+    line-height: $lineHeight;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+    border-width: 1px;
+    height: 32px;
+    padding: 4px 12px;
+
+    border-radius: 3px;
+    border-style: solid;
+    border-color: #d9d9d9;
+    background-color: white;
+    color: rgba(0,0,0,.65);
+    outline: 0 ;
+    box-shadow: 0 2px 0 rgba(0,0,0,.015);
+
+    transition: all .2s cubic-bezier(.645,.045,.355,1);
+
     > span { display: inline-block; }
+
+    &-lg {
+        @include lg($lineHeight);
+    }
+    &-sm {
+        @include sm($lineHeight);
+    }
 
     &:hover{
         opacity: .85;
-        border-color: $primary;
         color: $primary;
-        &:active {
-            color: #096dd9;
-        }
+        border-color: $primary;
+    }
+    &:active {
+        color: #096dd9;
+        border-color: #096dd9;
     }
     
-    // 主要
     &-primary {
-        background-color: $primary;
-        border-color: $primary;
-        color: white;
         box-shadow: 0 2px 0 rgba(0,0,0,.045);
-
-        &:hover{
+        color: white;
+        border-color: $primary;
+        background-color: $primary;
+        &:hover { color: white; }
+        &:active {
+            color: white;
+            border-color: #096dd9;
+            background-color: #096dd9;
+        }
+        &.#{$cssPrefix}-btn-ghost{
+            background-color: transparent;
+            color: $primary;
             &:active {
+                color: #096dd9;
                 border-color: #096dd9;
-                background-color: #096dd9;;
-                color: white;
             }
         }
     }
 
-    // 
     &-danger {
+        box-shadow: 0 2px 0 rgba(0,0,0,.045);
         background-color: $danger;
         border-color: $danger;
         color: white;
         &:hover{
-            border-color: $danger;
             color: white;
+            border-color: $danger;
             &:active {
                 border-color: #d9363e;
                 background-color: #d9363e;;
                 color: white;
             }
         }
+        // 空心样式
+        &.#{$cssPrefix}-btn-ghost{
+            background-color: transparent;
+            color: $danger;
+            &:active {
+                background-color: transparent;
+                color: #d9363e;
+            }
+        }
     }
 
-    // 纯文本
     &-text {
-        background-color: transparent;
+        background-color: white;
         border-color: transparent;
-    }
-    // 超链接
-    &-link {
-        
+        box-shadow: none;
+        &:hover{
+            border-color: transparent;
+            background-color: rgba(0,0,0,.018);
+        }
+        &:active {
+            color: #096dd9;
+            background-color: rgba(0,0,0,.038);
+        }
+        // 文本样式
+        &.#{$cssPrefix}-btn-text-danger {
+            color: $danger;
+            &:active {
+                color: #d9363e;
+            }
+        }
     }
 
-    &-disabled {
+    &-link {
+        border-color: transparent;
+        box-shadow: none;
+        text-decoration: underline;
+        &:hover{
+            border-color: transparent;
+        }
+        &:active {
+            color: #096dd9;
+        }
+        &.#{$cssPrefix}-btn-link-danger {
+            color: $danger;
+        }
+    }
+
+    &:disabled {
+        &:hover{ opacity: 1; }
         background-color: #f5f5f5;
         border-color: #d9d9d9;
         color: rgba(0,0,0,.25);
+        box-shadow: none;
         cursor: not-allowed;
         > * {
             pointer-events: none;
+        }
+    }
+
+    &-text, &-link {
+        &:disabled{
+            background-color: transparent;
+            border-color: transparent;
         }
     }
 }
