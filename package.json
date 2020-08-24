@@ -8,7 +8,7 @@
     "moore": "bin/shell"
   },
   "scripts": {
-    "test": "npm test -- --watch",
+    "test": "jest --watchAll --color",
     "dev": "cross-env NODE_ENV=development node ./config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production node ./config/webpack.prod.js",
     "build:esm": "tsc && tsc -m es6 --outDir lib-esm",
@@ -33,7 +33,11 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@testing-library/dom": "^7.22.5",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^10.4.9",
     "@types/classnames": "^2.2.10",
+    "@types/jest": "^26.0.10",
     "@types/lodash": "^4.14.156",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.9.43",
