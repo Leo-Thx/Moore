@@ -14,7 +14,7 @@
 }
 
 .#{$cssPrefix}-btn {
-    margin: 15px;
+    margin: 15px 15px 15px 0;
     cursor: pointer;
     user-select: none;
 
@@ -142,6 +142,8 @@
             color: $danger;
         }
     }
+
+    &-block { display: block; width: 100%; }
 
     &:disabled {
         &:hover{ opacity: 1; }

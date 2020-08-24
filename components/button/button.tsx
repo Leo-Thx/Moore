@@ -25,13 +25,14 @@ type ButtonProps       = Partial<NativeAnchorProps & NativeButtonProps>;
 
 
 const Button: React.FC<ButtonProps> = props => {
-    const { disabled, ghost, size, danger, classname, type, block, onClick, ...restProps } = props;
+    const { disabled, ghost, size, danger, classname, type, href, block, onClick, ...restProps } = props;
     const clsPrefix = getClsPrefix('btn');
 
     let clname  = classnames(classname, clsPrefix, {
         [`${clsPrefix}-${size}`] : !!size,
         [`${clsPrefix}-${type}`] : !!type,
-        [`${clsPrefix}-ghost`]: ghost
+        [`${clsPrefix}-ghost`]: ghost,
+        [`${clsPrefix}-block`]: block
     });
 
     if( type === 'link' || type === 'text' ) {
@@ -40,8 +41,14 @@ const Button: React.FC<ButtonProps> = props => {
         });
     }
 
+    const handleClick = React.useCallback((event: React.MouseEvent)=>{
+        if( type === 'link' ) return window.open( href );
+        else if( typeof onClick === 'function' )  onClick!(event);
+    }, [ type ]);
+
+
     return (
-        <button type="button" disabled={disabled} className={clname} {...restProps}>
+        <button type="button" disabled={disabled} className={clname} onClick={handleClick} {...restProps}>
             <span>{props.children}</span>
         </button>
     );

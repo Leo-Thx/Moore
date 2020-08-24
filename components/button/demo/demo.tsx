@@ -28,6 +28,7 @@ ReactDOM.render(
             <Component type="danger" disabled>danger-disabled</Component>
             <Component type="link" disabled>link-disabled</Component>
             <Component type="text" disabled>text-disabled</Component>
+            <Component disabled block>block</Component>
         </div>
 
         <Component type="primary" size="lg">Primary</Component>
