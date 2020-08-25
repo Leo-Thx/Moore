@@ -41,9 +41,9 @@ const Button: React.FC<ButtonProps> = props => {
         });
     }
 
-    // 暂时不处理href的情况
+    
     const handleClick = React.useCallback((event: React.MouseEvent)=>{
-        if( type === 'link' ) return window.open( href );
+        if( type === 'link' && href ) return window.open( href );
         else if( typeof onClick === 'function' )  onClick!(event);
     }, [ type ]);
 

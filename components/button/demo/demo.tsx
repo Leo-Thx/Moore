@@ -11,6 +11,7 @@ ReactDOM.render(
             <Component type="primary" onClick={e=>console.info(e)}>primary</Component>
             <Component type="danger">danger</Component>
             <Component>default</Component>
+            <Component type="link" href="http://www.baidu.com">baidu.com</Component>
             <Component type="link">link</Component>
             <Component type="text">text</Component>
         </div>
