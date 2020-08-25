@@ -8,7 +8,7 @@ import Component from './../button';
 ReactDOM.render(
     <>
         <div>
-            <Component type="primary">primary</Component>
+            <Component type="primary" onClick={e=>console.info(e)}>primary</Component>
             <Component type="danger">danger</Component>
             <Component>default</Component>
             <Component type="link">link</Component>
