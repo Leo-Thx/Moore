@@ -3,38 +3,56 @@ import ReactDOM from 'react-dom';
 import 'normalize.css';
 import './../../index.scss';
 
-import Component from './../button';
+import Button from './../button';
+import ButtonGroup from './../buttonGroup';
+
 
 ReactDOM.render(
     <>
         <div>
-            <Component type="primary" onClick={e=>console.info(e)}>primary</Component>
-            <Component type="danger">danger</Component>
-            <Component>default</Component>
-            <Component type="link" href="http://www.baidu.com">baidu.com</Component>
-            <Component type="link">link</Component>
-            <Component type="text">text</Component>
+            <Button className="my-class" type="primary" onClick={e=>console.info(e)}>primary</Button>
+            <Button type="danger">danger</Button>
+            <Button>default</Button>
+            <Button type="link" href="http://www.baidu.com">baidu.com</Button>
+            <Button type="link">link</Button>
+            <Button type="text">text</Button>
         </div>
 
         <div>
-            <Component type="primary" ghost>primary</Component>
-            <Component type="danger" ghost>danger</Component>
-            <Component type="text" danger>text</Component>
-            <Component type="link" danger>link</Component>
+            <Button type="primary" ghost>primary</Button>
+            <Button type="danger" ghost>danger</Button>
+            <Button type="text" danger>text</Button>
+            <Button type="link" danger>link</Button>
         </div>
         
         <div>
-            <Component disabled>disabled</Component>
-            <Component type="primary" disabled>primary-disabled</Component>
-            <Component type="danger" disabled>danger-disabled</Component>
-            <Component type="link" disabled>link-disabled</Component>
-            <Component type="text" disabled>text-disabled</Component>
-            <Component disabled block>block</Component>
+            <Button disabled>disabled</Button>
+            <Button type="primary" disabled>primary-disabled</Button>
+            <Button type="danger" disabled>danger-disabled</Button>
+            <Button type="link" disabled>link-disabled</Button>
+            <Button type="text" disabled>text-disabled</Button>
         </div>
 
-        <Component type="primary" size="lg">Primary</Component>
-        <Component type="danger">Danger</Component>
-        <Component type="primary" size="sm">Default</Component>
+        <div>
+            <Button type="primary" size="lg">Primary</Button>
+            <Button type="danger">Danger</Button>
+            <Button type="primary" size="sm">Default</Button>
+            <Button disabled block>block</Button>
+        </div>
+        
+        <div>
+            <ButtonGroup>
+                <Button>Text</Button>
+            </ButtonGroup>
+            <ButtonGroup><Button>Text</Button></ButtonGroup>
+            <hr />
+            <ButtonGroup size="sm">
+                <Button type="primary">primary</Button>
+                <Button>danger</Button>
+                <Button>default</Button>
+                <Button size="sm">default</Button>
+            </ButtonGroup>
+        </div>
     </>, 
     document.getElementById('app')
 );

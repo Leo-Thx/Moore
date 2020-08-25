@@ -14,15 +14,11 @@
 }
 
 .#{$cssPrefix}-btn {
-    margin: 15px 15px 15px 0;
-    cursor: pointer;
-    user-select: none;
-
-    vertical-align: middle;
+    cursor: pointer; user-select: none;
     display: inline-block;
     
-    text-align: center; 
     font-size: 14px;
+    text-align: center; 
     $lineHeight: round((22/14) * 10000) / 10000;
     line-height: $lineHeight;
     white-space: nowrap;
@@ -52,26 +48,28 @@
     }
 
     &:hover{
-        opacity: .85;
+        opacity: .88;
         color: $primary;
         border-color: $primary;
     }
+
     &:active {
         color: #096dd9;
         border-color: #096dd9;
     }
+
     
     &-primary {
-        box-shadow: 0 2px 0 rgba(0,0,0,.045);
         color: white;
         border-color: $primary;
         background-color: $primary;
+
         &:hover { color: white; }
         &:active {
             color: white;
-            border-color: #096dd9;
             background-color: #096dd9;
         }
+
         &.#{$cssPrefix}-btn-ghost{
             background-color: transparent;
             color: $primary;
@@ -83,20 +81,19 @@
     }
 
     &-danger {
-        box-shadow: 0 2px 0 rgba(0,0,0,.045);
         background-color: $danger;
         border-color: $danger;
         color: white;
         &:hover{
             color: white;
             border-color: $danger;
-            &:active {
-                border-color: #d9363e;
-                background-color: #d9363e;;
-                color: white;
-            }
         }
-        // 空心样式
+        &:active {
+            border-color: #d9363e;
+            background-color: #d9363e;;
+            color: white;
+        }
+        
         &.#{$cssPrefix}-btn-ghost{
             background-color: transparent;
             color: $danger;
@@ -119,7 +116,7 @@
             color: #096dd9;
             background-color: rgba(0,0,0,.038);
         }
-        // 文本样式
+
         &.#{$cssPrefix}-btn-text-danger {
             color: $danger;
             &:active {

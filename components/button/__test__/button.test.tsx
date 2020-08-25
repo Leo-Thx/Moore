@@ -7,14 +7,14 @@ import Button from './../button';
 
 describe('test button component', () => {
     test('render default button', () => {
-        let wrapperContainer = render(<Button>renderTest</Button>),
+        let wrapperContainer = render(<Button className="myClass">renderTest</Button>),
             container = wrapperContainer.container;
         
         const button = container.querySelector('button');
         const text = wrapperContainer.getByText('renderTest');
 
         expect(text?.tagName).toMatch(/span/i);
-        expect(button).toHaveClass('moore-btn');
+        expect(button).toHaveClass('moore-btn', 'myClass');
     });
 
     test('render primary button', () => {
