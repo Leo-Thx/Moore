@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { getClsPrefix } from './../_utils/_style.util';
-import { ButtonProps } from './button';
+import Button, { ButtonProps } from './button';
 
 interface BaseButtonGroupProp {
     vertical : boolean;
@@ -10,7 +10,7 @@ interface BaseButtonGroupProp {
     className: string;
 };
 
-type ButtonGroupProps = Partial<BaseButtonGroupProp> & Omit<React.DOMAttributes<HTMLDivElement>, 'onClick'>;
+type ButtonGroupProps = Partial<BaseButtonGroupProp & Omit<React.DOMAttributes<HTMLDivElement>, 'onClick'>>;
 
 
 const ButtonGroup: React.FC<ButtonGroupProps> = props => {
@@ -25,15 +25,22 @@ const ButtonGroup: React.FC<ButtonGroupProps> = props => {
     return (
         <div className={clsname} {...restProps}>
             {
-                React.Children.map(children as Array<React.ReactNode>, (iChild) => {
-                    return React.cloneElement(iChild as React.FunctionComponentElement<ButtonProps>, {
-                        size: size
-                    })
+                React.Children.map(children as Array<React.FunctionComponentElement<ButtonProps>>, (iChild) => {
+                    if( iChild.type !== Button ) return null;
+                    
+                    const { type } =  iChild.props,
+                        notLinkOrText = type !== 'link' && type !== 'text';
+
+                    return React.cloneElement(iChild, {
+                        size: size,
+                        type: notLinkOrText ? type: 'default'
+                    });
                 })
             }
         </div>
     );
 };
+
 
 ButtonGroup.defaultProps = {
     vertical: false

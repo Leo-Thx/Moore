@@ -6,24 +6,19 @@ $cssPrefix: 'moore';
 
 // 系统色板-功能色
 $primary: #1E90FF !default;
-$second: '' !default;
+$second : '' !default;
 $success: '' !default;
-$info: '' !default;
+$info   : '' !default;
 $warning: '' !default;
-$danger: #ff7875 !default;
-$light: '' !default;
-$dark: '' !default;
+$danger : #ff7875 !default;
+$light  : '' !default;
+$dark   : '' !default;
 
 
 
-// 内填充和外边距 这个要统一
-$lg-padding: '' !default;
-$md-padding: 4px !default;
-$sm-padding: '' !default;
-
-$lg-margin: '' !default;
-$md-margin: 4px !default;
-$sm-margin: '' !default;
+// 圆角大小
+$border-radius: 3px !default;
+$border-width : 1px !default;
 
 
 // 边框、字体

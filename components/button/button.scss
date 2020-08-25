@@ -1,51 +1,82 @@
 @import './../style/variables';
 
+$primaryActive: #096dd9;
+$dangerActive: #d9363e;
 
-@mixin lg($lineHeight) {
-    font-size: 16px;
-    height: 40px;
-    padding: (40 - 2 - ($lineHeight * 16px))/2 16px;
+@mixin mix_btnSize {
+    font-size: 14px;
+    height   : 32px;
+    padding  : 0px 12px;
+    // $lineHeight: round((22/14) * 10000) / 10000;
+    // line-height: 1.57;
 }
 
-@mixin sm($lineHeight) {
+@mixin mix_btnSmSize {
     font-size: 12px;
-    height: 24px;
-    padding: 0px 8px;
+    height   : 24px;
+    padding  : 0px 8px;
 }
+
+@mixin mix_btnlgSize {
+    font-size: 16px;
+    height   : 40px;
+    padding  : 0px 16px;
+}
+
+// 主色，激活色
+@mixin mix_fillButton($pr, $act) {
+    color: white;
+    border-color: $pr;
+    background-color: $pr;
+    &:hover {
+        color: white;
+        border-color: $pr;
+    }
+    &:active {
+        color: white;
+        border-color: $act;
+        background-color: $act;
+    }
+    &.#{$cssPrefix}-btn-ghost{
+        background-color: transparent;
+        color: $pr;
+        &:active {
+            color: $act;
+            border-color: $act;
+        }
+    }
+}
+
+
 
 .#{$cssPrefix}-btn {
     cursor: pointer; user-select: none;
     display: inline-block;
     
-    font-size: 14px;
-    text-align: center; 
-    $lineHeight: round((22/14) * 10000) / 10000;
-    line-height: $lineHeight;
+    text-align: center;
     white-space: nowrap;
 
     box-sizing: border-box;
-    border-width: 1px;
-    height: 32px;
-    padding: 4px 12px;
 
-    border-radius: 3px;
-    border-style: solid;
-    border-color: #d9d9d9;
+    border: {
+        width: $border-width;
+        radius: $border-radius;
+        style: solid;
+        color: #d9d9d9;
+    }
+
+    outline: 0 ;
     background-color: white;
     color: rgba(0,0,0,.65);
-    outline: 0 ;
     box-shadow: 0 2px 0 rgba(0,0,0,.015);
 
     transition: all .2s cubic-bezier(.645,.045,.355,1);
-
+    
     > span { display: inline-block; }
 
-    &-lg {
-        @include lg($lineHeight);
-    }
-    &-sm {
-        @include sm($lineHeight);
-    }
+    @include mix_btnSize;
+    &-lg { @include mix_btnlgSize;}
+    &-sm { @include mix_btnSmSize; }
 
     &:hover{
         opacity: .88;
@@ -54,53 +85,20 @@
     }
 
     &:active {
-        color: #096dd9;
-        border-color: #096dd9;
+        color: $primaryActive;
+        border-color: $primaryActive;
     }
 
+    &:focus { box-shadow: 0 0 0 2px rgba($primary, .2); }
     
     &-primary {
-        color: white;
-        border-color: $primary;
-        background-color: $primary;
-
-        &:hover { color: white; }
-        &:active {
-            color: white;
-            background-color: #096dd9;
-        }
-
-        &.#{$cssPrefix}-btn-ghost{
-            background-color: transparent;
-            color: $primary;
-            &:active {
-                color: #096dd9;
-                border-color: #096dd9;
-            }
-        }
+        @include mix_fillButton($primary, $primaryActive);
     }
 
     &-danger {
-        background-color: $danger;
-        border-color: $danger;
-        color: white;
-        &:hover{
-            color: white;
-            border-color: $danger;
-        }
-        &:active {
-            border-color: #d9363e;
-            background-color: #d9363e;;
-            color: white;
-        }
-        
-        &.#{$cssPrefix}-btn-ghost{
-            background-color: transparent;
-            color: $danger;
-            &:active {
-                background-color: transparent;
-                color: #d9363e;
-            }
+        @include mix_fillButton($danger, $dangerActive);
+        &:focus {
+            box-shadow: 0 0 0 2px rgba($danger, .2);
         }
     }
 
@@ -113,14 +111,15 @@
             background-color: rgba(0,0,0,.018);
         }
         &:active {
-            color: #096dd9;
+            color: $primaryActive;
             background-color: rgba(0,0,0,.038);
         }
+        &:focus { box-shadow: none; }
 
         &.#{$cssPrefix}-btn-text-danger {
             color: $danger;
             &:active {
-                color: #d9363e;
+                color: $dangerActive;
             }
         }
     }
@@ -129,12 +128,9 @@
         border-color: transparent;
         box-shadow: none;
         text-decoration: underline;
-        &:hover{
-            border-color: transparent;
-        }
-        &:active {
-            color: #096dd9;
-        }
+        &:hover{ border-color: transparent; }
+        &:active { color: $primaryActive; }
+        &:focus { box-shadow: none; }
         &.#{$cssPrefix}-btn-link-danger {
             color: $danger;
         }

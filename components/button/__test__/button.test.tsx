@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import "@testing-library/jest-dom";
-import { getClsPrefix } from './../../_utils/_style.util';
 import Button from './../button';
 
 

@@ -4,7 +4,7 @@ import { getClsPrefix } from '../_utils/_style.util';
 
 
 interface BaseButtonProps {
-    type?     : 'primary' | 'danger' | 'link' | 'text';
+    type?     : 'primary' | 'danger' | 'link' | 'text' | 'default';
     htmlType  : 'submit' | 'reset' | 'button';           // HTML原始按钮类型
     size?     : 'sm' | 'lg';                             //
     ghost     : boolean;                                 // 是否是空心按钮 true表示没有背景色
@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = props => {
 
     let clname  = classnames(className, clsPrefix, {
         [`${clsPrefix}-${size}`]: !!size,
-        [`${clsPrefix}-${type}`]: !!type,
+        [`${clsPrefix}-${type}`]: !!type && type !== 'default',
         [`${clsPrefix}-ghost`]  : ghost,
         [`${clsPrefix}-block`]  : block
     });
@@ -48,7 +48,7 @@ const Button: React.FC<ButtonProps> = props => {
     }, [ type, onClick ]);
 
     return (
-        <button type="button" disabled={disabled} className={clname} onClick={handleClick} {...restProps}>
+        <button role="button" type="button" disabled={disabled} className={clname} onClick={handleClick} {...restProps}>
             <span>{props.children}</span>
         </button>
     );

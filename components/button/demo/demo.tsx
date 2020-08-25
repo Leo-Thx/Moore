@@ -48,9 +48,36 @@ ReactDOM.render(
             <hr />
             <ButtonGroup size="sm">
                 <Button type="primary">primary</Button>
-                <Button>danger</Button>
                 <Button>default</Button>
-                <Button size="sm">default</Button>
+                <Button type="danger">danger</Button>
+                <Button size="lg">default</Button>
+                <Button size="lg">default</Button>
+            </ButtonGroup>
+            <br />
+
+            <ButtonGroup size="lg" vertical>
+                <Button type="primary">primary</Button>
+                <Button>default</Button>
+                <Button type="danger">danger</Button>
+                <Button size="lg">default</Button>
+                <Button size="lg">default</Button>
+            </ButtonGroup>
+
+            <ButtonGroup vertical>
+                <Button type="primary">primary</Button>
+                <Button>default</Button>
+                <Button type="danger">danger</Button>
+                <Button size="lg">default</Button>
+                <Button size="lg">default</Button>
+            </ButtonGroup>
+
+            <ButtonGroup size="sm" vertical>
+                <Button type="primary">primary</Button>
+                <Button>default</Button>
+                <Button type="danger">danger</Button>
+                <Button size="lg">default</Button>
+                <Button size="lg">default</Button>
+                Text
             </ButtonGroup>
         </div>
     </>, 
