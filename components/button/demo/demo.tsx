@@ -77,7 +77,6 @@ ReactDOM.render(
                 <Button type="danger">danger</Button>
                 <Button size="lg">default</Button>
                 <Button size="lg">default</Button>
-                Text
             </ButtonGroup>
         </div>
     </>, 

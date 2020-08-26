@@ -5,9 +5,9 @@ import { getClsPrefix } from '../_utils/_style.util';
 
 interface BaseButtonProps {
     type?     : 'primary' | 'danger' | 'link' | 'text' | 'default';
-    htmlType  : 'submit' | 'reset' | 'button';           // HTML原始按钮类型
-    size?     : 'sm' | 'lg';                             //
-    ghost     : boolean;                                 // 是否是空心按钮 true表示没有背景色
+    htmlType  : 'submit' | 'reset' | 'button';                       // HTML原始按钮类型
+    size?     : 'sm' | 'lg';                                         //
+    ghost     : boolean;                                             // 是否是空心按钮 true表示没有背景色
     danger    : boolean;
     loading?  : boolean;
     block?    : boolean;
@@ -25,8 +25,14 @@ type ButtonProps       = Partial<NativeAnchorProps & NativeButtonProps>;
 
 
 const Button: React.FC<ButtonProps> = props => {
-    const { disabled, ghost, size, danger, className, type, href, block, onClick, ...restProps } = props;
-    const clsPrefix                                                                              = getClsPrefix('btn');
+    const { 
+        disabled, htmlType = 'button', 
+        ghost, size, danger, className, 
+        type, href, block, 
+        onClick, ...restProps 
+    } = props;
+
+    const clsPrefix = getClsPrefix('btn');
 
     let clname  = classnames(className, clsPrefix, {
         [`${clsPrefix}-${size}`]: !!size,
@@ -48,7 +54,12 @@ const Button: React.FC<ButtonProps> = props => {
     }, [ type, onClick ]);
 
     return (
-        <button role="button" type="button" disabled={disabled} className={clname} onClick={handleClick} {...restProps}>
+        <button role="button" 
+            type={htmlType} 
+            disabled={disabled} 
+            className={clname} 
+            onClick={handleClick} 
+            {...restProps}>
             <span>{props.children}</span>
         </button>
     );
