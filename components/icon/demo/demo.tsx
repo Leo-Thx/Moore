@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Icon from './../icon';
+import Icon, { IconType } from './../icon';
 import './../../index.scss';
 
 ReactDOM.render(
     <div>
-        <Icon></Icon>
+        <Icon svg href={IconType.close}></Icon>
+        <Icon svg></Icon>
+        <Icon href={IconType.close}></Icon>
     </div>, 
     document.getElementById('app')
 );
