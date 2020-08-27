@@ -72,11 +72,15 @@ $primaryActive: $primary-7;
 
     transition: all .2s cubic-bezier(.645,.045,.355,1);
     
+    i{ margin-right: 8px; }
     > span { display: inline-block; }
 
     @include mix_btnSize;
     &-lg { @include mix_btnlgSize;}
-    &-sm { @include mix_btnSmSize; }
+    &-sm { 
+        @include mix_btnSmSize; 
+        i{ margin-right: 4px; }
+    }
 
     &:hover{
         opacity: .88;

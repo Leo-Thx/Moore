@@ -5,14 +5,15 @@ import './../../index.scss';
 
 import Button from './../button';
 import ButtonGroup from './../buttonGroup';
-import Icon, { IconType } from './../../icon/icon';
+import Icon from './../../icon/icon';
 
 
 ReactDOM.render(
     <>
         <div>
-            <Button type="primary" icon={IconType.close}>Primary</Button>
-            {/* <Button type="primary" icon={<Icon svg type={IconType.close}></Icon>}>Primary</Button> */}
+            <Button icon="close">Primary</Button>
+            <Button type="primary" icon={<Icon type="close"></Icon>}>Primary</Button>
+            <Button type="primary"><Icon type="close"></Icon></Button>
             <Button className="my-class" type="primary" onClick={e=>console.info(e)}>primary</Button>
             <Button type="danger">danger</Button>
             <Button>default</Button>
@@ -38,8 +39,10 @@ ReactDOM.render(
 
         <div>
             <Button type="primary" size="lg">Primary</Button>
+            <Button size="lg" icon="close">Default</Button>
             <Button type="danger">Danger</Button>
             <Button type="primary" size="sm">Default</Button>
+            <Button size="sm" icon="close">Default</Button>
             <Button disabled block>block</Button>
         </div>
         
@@ -79,7 +82,7 @@ ReactDOM.render(
                 <Button>default</Button>
                 <Button type="danger">danger</Button>
                 <Button size="lg">default</Button>
-                <Button size="lg">default</Button>
+                <Button size="lg" icon="close">default</Button>
             </ButtonGroup>
         </div>
     </>, 

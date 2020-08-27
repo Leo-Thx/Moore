@@ -1,40 +1,33 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { TypeKey, IconType, IconTypeMap } from './iconType.map';
+import { IconTypeKey, IconProps } from './icon.type';
+import { IconTypeMap } from './iconType.map';
 import { getClsPrefix } from './../_utils/_style.util';
 
 
-
-/**
- * svg需要引入脚本，暂时不用, 使用Unicode码代替
- */
-type BaseIconProps = {
-    spin     : boolean;  // 旋转
-    className: string;   // 自定义类名
-    rotate   : number;   // 旋转角度，在spin下不生效
-    svg      : boolean;  // 是否使用svg
-    type     : string;   // 可使用的类型, svg指向的id
-};
-
-
-type IconProps = Partial<BaseIconProps & React.DOMAttributes<HTMLElement>>;
-
 const Icon: React.FC<IconProps> = props => {
-    let { svg, type, className, children, ...restProps } = props,
+    let { type, className, children, size, spin, rotate, ...restProps } = props,
           clsPefix                 = getClsPrefix('icon');
-    
-    svg = false;
 
-    const iCls     = classnames(clsPefix, className),
-          icon     = IconTypeMap[ type as TypeKey ];
+    let iCls     = classnames(clsPefix, className),
+        icon     = IconTypeMap[ type as IconTypeKey ];
 
     // const linkHref = '#icon-' + type,
     //       svgCls   = classnames({
     //         [`${clsPefix}-svg`]: svg
     //     });
     
+    let styleObj: React.CSSProperties = {};
 
-    return React.useMemo(()=>icon ? <i className={iCls} {...restProps} dangerouslySetInnerHTML={{__html: icon.unicode!}}></i> : null, [type]);
+    if( size ) styleObj.fontSize = size+'px';
+    if( spin ) iCls = classnames(iCls, getClsPrefix('icon')+'-spin');
+    else if( rotate ) styleObj.transform = `rotate(${rotate}deg)`;
+
+    return React.useMemo(() => 
+        icon ? 
+                <i style={styleObj} className={iCls} {...restProps} dangerouslySetInnerHTML={{__html: icon.unicode!}}></i>
+            : null, 
+        [type]);
     
     // return React.useMemo(() => {
     //     return (
@@ -53,4 +46,4 @@ const Icon: React.FC<IconProps> = props => {
 
 
 export default Icon;
-export { IconProps, IconType };
+export { IconProps, IconTypeKey };

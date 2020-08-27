@@ -52,5 +52,17 @@ describe('test button component', () => {
         const result = fireEvent(button as HTMLElement, new MouseEvent('click'));
         expect(result).toBe(true);
     });
+
+    test('render iconButton', () => {
+        let wrapperContainer = render(<Button type="primary" icon="close">Primary</Button>),
+            container = wrapperContainer.container;
+
+        const button = container.querySelector('button');
+        const icon = container.querySelector('i');
+        
+        expect(button).toBeTruthy();
+        expect(icon).toBeTruthy();
+        expect(icon).toHaveClass('moore-icon');
+    });
 });
 

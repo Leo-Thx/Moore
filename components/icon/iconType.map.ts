@@ -1,5 +1,4 @@
-// 可用类型
-export type TypeKey = 'close';
+import { IconTypeKey, BaseIconType } from './icon.type';
 
 
 // 具体unicode映射列表
@@ -7,23 +6,14 @@ const IconTypeToUnicode: {[key: string]: string} = {
     close: '&#xe7fc;'
 };
 
-
-type BaseIconType = Partial<{
-    [ key in TypeKey ]: Partial<{   // 映射属性
-        href   : string;
-        unicode: string;
-    }>
-}>;
-
-
 /**
  * 初始化可用图标列表
  * @type object
  * @example
  *  {
  *      close: {
- * href   : 'close',
- * unicode: '&#xe7fc;
+ *          href   : 'close',
+ *          unicode: '&#xe7fc;
  *      }
  *  }
  */
@@ -35,12 +25,15 @@ const IconTypeMap : BaseIconType = {};
  * @example
  *  { close: 'close' }
  */
-const IconType = {} as { [P in TypeKey]: string };
+// const IconType = {} as { 
+//     [P in IconTypeKey]: string 
+// };
 
 
+// 初始化应有的映射icon
 Object.keys(IconTypeToUnicode).forEach((key)=>{
-    IconType   [ key as TypeKey ] = key;
-    IconTypeMap[ key as TypeKey ] = {
+    // IconType   [ key as IconTypeKey  ] = key;
+    IconTypeMap[ key as IconTypeKey ] = {
         href   : key,
         unicode: IconTypeToUnicode[ key ]
     };
@@ -48,4 +41,4 @@ Object.keys(IconTypeToUnicode).forEach((key)=>{
 
 
 
-export { IconTypeMap, IconType };
+export { IconTypeMap };

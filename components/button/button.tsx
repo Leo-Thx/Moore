@@ -1,54 +1,67 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import { ButtonProps, BaseButtonProps } from './button.type';
 import { getClsPrefix } from '../_utils/_style.util';
 import Icon, { IconProps } from '../icon/icon';
 
+/**
+ * 获取需要渲染的图标
+ * @param icon 图标
+ *  @type icon: string | Icon
+ * @param children button的子元素
+ * @return null | React.ReactNode<Icon>
+ */
+function userIconNode(icon: BaseButtonProps[keyof Pick<BaseButtonProps, 'icon'>], children?: React.ReactNode): React.ReactNode {
+    // icon: BaseButtonProps[keyof Pick<BaseButtonProps, 'icon'>]
+    return React.useMemo(()=>{
+        if( !icon ) return null;
+        
+        if( typeof icon === 'string' ) {        // 如果icon是作为属性传入的 [ string ]
+            return <Icon type={icon}></Icon>;
 
-interface BaseButtonProps {
-    type?     : 'primary' | 'danger' | 'link' | 'text' | 'default';
-    htmlType  : 'submit' | 'reset' | 'button';                       // HTML原始按钮类型
-    size?     : 'sm' | 'lg';                                         //
-    ghost     : boolean;                                             // 是否是空心按钮 true表示没有背景色
-    danger    : boolean;
-    loading?  : boolean;
-    block?    : boolean;
-    className?: string;
-    href?     : string;
-    icon?     : React.ReactNode | string;
-    children  : React.ReactNode;
-    onClick?  : React.MouseEventHandler;
-};
-
-
-type NativeButtonProps = BaseButtonProps & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'|'onClick'>;
-type NativeAnchorProps = BaseButtonProps & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'type'|'onClick'>;
-type ButtonProps       = Partial<NativeAnchorProps & NativeButtonProps>;
+        } else if( (icon as React.FunctionComponentElement<IconProps>).type === Icon ){
+            return React.cloneElement(icon as React.FunctionComponentElement<IconProps>);
+        }
+        
+        return null;
+    }, [icon]);
+}
 
 
 const Button: React.FC<ButtonProps> = props => {
     const { 
-        disabled, htmlType = 'button', 
-        ghost, size, danger, className, 
-        type, href, block, 
+        disabled, 
+        ghost, 
+        size, 
+        danger, 
+        className, 
+        type, 
+        href, 
+        block, 
         icon,
+        children,
+        htmlType, 
         onClick, 
         ...restProps 
     } = props;
 
-    const clsPrefix = getClsPrefix('btn');
 
-    let clname  = classnames(className, clsPrefix, {
+    let clsPrefix = getClsPrefix('btn'),
+        clname    = classnames(className, clsPrefix, {
         [`${clsPrefix}-${size}`]: !!size,
-        [`${clsPrefix}-${type}`]: !!type && type !== 'default',
+        [`${clsPrefix}-${type}`]: !!type && type !== 'default', // default不用任何样式
         [`${clsPrefix}-ghost`]  : ghost,
-        [`${clsPrefix}-block`]  : block
+        [`${clsPrefix}-block`]  : block,
+        // link 或 text 类型按钮且传入了danger
+        [`${clsPrefix}-${type}-danger`]: (type === 'link' || type === 'text') && danger
     });
 
-    if( type === 'link' || type === 'text' ) {
-        if( danger ) clname = classnames(clname, {
-            [`${clsPrefix}-${type}-danger`]: true
-        });
-    }
+
+    // if( type === 'link' || type === 'text' ) {
+    //     clname = classnames(clname, {
+    //         [`${clsPrefix}-${type}-danger`]: danger
+    //     });
+    // }
 
     /**
      * 
@@ -58,14 +71,8 @@ const Button: React.FC<ButtonProps> = props => {
         else if( typeof onClick === 'function' )  onClick!(event);
     }, [ type, onClick ]);
 
-    /**
-     * 
-     */
-    const IconNode = React.useMemo(()=>{
-        if( !icon ) return null;
-        if( typeof icon === 'string' ) return <Icon type={icon}></Icon>
-        else return React.cloneElement(icon as React.FunctionComponentElement<IconProps>); 
-    }, [icon])
+
+    const IconNode = userIconNode(icon, children);
 
     return (
         <button role="button" 
@@ -74,17 +81,18 @@ const Button: React.FC<ButtonProps> = props => {
             className={clname} 
             onClick={handleClick} 
             {...restProps}>
-            { IconNode && IconNode }
-            <span>{props.children}</span>
+            { IconNode }
+            <span>{children}</span>
         </button>
     );
 };
 
 
 Button.defaultProps = {
-    block : false,
-    ghost : false,
-    danger: false
+    block   : false,
+    ghost   : false,
+    danger  : false,
+    htmlType: 'button'
 };
 
 
