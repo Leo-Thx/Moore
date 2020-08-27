@@ -5,11 +5,14 @@ import './../../index.scss';
 
 import Button from './../button';
 import ButtonGroup from './../buttonGroup';
+import Icon, { IconType } from './../../icon/icon';
 
 
 ReactDOM.render(
     <>
         <div>
+            <Button type="primary" icon={IconType.close}>Primary</Button>
+            {/* <Button type="primary" icon={<Icon svg type={IconType.close}></Icon>}>Primary</Button> */}
             <Button className="my-class" type="primary" onClick={e=>console.info(e)}>primary</Button>
             <Button type="danger">danger</Button>
             <Button>default</Button>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { getClsPrefix } from '../_utils/_style.util';
+import Icon, { IconProps } from '../icon/icon';
 
 
 interface BaseButtonProps {
@@ -13,7 +14,7 @@ interface BaseButtonProps {
     block?    : boolean;
     className?: string;
     href?     : string;
-    icon?     : React.ReactNode;
+    icon?     : React.ReactNode | string;
     children  : React.ReactNode;
     onClick?  : React.MouseEventHandler;
 };
@@ -29,7 +30,9 @@ const Button: React.FC<ButtonProps> = props => {
         disabled, htmlType = 'button', 
         ghost, size, danger, className, 
         type, href, block, 
-        onClick, ...restProps 
+        icon,
+        onClick, 
+        ...restProps 
     } = props;
 
     const clsPrefix = getClsPrefix('btn');
@@ -47,11 +50,22 @@ const Button: React.FC<ButtonProps> = props => {
         });
     }
 
-    
+    /**
+     * 
+     */
     const handleClick = React.useCallback((event: React.MouseEvent)=>{
         if( type === 'link' && href ) return window.open( href );
         else if( typeof onClick === 'function' )  onClick!(event);
     }, [ type, onClick ]);
+
+    /**
+     * 
+     */
+    const IconNode = React.useMemo(()=>{
+        if( !icon ) return null;
+        if( typeof icon === 'string' ) return <Icon type={icon}></Icon>
+        else return React.cloneElement(icon as React.FunctionComponentElement<IconProps>); 
+    }, [icon])
 
     return (
         <button role="button" 
@@ -60,6 +74,7 @@ const Button: React.FC<ButtonProps> = props => {
             className={clname} 
             onClick={handleClick} 
             {...restProps}>
+            { IconNode && IconNode }
             <span>{props.children}</span>
         </button>
     );

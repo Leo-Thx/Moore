@@ -5,9 +5,9 @@ import './../../index.scss';
 
 ReactDOM.render(
     <div>
-        <Icon svg href={IconType.close}></Icon>
-        <Icon svg></Icon>
-        <Icon href={IconType.close}></Icon>
+        {/* <Icon svg type={IconType.close}></Icon> */}
+        {/* <Icon svg></Icon> */}
+        <Icon type={IconType.close}>111</Icon>
     </div>, 
     document.getElementById('app')
 );
