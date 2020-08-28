@@ -72,14 +72,23 @@ $primaryActive: $primary-7;
 
     transition: all .2s cubic-bezier(.645,.045,.355,1);
     
-    i{ margin-right: 8px; }
+    i+span{ margin-left: 4px; }
     > span { display: inline-block; }
 
     @include mix_btnSize;
-    &-lg { @include mix_btnlgSize;}
+    &-lg { 
+        @include mix_btnlgSize;
+        &.#{$cssPrefix}-btn-icon-only{
+            width: 40px; height: 40px;
+        }
+        i+span{ margin-left: 8px; }
+    }
     &-sm { 
-        @include mix_btnSmSize; 
-        i{ margin-right: 4px; }
+        @include mix_btnSmSize;
+        &.#{$cssPrefix}-btn-icon-only{
+            width: 24px; height: 24px;
+        }
+        i+span{ margin-left: 2px; }
     }
 
     &:hover{
@@ -159,5 +168,13 @@ $primaryActive: $primary-7;
             background-color: transparent;
             border-color: transparent;
         }
+    }
+
+    &-icon-only{
+        border-radius: 50%;
+        padding: 0px;
+        width: 32px; 
+        height: 32px; 
+        box-sizing: border-box;
     }
 }

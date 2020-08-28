@@ -11,9 +11,12 @@ import Icon from './../../icon/icon';
 ReactDOM.render(
     <>
         <div>
-            <Button icon="close">Primary</Button>
             <Button type="primary" icon={<Icon type="close"></Icon>}>Primary</Button>
+            <Button type="primary" icon="info-circle"></Button>
             <Button type="primary"><Icon type="close"></Icon></Button>
+            <Button type="primary"><Icon type="close-circle" />Primary</Button>
+
+            <Button icon="close">Primary</Button>
             <Button className="my-class" type="primary" onClick={e=>console.info(e)}>primary</Button>
             <Button type="danger">danger</Button>
             <Button>default</Button>
@@ -40,6 +43,7 @@ ReactDOM.render(
         <div>
             <Button type="primary" size="lg">Primary</Button>
             <Button size="lg" icon="close">Default</Button>
+            <Button size="lg" icon="info-circle"></Button>
             <Button type="danger">Danger</Button>
             <Button type="primary" size="sm">Default</Button>
             <Button size="sm" icon="close">Default</Button>
@@ -58,11 +62,13 @@ ReactDOM.render(
                 <Button type="danger">danger</Button>
                 <Button size="lg">default</Button>
                 <Button size="lg">default</Button>
+                <Button icon="check-circle"></Button>
             </ButtonGroup>
             <br />
 
             <ButtonGroup size="lg" vertical>
                 <Button type="primary">primary</Button>
+                <Button size="lg" icon="info-circle"></Button>
                 <Button>default</Button>
                 <Button type="danger">danger</Button>
                 <Button size="lg">default</Button>

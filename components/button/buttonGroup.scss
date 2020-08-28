@@ -2,10 +2,8 @@
 
 .#{$cssPrefix}-btn-group {
     display: inline-block;
-    position: relative; 
-    overflow: hidden;
 
-    .#{$cssPrefix}-btn {
+    .#{$cssPrefix}-btn:not(.#{$cssPrefix}-btn-icon-only) {
         border-radius: 0;
         margin-left: -1px;
 
@@ -23,9 +21,17 @@
 
     &-vertical {
         .#{$cssPrefix}-btn {
-            display: block; width: 100%;
+            display: block;
             margin-left: 0;
             margin-top: -1px;
+
+            &:not(.#{$cssPrefix}-btn-icon-only){
+                width: 100%;
+            }
+            
+            &.#{$cssPrefix}-btn-icon-only {
+                margin: 0 auto;
+            }
 
             &:first-child{
                 border-top-left-radius: $border-radius;
@@ -33,6 +39,7 @@
                 border-bottom-left-radius: 0;
                 margin-top: 0;
             }
+
             &:last-child {
                 border-bottom-left-radius: $border-radius;
                 border-bottom-right-radius: $border-radius;

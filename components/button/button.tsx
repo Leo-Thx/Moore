@@ -1,32 +1,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { ButtonProps, BaseButtonProps } from './button.type';
+import { ButtonProps } from './button.type';
 import { getClsPrefix } from '../_utils/_style.util';
-import Icon, { IconProps } from '../icon/icon';
+import Icon, { renderIconNode } from '../icon/icon';
+import { IconProps } from '../icon/icon.type';
 
-/**
- * 获取需要渲染的图标
- * @param icon 图标
- *  @type icon: string | Icon
- * @param children button的子元素
- * @return null | React.ReactNode<Icon>
- */
-function userIconNode(icon: BaseButtonProps[keyof Pick<BaseButtonProps, 'icon'>], children?: React.ReactNode): React.ReactNode {
-    // icon: BaseButtonProps[keyof Pick<BaseButtonProps, 'icon'>]
-    return React.useMemo(()=>{
-        if( !icon ) return null;
-        
-        if( typeof icon === 'string' ) {        // 如果icon是作为属性传入的 [ string ]
-            return <Icon type={icon}></Icon>;
-
-        } else if( (icon as React.FunctionComponentElement<IconProps>).type === Icon ){
-            return React.cloneElement(icon as React.FunctionComponentElement<IconProps>);
-        }
-        
-        return null;
-    }, [icon]);
-}
-
+const iconOnlyPrefix = 'icon-only',
+      btnPrefix      = 'btn';
 
 const Button: React.FC<ButtonProps> = props => {
     const { 
@@ -46,43 +26,56 @@ const Button: React.FC<ButtonProps> = props => {
     } = props;
 
 
-    let clsPrefix = getClsPrefix('btn'),
-        clname    = classnames(className, clsPrefix, {
-        [`${clsPrefix}-${size}`]: !!size,
-        [`${clsPrefix}-${type}`]: !!type && type !== 'default', // default不用任何样式
-        [`${clsPrefix}-ghost`]  : ghost,
-        [`${clsPrefix}-block`]  : block,
-        // link 或 text 类型按钮且传入了danger
-        [`${clsPrefix}-${type}-danger`]: (type === 'link' || type === 'text') && danger
+    let clsPrefix = getClsPrefix(btnPrefix),
+        clsName   = classnames(className, clsPrefix, {
+            [`${clsPrefix}-${type}`]: !!type && type !== 'default', // default不用任何样式
+            [`${clsPrefix}-${type}-danger`]: (type === 'link' || type === 'text') && danger,
+            [`${clsPrefix}-ghost`]  : ghost,
+            [`${clsPrefix}-block`]  : block,
+            // link 或 text 类型按钮且传入了danger
+            [`${clsPrefix}-${size}`]: !!size
     });
 
 
-    // if( type === 'link' || type === 'text' ) {
-    //     clname = classnames(clname, {
-    //         [`${clsPrefix}-${type}-danger`]: danger
-    //     });
-    // }
-
-    /**
-     * 
-     */
     const handleClick = React.useCallback((event: React.MouseEvent)=>{
         if( type === 'link' && href ) return window.open( href );
         else if( typeof onClick === 'function' )  onClick!(event);
     }, [ type, onClick ]);
 
 
-    const IconNode = userIconNode(icon, children);
+    let child: React.ReactNode;
+
+    if( icon ) {    // icon属性
+        const iconAttrNode = renderIconNode(icon);  // 处理icon作为属性或者是节点时，需要渲染按钮
+        if( !children ) {    // 没有子节点，单一的图标按钮
+            child = iconAttrNode;
+            clsName = classnames(clsName, getClsPrefix(iconOnlyPrefix, clsPrefix));
+        } else {    // 如果有子组件，则为图标+子节点
+            child = <>{iconAttrNode}<span>{children}</span></>;
+        }
+
+    } else { // 如果没有icon属性
+        if( Array.isArray(children) ) { // 多个节点，则直接渲染即可
+            child = React.Children.map(children, (iChild)=>{
+                if( typeof iChild === 'string' ) return <span>{iChild}</span>;
+                else return iChild;
+            });
+        } else {    // 单个节点
+            child = children;
+            if( children && (children as React.FunctionComponentElement<IconProps>).type === Icon ) {
+                clsName = classnames(clsName, getClsPrefix(iconOnlyPrefix, clsPrefix));
+            }
+        }
+    }
 
     return (
         <button role="button" 
             type={htmlType} 
             disabled={disabled} 
-            className={clname} 
+            className={clsName} 
             onClick={handleClick} 
             {...restProps}>
-            { IconNode }
-            <span>{children}</span>
+            {child}
         </button>
     );
 };
@@ -96,5 +89,4 @@ Button.defaultProps = {
 };
 
 
-export { ButtonProps };
 export default Button;

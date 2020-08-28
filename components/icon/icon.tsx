@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { IconTypeKey, IconProps } from './icon.type';
+import { IconKeyType, IconProps } from './icon.type';
 import { IconTypeMap } from './iconType.map';
 import { getClsPrefix } from './../_utils/_style.util';
 
@@ -10,7 +10,7 @@ const Icon: React.FC<IconProps> = props => {
           clsPefix                 = getClsPrefix('icon');
 
     let iCls     = classnames(clsPefix, className),
-        icon     = IconTypeMap[ type as IconTypeKey ];
+        icon     = IconTypeMap[ type as IconKeyType ];
 
     // const linkHref = '#icon-' + type,
     //       svgCls   = classnames({
@@ -45,5 +45,30 @@ const Icon: React.FC<IconProps> = props => {
 };
 
 
+
+/**
+ * 获取需要渲染的图标
+ * @param icon 图标
+ *  @type icon: string | Icon
+ * @return null | React.ReactNode<Icon>
+ */
+function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKeyType | undefined): React.ReactNode {
+    return React.useMemo(()=>{
+        if( !icon ) return null;
+        
+        // 如果icon是作为属性传入的 [ string ]
+        if( typeof icon === 'string' ) {        
+            return <Icon type={icon}></Icon>;
+        
+        // 如果是作为节点传入
+        } else if( (icon as React.FunctionComponentElement<IconProps>).type === Icon ){
+            return React.cloneElement(icon as React.FunctionComponentElement<IconProps>);
+        }
+        
+        return null;
+    }, [icon]);
+}
+
+
 export default Icon;
-export { IconProps, IconTypeKey };
+export { renderIconNode };

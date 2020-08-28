@@ -1,26 +1,49 @@
 import * as React from 'react';
+import classnames from 'classnames';
+import { AlertProps } from './alert.type';
+import { getClsPrefix } from './../_utils/_style.util';
+import Button from './../button/button';
 
-type BaseAlertProps = {
-    onClose  : React.MouseEventHandler;                   // 关闭回调
-    closeable: boolean;                                   // 是否显示关闭按钮
-    closeText: string;                                    // 自定义关闭的文字
-    type     : 'info' | 'success' | 'warning' | 'error';  // 四种类型
-    showIcon : boolean;                                   // 是否显示左侧图标
-    icon     : React.ReactNode;                           // 自定义左侧图标
-    title    : string;                                    // 内容标题
-    desc     : string;                                    // 具体内容
-};
-
-type AlertProps = Partial<BaseAlertProps>;
 
 const Alert: React.FC<AlertProps> = props => {
+    const { 
+        className, 
+        closeable, 
+        closeText, 
+        type, 
+        showIcon, 
+        icon, 
+        title 
+    } = props;
+
+    let clsPrefix = getClsPrefix('alert'),
+        clsName = classnames(clsPrefix, className, {
+            [`${clsPrefix}-${type}`]: true
+        }),
+        wrapperCls = classnames(getClsPrefix('wrapper', clsPrefix)),
+        iconCls = classnames(getClsPrefix('icon', clsPrefix)),
+        closeCls = classnames(getClsPrefix('close', clsPrefix))
+        
+    
+        
+    function renderCloseComp() {
+
+    }
+
     return (
-        <div></div>
+        <div className={clsName}>
+            <div className={wrapperCls}>
+                <div className="iconCls"></div>
+                {props.children}
+                <Button className="closeCls" icon="close-circle"></Button>
+            </div>
+        </div>
     )
 };
 
 Alert.defaultProps = {
-    closeable: false
+    closeable: false,
+    type: 'info'
 };
 
 

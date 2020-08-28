@@ -1,0 +1,10 @@
+@import './../style/variables';
+
+.#{$cssPrefix}-alert {
+    display: inline-block;
+    
+    &-info{}
+    &-success{}
+    &-warning{}
+    &-error{}
+}

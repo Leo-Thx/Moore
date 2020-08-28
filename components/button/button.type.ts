@@ -1,24 +1,24 @@
 import * as React from 'react';
-import { IconProps, IconTypeKey } from './../icon/icon';
+import { IconComAttrType } from './../icon/icon.type';
 
-type enumType     = 'primary' | 'danger' | 'link' | 'text' | 'default';
-type enumSize     = 'sm' | 'lg';
-type enumHtmlType = 'submit' | 'reset' | 'button';
+type ButtonEnumType     = 'primary' | 'danger' | 'link' | 'text' | 'icon' | 'default';
+type ButtonEnumSize     = 'sm' | 'lg';
+type ButtonEnumHtmlType = 'submit' | 'reset' | 'button';
 
 
 interface BaseButtonProps {
-    type?     : enumType;
-    htmlType  : enumHtmlType;              // HTML原始按钮类型
-    size?     : enumSize;                  //
-    ghost     : boolean;                   // 是否是空心按钮 true表示没有背景色
-    danger    : boolean;                   // 是否是危险按钮
-    loading?  : boolean;
-    block?    : boolean;                   // 是否是块级元素
-    className?: string;
-    href?     : string;                    // 链接
-    icon?     : React.FunctionComponentElement<IconProps> | IconTypeKey;
-    children  : React.ReactNode;
-    onClick?  : React.MouseEventHandler;
+    type     : ButtonEnumType;
+    htmlType : ButtonEnumHtmlType;       // HTML原始按钮类型
+    size     : ButtonEnumSize;           //
+    ghost    : boolean;                  // 是否是空心按钮 true表示没有背景色
+    danger   : boolean;                  // 是否是危险按钮
+    loading  : boolean;
+    block    : boolean;                  // 是否是块级元素
+    className: string;
+    href     : string;                   // 链接
+    icon     : IconComAttrType;
+    children : React.ReactNode;
+    onClick  : React.MouseEventHandler;
 };
 
 
@@ -27,10 +27,18 @@ type NativeAnchorProps = BaseButtonProps & Omit<React.AnchorHTMLAttributes<HTMLA
 type ButtonProps       = Partial<NativeAnchorProps & NativeButtonProps>;
 
 
+
+// -------------按钮组--------------
+interface BaseButtonGroupProp {
+    vertical : boolean;
+    size     : 'sm' | 'lg';
+    className: string;
+};
+
+type ButtonGroupProps = Partial<BaseButtonGroupProp & Omit<React.DOMAttributes<HTMLDivElement>, 'onClick'>>;
+
+
 export {
-    enumType,
-    enumSize,
-    enumHtmlType,
     ButtonProps,
-    BaseButtonProps
+    ButtonGroupProps
 };

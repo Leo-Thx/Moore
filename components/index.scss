@@ -4,19 +4,20 @@
 
 @font-face {
     font-family: #{$iconFont};  /* project id 2028097 */
-    src: url('//at.alicdn.com/t/font_2028097_91v9yjc7m.eot');
-    src: url('//at.alicdn.com/t/font_2028097_91v9yjc7m.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_2028097_91v9yjc7m.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_2028097_91v9yjc7m.woff') format('woff'),
-    url('//at.alicdn.com/t/font_2028097_91v9yjc7m.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_2028097_91v9yjc7m.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_2028097_7sayvpgmg9j.eot');
+    src: url('//at.alicdn.com/t/font_2028097_7sayvpgmg9j.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_2028097_7sayvpgmg9j.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_2028097_7sayvpgmg9j.woff') format('woff'),
+    url('//at.alicdn.com/t/font_2028097_7sayvpgmg9j.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_2028097_7sayvpgmg9j.svg#iconfont') format('svg');
 }
+
+@import './icon/icon.scss';
 
 @import './button/button.scss';
 @import './button/buttonGroup.scss';
 
-
-@import './icon/icon.scss';
+@import './alert/alert.scss';
 
 
 html, body {

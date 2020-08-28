@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // 可用类型
-type IconTypeKey = 'close' | 'user';
+type IconKeyType = 'close' | 'info-circle' | 'check-circle' | 'close-circle';
 
 
 /**
@@ -16,17 +16,15 @@ interface BaseIconProps {
 };
 
 
-type IconProps = Partial<BaseIconProps & React.DOMAttributes<HTMLElement>> & {
-    type: IconTypeKey   // // 可使用的类型, svg指向的id
+type IconProps = Partial<BaseIconProps & React.HTMLAttributes<HTMLElement>> & {
+    type: IconKeyType   // 可使用的类型, svg指向的id
 };
 
 
-type BaseIconType = Partial<{
-    [ key in IconTypeKey ]: Partial<{   // 映射属性
-        href   : string;
-        unicode: string;
-    }>
-}>;
+/**
+ * 作为组件属性或节点进行渲染的ICON类型声明
+ */
+type IconComAttrType = React.FunctionComponentElement<IconProps> | IconKeyType;
 
 
-export { IconTypeKey, IconProps, BaseIconType }
+export { IconKeyType, IconProps, IconComAttrType }

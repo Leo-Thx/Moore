@@ -2,15 +2,8 @@ import * as React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { getClsPrefix } from './../_utils/_style.util';
-import Button, { ButtonProps } from './button';
-
-interface BaseButtonGroupProp {
-    vertical : boolean;
-    size     : 'sm' | 'lg';
-    className: string;
-};
-
-type ButtonGroupProps = Partial<BaseButtonGroupProp & Omit<React.DOMAttributes<HTMLDivElement>, 'onClick'>>;
+import Button from './button';
+import { ButtonGroupProps, ButtonProps } from './button.type';
 
 
 const ButtonGroup: React.FC<ButtonGroupProps> = props => {
@@ -56,4 +49,3 @@ ButtonGroup.propTypes = {
 
 
 export default ButtonGroup;
-export { ButtonGroupProps };
