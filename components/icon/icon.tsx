@@ -53,20 +53,18 @@ const Icon: React.FC<IconProps> = props => {
  * @return null | React.ReactNode<Icon>
  */
 function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKeyType | undefined): React.ReactNode {
-    return React.useMemo(()=>{
-        if( !icon ) return null;
+    if( !icon ) return null;
         
-        // 如果icon是作为属性传入的 [ string ]
-        if( typeof icon === 'string' ) {        
-            return <Icon type={icon}></Icon>;
-        
-        // 如果是作为节点传入
-        } else if( (icon as React.FunctionComponentElement<IconProps>).type === Icon ){
-            return React.cloneElement(icon as React.FunctionComponentElement<IconProps>);
-        }
-        
-        return null;
-    }, [icon]);
+    // 如果icon是作为属性传入的 [ string ]
+    if( typeof icon === 'string' ) {        
+        return <Icon type={icon}></Icon>;
+    
+    // 如果是作为节点传入
+    } else if( (icon as React.FunctionComponentElement<IconProps>).type === Icon ){
+        return React.cloneElement(icon as React.FunctionComponentElement<IconProps>);
+    }
+    
+    return null;
 }
 
 

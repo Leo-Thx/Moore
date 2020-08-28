@@ -28,12 +28,11 @@ const Button: React.FC<ButtonProps> = props => {
 
     let clsPrefix = getClsPrefix(btnPrefix),
         clsName   = classnames(className, clsPrefix, {
-            [`${clsPrefix}-${type}`]: !!type && type !== 'default', // default不用任何样式
+            [`${clsPrefix}-${type}`]       : !!type && type !== 'default',                     // default不用任何样式
+            [`${clsPrefix}-${size}`]       : !!size,
             [`${clsPrefix}-${type}-danger`]: (type === 'link' || type === 'text') && danger,
-            [`${clsPrefix}-ghost`]  : ghost,
-            [`${clsPrefix}-block`]  : block,
-            // link 或 text 类型按钮且传入了danger
-            [`${clsPrefix}-${size}`]: !!size
+            [`${clsPrefix}-ghost`]         : ghost,
+            [`${clsPrefix}-block`]         : block
     });
 
 

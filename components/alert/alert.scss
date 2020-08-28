@@ -2,9 +2,57 @@
 
 .#{$cssPrefix}-alert {
     display: inline-block;
+    padding: 8px;
+    border-radius: $border-radius;
+    max-width: 400px;
+    position: relative;
+
+    &-info{
+        background-color: $info;
+    }
+
+    &-success{
+        background-color: $success;
+    }
     
-    &-info{}
-    &-success{}
-    &-warning{}
-    &-error{}
+    &-warning{
+        background-color: $warning;
+    }
+
+    &-error{
+        background-color: $error;
+    }
+
+    &-container {
+        display: flex;
+        .#{$cssPrefix}-alert-main {
+            margin-left: 8px;
+            text-align: left;
+        }
+        .#{$cssPrefix}-alert-title{
+            font-size: 16px;
+            margin-bottom: 4px;
+            display: flex; 
+            justify-content: space-between;
+        }
+        .#{$cssPrefix}-alert-content{
+            font-size: 14px;
+        }
+    }
+
+    // 左侧图标
+    &-icon {
+        font-size: 24px;
+        flex: 0;
+        line-height: 1;
+        .#{$cssPrefix}-icon{
+            vertical-align: top;
+        }
+    }
+
+    // 关闭按钮
+    &-close {
+
+    }
+
 }
