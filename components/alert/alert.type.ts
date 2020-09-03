@@ -9,15 +9,17 @@ type BaseAlertProps = {
     closeText: string;                   // 自定义关闭的文字
     type     : AlerType;                 // 类型
     showIcon : boolean;                  // 是否显示左侧图标
-    // 自定义左侧图标
-    icon : IconComAttrType;
-    title: string;           // 内容标题
-    // desc : string;           // 具体内容-作为子节点
+    icon     : IconComAttrType;          // 自定义左侧图标
+    title    : string;                   // 内容标题
+    desc     : string;
+    className: string;
 };
 
-type AlertProps = Partial<BaseAlertProps & React.HTMLAttributes<HTMLDivElement>>;
+// type AlertProps = Partial<BaseAlertProps & React.HTMLAttributes<HTMLDivElement>>;
+type AlertProps = Partial<BaseAlertProps>;
 
 
 export {
+    AlerType,
     AlertProps
 }

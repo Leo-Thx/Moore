@@ -69,4 +69,4 @@ function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKe
 
 
 export default Icon;
-export { renderIconNode };
+export { renderIconNode, IconKeyType };

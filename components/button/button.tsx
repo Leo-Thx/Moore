@@ -63,7 +63,7 @@ const Button: React.FC<ButtonProps> = props => {
             child = children;
             if( children && (children as React.FunctionComponentElement<IconProps>).type === Icon ) {
                 clsName = classnames(clsName, getClsPrefix(iconOnlyPrefix, clsPrefix));
-            }
+            } else child = <span>{children}</span>
         }
     }
 

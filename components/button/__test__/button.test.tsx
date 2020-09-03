@@ -21,9 +21,6 @@ describe('test button component', () => {
             container = wrapperContainer.container;
         
         const button = container.querySelector('button');
-        const text = wrapperContainer.getByText('primary');
-
-        expect(text?.tagName).toMatch(/span/i);
         expect(button).toHaveClass('moore-btn', 'moore-btn-primary');
     });
 
@@ -34,7 +31,7 @@ describe('test button component', () => {
         const button = container.querySelector('button');
         const text = wrapperContainer.getByText('text');
 
-        expect(text?.tagName).toMatch(/span/i);
+        expect(text).toBeTruthy();
         expect(button).toHaveClass('moore-btn', 'moore-btn-text', 'moore-btn-block');
     });
 
@@ -53,7 +50,7 @@ describe('test button component', () => {
         expect(result).toBe(true);
     });
 
-    test('render iconButton', () => {
+    test('render Icon Button', () => {
         let wrapperContainer = render(<Button type="primary" icon="close">Primary</Button>),
             container = wrapperContainer.container;
 
@@ -63,6 +60,19 @@ describe('test button component', () => {
         expect(button).toBeTruthy();
         expect(icon).toBeTruthy();
         expect(icon).toHaveClass('moore-icon');
+    });
+
+    test('render Single Icon Button', ()=>{
+        let wrapperContainer = render(<Button type="primary" icon="close" />),
+            container = wrapperContainer.container;
+
+        const button = container.querySelector('button');
+        const icon = container.querySelector('i');
+        const child = button?.childElementCount;
+
+        expect(child).toBe(1);
+        expect(button?.firstElementChild?.tagName).toMatch(/i/ig);
+        expect(button).toHaveClass('moore-btn-icon-only');
     });
 });
 

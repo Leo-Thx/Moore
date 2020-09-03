@@ -94,8 +94,8 @@ portfinder.getPort((error, port) => {
 					messages: [
 						chalk.yellow(
 							`Project is running at \n
-                                http: //localhost:${port}/
-                                http: //${ipAddress}:${port}/
+                                http://localhost:${port}/
+                                http://${ipAddress}:${port}/
                         `)
 					]
 				},

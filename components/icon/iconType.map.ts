@@ -4,13 +4,21 @@ import { IconKeyType } from './icon.type';
 type AvailableIconType<T extends string> = {
     [P in T]: string;
 }
+
 // 具体unicode映射列表
 // const IconTypeToUnicode: {[key: string]: string} = {
 const IconTypeToUnicode: AvailableIconType<IconKeyType> = {
-    'close'       : '&#xe7fc;',
-    'info-circle' : '&#xe77e;',
-    'check-circle': '&#xe77d;',
-    'close-circle': '&#xe77f;'
+    'close': '&#xe7fc;',
+
+    'info-circle'   : '&#xe77e;',
+    'check-circle'  : '&#xe77d;',
+    'warning-circle': '&#xe785;',
+    'close-circle'  : '&#xe77f;',
+
+    'info-circle-fill'   : '&#xe846;',
+    'check-circle-fill'  : '&#xe844;',
+    'warning-circle-fill': '&#xe848;',
+    'close-circle-fill'  : '&#xe845;',
 };
 
 
