@@ -1,7 +1,6 @@
 @import './../style/variables';
 
 $dangerActive: $error-active;
-$primaryActive: $primary-7;
 
 @mixin mix_btnSize {
     font-size: 14px;
@@ -98,14 +97,14 @@ $primaryActive: $primary-7;
     }
 
     &:active {
-        color: $primaryActive;
-        border-color: $primaryActive;
+        color: $primary-7;
+        border-color: $primary-7;
     }
 
     &:focus { box-shadow: 0 0 0 2px rgba($primary, .2); }
     
     &-primary {
-        @include mix_fillButton($primary, $primaryActive);
+        @include mix_fillButton($primary, $primary-7);
     }
 
     &-danger {
@@ -124,7 +123,7 @@ $primaryActive: $primary-7;
             background-color: $gray-3;
         }
         &:active {
-            color: $primaryActive;
+            color: $primary-7;
             background-color: $gray-4;
         }
         &:focus { box-shadow: none; }
@@ -142,7 +141,7 @@ $primaryActive: $primary-7;
         box-shadow: none;
         text-decoration: underline;
         &:hover{ border-color: transparent; }
-        &:active { color: $primaryActive; }
+        &:active { color: $primary-7; }
         &:focus { box-shadow: none; }
         &.#{$cssPrefix}-btn-link-danger {
             color: $error;

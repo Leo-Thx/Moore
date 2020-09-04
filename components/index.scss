@@ -12,21 +12,17 @@
     url('//at.alicdn.com/t/font_2028097_yjdt327ch87.svg#iconfont') format('svg');
 }
 
+// 图标
 @import './icon/icon.scss';
-
+// 按钮
 @import './button/button.scss';
 @import './button/buttonGroup.scss';
-
+// Alert提示消息
 @import './alert/alert.scss';
+// 菜单
+@import './menu/menu.scss';
 
 
 html, body {
     font-family: $fontFmaily;
-}
-
-
-@each $var in (block, inline, flex, inline-block) {
-    .#{$var} {
-        display: $var;
-    }
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { getClsPrefix } from './../_utils/_style.util';
+import { clsPrefix } from './../_config/_variables';
 
 import Icon, { renderIconNode, IconKeyType } from '../icon/icon';
 
@@ -21,7 +22,7 @@ function getIconType( type: AlerType, withFill: boolean = false ): IconKeyType {
     return result as IconKeyType;
 }
 
-
+const alertPrefix = 'alert';
 const Alert: React.FC<AlertProps> = props => {
     const { 
         className, 
@@ -35,8 +36,8 @@ const Alert: React.FC<AlertProps> = props => {
         onClose
     } = props;
 
-    let clsPrefix  = getClsPrefix('alert'),
-        alertClass = classnames(clsPrefix, className, {
+    let clsPrefix  = getClsPrefix(alertPrefix),
+        alertClass = classnames(clsPrefix, {
             [`${clsPrefix}-${type}`]  : true,
             [`${clsPrefix}-with-icon`]: showIcon,
             [`${clsPrefix}-with-desc`]: !!desc
@@ -85,6 +86,8 @@ const Alert: React.FC<AlertProps> = props => {
         return node && <div className={iconCls}>{node}</div>;
     }, [showIcon, icon, type, desc]);
 
+    
+    clsName = classnames(clsName, className);
     return (
         destoryed ? null: <div className={clsName}>
             {iconNode}
@@ -103,5 +106,6 @@ Alert.defaultProps = {
     showIcon : false
 };
 
+Alert.displayName = `${clsPrefix}.Alert`;
 
 export default Alert;

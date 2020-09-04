@@ -2,6 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { ButtonProps } from './button.type';
 import { getClsPrefix } from '../_utils/_style.util';
+import { clsPrefix } from './../_config/_variables';
 import Icon, { renderIconNode } from '../icon/icon';
 import { IconProps } from '../icon/icon.type';
 
@@ -27,7 +28,7 @@ const Button: React.FC<ButtonProps> = props => {
 
 
     let clsPrefix = getClsPrefix(btnPrefix),
-        clsName   = classnames(className, clsPrefix, {
+        clsName   = classnames(clsPrefix, {
             [`${clsPrefix}-${type}`]       : !!type && type !== 'default',                     // default不用任何样式
             [`${clsPrefix}-${size}`]       : !!size,
             [`${clsPrefix}-${type}-danger`]: (type === 'link' || type === 'text') && danger,
@@ -67,6 +68,7 @@ const Button: React.FC<ButtonProps> = props => {
         }
     }
 
+    clsName = classnames(clsName, className);
     return (
         <button role="button" 
             type={htmlType} 
@@ -87,5 +89,6 @@ Button.defaultProps = {
     htmlType: 'button'
 };
 
+Button.displayName = `${clsPrefix}-Button`;
 
 export default Button;

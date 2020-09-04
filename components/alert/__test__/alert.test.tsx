@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor, waitForElement } from '@testing-library/react';
 import "@testing-library/jest-dom";
 import Alert from './../alert';
-import { act } from 'react-dom/test-utils';
 
 
 describe('Test Alert Component', () => {
@@ -31,7 +30,7 @@ describe('Test Alert Component', () => {
     
     });
 
-    test('render close alert', () => {
+    test('render close alert', async () => {
         const handleClose = function() {};
 
         let wrapperContainer = render(<Alert type="info" title="title" desc="desc" closeable onClose={handleClose}/>),
@@ -51,12 +50,26 @@ describe('Test Alert Component', () => {
         fireEvent.click(close!);
         expect(alert).toHaveClass('moore-alert-destory');
 
-        // return new Promise((resolve)=>{
+        
+
+        // await new Promise(resolve=>{
         //     setTimeout(()=>{
-        //         expect(container.querySelector('.moore-alert')).not.toBeTruthy();
-        //         resolve();
+        //         let element = container.querySelector('.moore-alert') as HTMLElement;
+        //         expect(container).not.toContainElement(element);
+        //         resolve(element);
         //     }, 1000);
         // });
+
+        // done();
+
+        // waitFor<Element>(()=>container.querySelector('.moore-alert') as Element)
+        // waitFor<Promise<Element>>(()=>new Promise(resolve=>{
+        //     // setTimeout(()=>{
+        //         resolve(container.querySelector('.moore-alert') as Element);
+        //     // }, 1000);
+        // }).then(res=>{
+        //     console.info(res.innerHTML);
+        // })
     });
 });
 

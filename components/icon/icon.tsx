@@ -3,13 +3,14 @@ import classnames from 'classnames';
 import { IconKeyType, IconProps } from './icon.type';
 import { IconTypeMap } from './iconType.map';
 import { getClsPrefix } from './../_utils/_style.util';
+import { clsPrefix } from './../_config/_variables';
 
-
+const iconPrefix = 'icon';
 const Icon: React.FC<IconProps> = props => {
-    let { type, className, children, size, spin, rotate, ...restProps } = props,
-          clsPefix                 = getClsPrefix('icon');
+    let { type, className, children, size, spin, rotate, ...restProps } = props;
 
-    let iCls     = classnames(clsPefix, className),
+    let clsPefix = getClsPrefix(iconPrefix),
+        iCls     = classnames(clsPefix),
         icon     = IconTypeMap[ type as IconKeyType ];
 
     // const linkHref = '#icon-' + type,
@@ -22,6 +23,8 @@ const Icon: React.FC<IconProps> = props => {
     if( size ) styleObj.fontSize = size+'px';
     if( spin ) iCls = classnames(iCls, getClsPrefix('icon')+'-spin');
     else if( rotate ) styleObj.transform = `rotate(${rotate}deg)`;
+
+    iCls = classnames(iCls, className);
 
     return React.useMemo(() => 
         icon ? 
@@ -66,6 +69,8 @@ function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKe
     
     return null;
 }
+
+Icon.displayName = `${clsPrefix}-Icon`;
 
 
 export default Icon;

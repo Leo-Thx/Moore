@@ -30,12 +30,13 @@ type ButtonProps       = Partial<NativeAnchorProps & NativeButtonProps>;
 
 // -------------按钮组--------------
 interface BaseButtonGroupProp {
-    vertical : boolean;
-    size     : 'sm' | 'lg';
-    className: string;
+    vertical? : boolean;
+    size?     : 'sm' | 'lg';
+    className?: string;
+    // children  : React.ReactElement<ButtonProps> | Array<React.ReactElement<ButtonProps>>
 };
 
-type ButtonGroupProps = Partial<BaseButtonGroupProp & Omit<React.DOMAttributes<HTMLDivElement>, 'onClick'>>;
+type ButtonGroupProps = BaseButtonGroupProp & Partial<Omit<React.DOMAttributes<HTMLDivElement>, 'onClick'>>;
 
 
 export {
