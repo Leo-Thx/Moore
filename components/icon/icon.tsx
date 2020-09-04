@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { IconKeyType, IconProps } from './icon.type';
 import { IconTypeMap } from './iconType.map';
 import { getClsPrefix } from './../_utils/_style.util';
-import { clsPrefix } from './../_config/_variables';
+import { displayPrefix } from './../_config/_variables';
 
 const iconPrefix = 'icon';
 const Icon: React.FC<IconProps> = props => {
@@ -70,7 +70,7 @@ function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKe
     return null;
 }
 
-Icon.displayName = `${clsPrefix}-Icon`;
+Icon.displayName = `${displayPrefix}-Icon`;
 
 
 export default Icon;

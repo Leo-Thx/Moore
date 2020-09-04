@@ -1,2 +1,44 @@
 @import './../style/variables';
 
+.#{$cssPrefix}-menu {
+    font-size: 14px;
+    // background: rgba($color: red, $alpha: .2);
+    list-style: none;
+    margin: {
+        top: 0;
+        bottom: 0;
+    }
+    padding: {
+        left: 0;
+    }
+
+    &-item {
+        white-space: nowrap;
+        position: relative;
+        padding: {
+            top: 8px;
+            bottom: 8px;
+            left: 8px;
+        };
+        &::after{
+            content: '';
+            position: absolute;
+            height: 0;
+            width: 4px;
+            background-color: transparent;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            transition: all .15s ease-in-out;
+        }
+
+        &-active {
+            background: rgba($color: $primary, $alpha: .12);
+            color: $primary;
+            &::after{
+                height: 100%;
+                background-color: $primary;
+            }
+        }
+    }
+}

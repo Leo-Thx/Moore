@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { ButtonProps } from './button.type';
 import { getClsPrefix } from '../_utils/_style.util';
-import { clsPrefix } from './../_config/_variables';
+import { displayPrefix } from './../_config/_variables';
 import Icon, { renderIconNode } from '../icon/icon';
 import { IconProps } from '../icon/icon.type';
 
@@ -89,6 +89,6 @@ Button.defaultProps = {
     htmlType: 'button'
 };
 
-Button.displayName = `${clsPrefix}-Button`;
+Button.displayName = `${displayPrefix}-Button`;
 
 export default Button;

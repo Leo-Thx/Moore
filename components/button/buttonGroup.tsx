@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { getClsPrefix } from './../_utils/_style.util';
-import { clsPrefix } from './../_config/_variables';
+import { displayPrefix } from './../_config/_variables';
 import Button from './button';
 import { ButtonGroupProps, ButtonProps } from './button.type';
 
@@ -49,7 +49,7 @@ ButtonGroup.propTypes = {
     ])
 };
 
-Button.displayName = `${clsPrefix}-ButtonGroup`;
+Button.displayName = `${displayPrefix}-ButtonGroup`;
 
 
 export default ButtonGroup;

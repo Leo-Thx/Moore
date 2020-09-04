@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { getClsPrefix } from './../_utils/_style.util';
-import { clsPrefix } from './../_config/_variables';
+import { displayPrefix } from './../_config/_variables';
 
 import Icon, { renderIconNode, IconKeyType } from '../icon/icon';
 
@@ -106,6 +106,6 @@ Alert.defaultProps = {
     showIcon : false
 };
 
-Alert.displayName = `${clsPrefix}.Alert`;
+Alert.displayName = `${displayPrefix}.Alert`;
 
 export default Alert;
