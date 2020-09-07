@@ -28,51 +28,38 @@ function useClassName(props: MenuProps) {
 }
 
 
-/**
- * 渲染Menu子节点
- * @param children Menu的子节点
- * @return
- */
-function renderChildren(children: Array<React.FunctionComponentElement<MenuItemProps>>) {
-    return React.Children.map(children, (child, index)=>{
-        // if( child.type.displayName !== MenuItem.displayName ) {
-        //     console.error(child.type.toString() + ' is not Menu.MenuItem ~!');
-        //     return null;
-        // } else 
-        if( child.type.displayName === MenuItem.displayName ) {
-            return child;
-
-        } else if( child.type.displayName === SubMenu.displayName ) {
-            return null;
-        }
-    });
-}
-
-
 const menuPrefix = 'menu';
 const InternalMenu: React.FC<MenuProps> = props => {
-    let { children } = props,
+    let { children, inlineIndent } = props,
         clsName = useClassName(props),
         [activeMenu, setActive] = React.useState(props.defaultActive);
-    
+
+    let context = React.useContext(MenuContext);
     let contextValue = React.useMemo(()=>{
         return {
+            ...context,
             activeMenu: activeMenu!,
-            onSelectMenuItem: (index: string) => {
-                setActive(index);
-            }
+            inlineIndent: inlineIndent!,
+            onSelectMenuItem: (index: string) => setActive(index)
         }
-    }, [activeMenu]);
+    }, [activeMenu, inlineIndent]);
 
     return (
         <MenuContext.Provider value={contextValue}>
             <ul className={clsName}>
-                { children && renderChildren(children as Array<React.FunctionComponentElement<MenuItemProps>>) }
+                {
+                    React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps>>, Child => {
+                        if( Child.type.displayName === MenuItem.displayName ) return Child; 
+                        else if( Child.type.displayName === SubMenu.displayName ) return Child; 
+                        return null;
+                    })
+                }
             </ul>
         </MenuContext.Provider>
     );
 };
-InternalMenu.displayName = `${displayPrefix}-InternalMenu`
+
+InternalMenu.displayName = `${displayPrefix}-InternalMenu`;
 
 
 
@@ -91,6 +78,25 @@ InternalMenu.displayName = `${displayPrefix}-InternalMenu`
 //         )
 //     }
 // };
+
+/**
+ * 
+ * @param props 
+ * @example
+ *  <Menu defaultActive="10">
+        <Menu.MenuItem index="10">10</Menu.MenuItem>
+        <Menu.MenuItem index="20">20</Menu.MenuItem>
+        <Menu.MenuItem index="30" disabled>30</Menu.MenuItem>
+        <Menu.SubMenu index="200" title="这是菜单">
+            <Menu.MenuItem index="40">40</Menu.MenuItem>
+            <Menu.MenuItem index="50">50</Menu.MenuItem>
+            <Menu.SubMenu index="300" title="这是菜单">
+                <Menu.MenuItem index="60">60</Menu.MenuItem>
+                <Menu.MenuItem index="70">70</Menu.MenuItem>
+            </Menu.SubMenu>
+        </Menu.SubMenu>
+    </Menu>
+ */
 const Menu: MenuTypeDeclaration = props => {
     return (
         <MenuContext.Consumer>

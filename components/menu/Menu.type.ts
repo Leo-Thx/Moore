@@ -16,8 +16,16 @@ type BaseMenuItemProps = {
     icon?    : IconComAttrType
 };
 
+
+type BaseSubMenuProps   = {
+    index    : string;
+    disabled?: boolean;
+    icon?    : IconComAttrType;
+    title    : string;
+};
+
+
 type BaseMenuGroupProps = {};
-type BaseSubMenuProps   = {};
 
 
 type MenuProps      = BaseMenuProps & Omit<React.HTMLAttributes<HTMLUListElement>,    ''>;

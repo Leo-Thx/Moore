@@ -1,10 +1,13 @@
 @import './../style/variables';
 
 .#{$cssPrefix}-menu {
-    width: 400px;
+    width: 200px;
     font-size: 14px;
-    // background: rgba($color: red, $alpha: .2);
     list-style: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     margin: {
         top: 0;
         bottom: 0;
@@ -33,10 +36,8 @@
             transform: translateY(-50%);
             transition: all .15s ease-in-out;
         }
-        &:not(.#{$cssPrefix}-menu-item-active):hover{
-            background: rgba($color: $primary, $alpha: .04);
-            // color: rgba($color: $primary, $alpha: .75);
-        }
+
+        &:hover{ background: rgba($color: $primary, $alpha: .04); }
 
         &-active {
             background: rgba($color: $primary, $alpha: .12);
@@ -45,6 +46,33 @@
                 height: 100%;
                 background-color: $primary;
             }
+            &:hover{ background: rgba($color: $primary, $alpha: .12); }
+        }
+
+        &-disabled {
+            color: $gray-6;
+            cursor: not-allowed;
+            &:hover{ background-color: transparent; }
+        }
+    }
+
+    .#{$cssPrefix}-sub-menu {
+        white-space: nowrap;
+        position: relative;
+        cursor: pointer;
+        
+        &-title {    
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: {
+                top: 8px;
+                bottom: 8px;
+                left: 8px;
+            };
+        }
+        &-disabled {
+            color: $gray-6;
+            cursor: not-allowed;
         }
     }
 }

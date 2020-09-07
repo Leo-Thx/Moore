@@ -9,3 +9,10 @@ import { clsPrefix } from './../_config/_variables';
  *  getClsPrefix('btn', 'myclass') -> myclass-btn
  */
 export const getClsPrefix:(prefix: string, cusPrefix?: string) => string = (prefix, cusPrefix = clsPrefix) => [ cusPrefix, prefix ].join('-');
+
+
+/**
+ * 输出警告的消息
+ * @param message 打印的信息
+ */
+export const devWarning: (message: string) => void = message => console.warn(message);

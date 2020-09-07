@@ -2,8 +2,8 @@ import * as React from 'react';
 import { MenuItemProps } from './Menu.type';
 import classnames from 'classnames';
 import { displayPrefix } from './../_config/_variables';
-import { getClsPrefix } from './../_utils/_style.util';
-import MenuContext, { MenuContextProps } from './MenuContext';
+import { getClsPrefix, devWarning } from './../_utils/_style.util';
+import MenuContext from './MenuContext';
 
 const menuItemPrefix  = 'menu-item';
 const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
@@ -14,11 +14,11 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
 
     
     let context = React.useContext(MenuContext),
-        { activeMenu } = context;
+        { activeMenu, renderLevel, inlineIndent } = context;
 
     const handleClick: React.MouseEventHandler = () => {
         let { onSelectMenuItem } = context;
-        onSelectMenuItem!(props.index);
+        if( !props.disabled ) onSelectMenuItem!(props.index);
     }
 
     clsName = classnames(clsName, {
@@ -26,8 +26,17 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
         [`${getClsPrefix('disabled', clsPrefix)}`]: disabled
     }, className);
 
+    let pushSuccess = context._pushIndexToArray(index);
+    if( !pushSuccess ) devWarning(`the index: ${index} is already exist !`);
+
+    let style = {} as React.CSSProperties;
+    if( renderLevel === 1 ) {}
+    else style.paddingLeft = (renderLevel - 1) * inlineIndent;
+
     return (
-        <li className={clsName} onClick={handleClick}>{props.children}</li>
+        <li className={clsName} 
+            style={style} 
+            onClick={handleClick}>{props.children}</li>
     );
 }
 
