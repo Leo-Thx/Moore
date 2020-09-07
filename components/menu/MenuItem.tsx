@@ -6,25 +6,33 @@ import { getClsPrefix } from './../_utils/_style.util';
 import MenuContext, { MenuContextProps } from './MenuContext';
 
 const menuItemPrefix  = 'menu-item';
-export default class MenuItem extends React.Component<MenuItemProps> {
-    static displayName = `${displayPrefix}-MenuItem`;
-    static defaultProps = {};
+const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
 
-    static contextType: React.Context<MenuContextProps> = MenuContext;
+    let clsPrefix = getClsPrefix(menuItemPrefix),
+        clsName = classnames(clsPrefix),
+        { className, index, disabled } = props;
 
-    render() {
-        let clsPrefix = getClsPrefix(menuItemPrefix),
-            clsName = classnames(clsPrefix),
-            { className, index } = this.props;
-        
-        let { activeLevel } = this.context as React.ContextType<typeof MenuContext>;
+    
+    let context = React.useContext(MenuContext),
+        { activeMenu } = context;
 
-        clsName = classnames(clsName, {
-            [`${getClsPrefix('active', clsPrefix)}`]: index === activeLevel + 1
-        }, className);
-
-        return (
-            <li className={clsName}>MenuItem</li>
-        );
+    const handleClick: React.MouseEventHandler = () => {
+        let { onSelectMenuItem } = context;
+        onSelectMenuItem!(props.index);
     }
+
+    clsName = classnames(clsName, {
+        [`${getClsPrefix('active', clsPrefix)}`]: index === activeMenu,
+        [`${getClsPrefix('disabled', clsPrefix)}`]: disabled
+    }, className);
+
+    return (
+        <li className={clsName} onClick={handleClick}>{props.children}</li>
+    );
 }
+
+
+MenuItem.displayName =`${displayPrefix}-MenuItem`;
+MenuItem.defaultProps = {};
+
+export default MenuItem;

@@ -6,20 +6,16 @@ import { getClsPrefix } from './../_utils/_style.util';
 
 const subMenuPrefix  = 'sub-menu';
 
-export default class SubMenu extends React.Component<SubMenuProps> {
-    static displayName = `${clsPrefix}-SubMenu`;
-    static defaultProps = {};
+const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
+    let clsPrefix = getClsPrefix(subMenuPrefix),
+        clsName = classnames(clsPrefix);
 
-    constructor(props: SubMenuProps){
-        super(props);
-    }
-
-    render() {
-        let clsPrefix = getClsPrefix(subMenuPrefix),
-            clsName = classnames(clsPrefix);
-
-        return (
-            <ul className={clsName}>MenuItem</ul>
-        );
-    }
+    return (
+        <ul className={clsName}>SubMenu</ul>
+    );
 }
+
+SubMenu.displayName = `${clsPrefix}-SubMenu`;
+SubMenu.defaultProps = {};
+
+export default SubMenu;

@@ -6,20 +6,16 @@ import { getClsPrefix } from './../_utils/_style.util';
 
 
 const menuGroupPrefix  = 'menu-group';
-export default class MenuGroup extends React.Component<MenuGroupProps> {
-    static displayName = `${clsPrefix}-MenuGroup`;
-    static defaultProps = {};
+const MenuGroup: React.FunctionComponent<MenuGroupProps> = props => {
+    let clsPrefix = getClsPrefix(menuGroupPrefix),
+        clsName = classnames(clsPrefix);
 
-    constructor(props: MenuGroupProps){
-        super(props);
-    }
-
-    render() {
-        let clsPrefix = getClsPrefix(menuGroupPrefix),
-            clsName = classnames(clsPrefix);
-
-        return (
-            <li className={clsName}>MenuItem</li>
-        );
-    }
+    return (
+        <li className={clsName}>MenuItem</li>
+    );
 }
+
+MenuGroup.displayName = `${clsPrefix}-MenuGroup`;
+MenuGroup.defaultProps = {};
+
+export default MenuGroup;

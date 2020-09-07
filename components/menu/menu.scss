@@ -1,6 +1,7 @@
 @import './../style/variables';
 
 .#{$cssPrefix}-menu {
+    width: 400px;
     font-size: 14px;
     // background: rgba($color: red, $alpha: .2);
     list-style: none;
@@ -15,6 +16,7 @@
     &-item {
         white-space: nowrap;
         position: relative;
+        cursor: pointer;
         padding: {
             top: 8px;
             bottom: 8px;
@@ -30,6 +32,10 @@
             right: 0;
             transform: translateY(-50%);
             transition: all .15s ease-in-out;
+        }
+        &:not(.#{$cssPrefix}-menu-item-active):hover{
+            background: rgba($color: $primary, $alpha: .04);
+            // color: rgba($color: $primary, $alpha: .75);
         }
 
         &-active {
