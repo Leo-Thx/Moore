@@ -7,10 +7,11 @@ let _indexArray = [] as Array<string>,
             return true;
         }
         return false;
+    },
+    _removeIndexFromArray = (index: string) => {
+        let _index = _indexArray.findIndex(item=>item===index);
+        if( _index !== -1 ) _indexArray.splice(_index, 1);
     };
-
-let renderLevel = 1,
-    setRenderLevel = (level: number) => renderLevel = level;
 
 
 export type MenuContextProps = {    
@@ -23,12 +24,12 @@ export type MenuContextProps = {
     inlineIndent: number;
 
     // 存储所有菜单的index
-    _indexArray?     : Array<string>;
-    _pushIndexToArray: (index: string) => boolean;
+    _indexArray?         : Array<string>;
+    _pushIndexToArray    : (index: string) => boolean;
+    _removeIndexFromArray: (index: string) => void;
     
     // 当前渲染的层级
-    renderLevel  : number;
-    setRenderLevel: (level: number) => void;
+    renderLevel   : number;
 };
 
 
@@ -38,10 +39,10 @@ export default React.createContext<MenuContextProps>({
 
     inlineIndent: 24,
     
-    _indexArray      : _indexArray,
-    _pushIndexToArray: _pushIndexToArray,
+    _indexArray          : _indexArray,
+    _pushIndexToArray    : _pushIndexToArray,
+    _removeIndexFromArray: _removeIndexFromArray,
 
-    renderLevel: renderLevel,
-    setRenderLevel: setRenderLevel
+    renderLevel: 0
 });
 

@@ -4,49 +4,43 @@ import classnames from 'classnames';
 import { displayPrefix } from './../_config/_variables';
 import { getClsPrefix } from './../_utils/_style.util';
 
-import { SubMenuProps, MenuItemProps } from './Menu.type';
-import MenuItem from './MenuItem';
-import MenuContext from './MenuContext';
+import { SubMenuProps } from './Menu.type';
+import { renderIconNode } from '../icon/icon';
+import InternalMenu, { useMenuPaddingLeft, renderMenuIcon } from './InternalMenu';
 
 
-const subMenuPrefix  = 'sub-menu';
+const subMenuPrefix  = 'submenu';
 const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
-    let clsPrefix = getClsPrefix(subMenuPrefix),
-        clsName = classnames(clsPrefix),
-        { className, children, title, disabled } = props;
+    let clsPrefix         = getClsPrefix(subMenuPrefix),
+        clsName           = classnames(clsPrefix),
+        arrowIcon         = renderIconNode('down'),
+        titleClsName      = getClsPrefix('title', clsPrefix),
+        arrowClsName      = getClsPrefix('arrow', clsPrefix),
+        [opened, setOpen] = React.useState(false);
 
-    let context = React.useContext(MenuContext);
-    let contextValue = {
-        ...context,
-        renderLevel: context.renderLevel + 1
-    };
+    let { className, children, title, disabled, icon, ...restProps } = props;
+    
+    let styleObj = useMenuPaddingLeft(),
+        iconNode = renderMenuIcon(icon!);
 
-    let childs = React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps>>, Child => {
-        let nameReg = new RegExp([MenuItem.displayName, SubMenu.displayName].join('|'), 'ig');
-
-        if( nameReg.test( Child.type.displayName! ) ) {
-            return <MenuContext.Provider value={contextValue}>
-                {
-                    React.cloneElement(Child, {
-                        ...Child.props
-                    })
-                }
-            </MenuContext.Provider>
-        }
-        return null;
-    });
+    let handleClick = React.useCallback((event: React.MouseEvent)=> {
+        if(!disabled) setOpen(!opened);
+    }, [ opened, disabled ]);
 
     
     clsName = classnames(clsName, {
-        [`${clsName}-disabled`]: disabled
-    }, className);    
+        [`${clsName}-disabled`]: disabled,
+        [`${clsName}-open`]    : opened
+    }, className);
 
     return (
         <li className={clsName}>
-            <div className={getClsPrefix('title', clsPrefix)}>{title}</div>
-            <ul className={getClsPrefix('menu')}>
-                { childs && childs }
-            </ul>
+            <div className={titleClsName} style={styleObj} onClick={handleClick}>
+                {iconNode}
+                {title}
+                <span className={arrowClsName}>{arrowIcon}</span>
+            </div>
+            <InternalMenu {...restProps}>{children}</InternalMenu>
         </li>
     );
 };

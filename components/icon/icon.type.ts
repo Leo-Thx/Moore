@@ -3,7 +3,8 @@ import * as React from 'react';
 // 可用类型
 type IconKeyType = 'close' 
     | 'info-circle' | 'check-circle' | 'warning-circle' | 'close-circle' 
-    | 'info-circle-fill' | 'check-circle-fill' | 'warning-circle-fill' | 'close-circle-fill';
+    | 'info-circle-fill' | 'check-circle-fill' | 'warning-circle-fill' | 'close-circle-fill'
+    | 'up' | 'right' | 'down' | 'left' ;
 
 
 /**

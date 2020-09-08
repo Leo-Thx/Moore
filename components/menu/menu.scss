@@ -20,16 +20,17 @@
         white-space: nowrap;
         position: relative;
         cursor: pointer;
+        line-height: 40px;
         padding: {
-            top: 8px;
-            bottom: 8px;
             left: 8px;
+            right: 8px;
         };
+        
         &::after{
             content: '';
             position: absolute;
             height: 0;
-            width: 4px;
+            width: 2px;
             background-color: transparent;
             top: 50%;
             right: 0;
@@ -37,7 +38,7 @@
             transition: all .15s ease-in-out;
         }
 
-        &:hover{ background: rgba($color: $primary, $alpha: .04); }
+        &:hover{ color: $primary; }
 
         &-active {
             background: rgba($color: $primary, $alpha: .12);
@@ -46,33 +47,67 @@
                 height: 100%;
                 background-color: $primary;
             }
-            &:hover{ background: rgba($color: $primary, $alpha: .12); }
         }
 
         &-disabled {
             color: $gray-6;
             cursor: not-allowed;
-            &:hover{ background-color: transparent; }
+            &:hover{ color: $gray-6; }
+        }
+
+        .#{$cssPrefix}-icon {
+            margin-right: 4px;
+        }
+    }
+}
+
+.#{$cssPrefix}-submenu {
+    white-space: nowrap;
+    position: relative;
+    cursor: pointer;
+    
+    .#{$cssPrefix}-menu {
+        display: none;
+        transition: all .25s ease-in-out;
+    }
+
+    &-title {    
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: relative;
+        line-height: 40px;
+        padding: {
+            left: 8px;
+            right: 8px;
+        };
+        .#{$cssPrefix}-icon {
+            margin-right: 4px;
         }
     }
 
-    .#{$cssPrefix}-sub-menu {
-        white-space: nowrap;
-        position: relative;
-        cursor: pointer;
-        
-        &-title {    
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding: {
-                top: 8px;
-                bottom: 8px;
-                left: 8px;
-            };
+    .#{$cssPrefix}-submenu-arrow {
+        .#{$cssPrefix}-icon {
+            margin-right: 0;
         }
-        &-disabled {
-            color: $gray-6;
-            cursor: not-allowed;
+        position: absolute;
+        right: 0;
+        transform: scale(1, .8);
+        transition: all .15s ease-in;
+    }
+
+    &-open {
+        > .#{$cssPrefix}-submenu-title {
+            > .#{$cssPrefix}-submenu-arrow {
+                transform: rotate(180deg) scale(1, .7);
+            }
         }
+        > .#{$cssPrefix}-menu {
+            display: block;
+        }
+    }
+
+    &-disabled {
+        color: $gray-6;
+        cursor: not-allowed;
     }
 }

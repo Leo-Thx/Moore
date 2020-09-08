@@ -19,6 +19,11 @@ const IconTypeToUnicode: AvailableIconType<IconKeyType> = {
     'check-circle-fill'  : '&#xe844;',
     'warning-circle-fill': '&#xe848;',
     'close-circle-fill'  : '&#xe845;',
+
+    'up'   : '&#xe7ed;',
+    'right': '&#xe7eb;',
+    'down' : '&#xe7ee;',
+    'left' : '&#xe7ec;'
 };
 
 

@@ -4,17 +4,18 @@ import classnames from 'classnames';
 import { displayPrefix } from './../_config/_variables';
 import { getClsPrefix, devWarning } from './../_utils/_style.util';
 import MenuContext from './MenuContext';
+import { useMenuPaddingLeft, renderMenuIcon } from './InternalMenu';
 
 const menuItemPrefix  = 'menu-item';
 const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
 
     let clsPrefix = getClsPrefix(menuItemPrefix),
         clsName = classnames(clsPrefix),
-        { className, index, disabled } = props;
-
+        { className, index, disabled, icon, ...restProps } = props;
     
     let context = React.useContext(MenuContext),
-        { activeMenu, renderLevel, inlineIndent } = context;
+        styleObj = useMenuPaddingLeft(),
+        iconNode = renderMenuIcon(icon!);
 
     const handleClick: React.MouseEventHandler = () => {
         let { onSelectMenuItem } = context;
@@ -22,21 +23,24 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
     }
 
     clsName = classnames(clsName, {
-        [`${getClsPrefix('active', clsPrefix)}`]: index === activeMenu,
+        [`${getClsPrefix('active', clsPrefix)}`]: index === context.activeMenu,
         [`${getClsPrefix('disabled', clsPrefix)}`]: disabled
     }, className);
 
-    let pushSuccess = context._pushIndexToArray(index);
-    if( !pushSuccess ) devWarning(`the index: ${index} is already exist !`);
-
-    let style = {} as React.CSSProperties;
-    if( renderLevel === 1 ) {}
-    else style.paddingLeft = (renderLevel - 1) * inlineIndent;
+    // let pushSuccess = context._pushIndexToArray(index);
+    // if( !pushSuccess ) {
+    //     devWarning(`the index: ${index} is already exist !`);
+    //     context._removeIndexFromArray(index);
+    // }
 
     return (
         <li className={clsName} 
-            style={style} 
-            onClick={handleClick}>{props.children}</li>
+            style={styleObj} 
+            onClick={handleClick}
+            {...restProps}>
+                {iconNode}
+                {props.children}
+            </li>
     );
 }
 
