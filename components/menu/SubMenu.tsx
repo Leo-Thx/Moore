@@ -7,6 +7,7 @@ import { getClsPrefix } from './../_utils/_style.util';
 import { SubMenuProps } from './Menu.type';
 import { renderIconNode } from '../icon/icon';
 import InternalMenu, { useMenuPaddingLeft, renderMenuIcon } from './InternalMenu';
+import MenuContext from './MenuContext';
 
 
 const subMenuPrefix  = 'submenu';
@@ -16,7 +17,8 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
         arrowIcon         = renderIconNode('down'),
         titleClsName      = getClsPrefix('title', clsPrefix),
         arrowClsName      = getClsPrefix('arrow', clsPrefix),
-        [opened, setOpen] = React.useState(false);
+        [opened, setOpen] = React.useState(false),
+        {horizontal}      = React.useContext(MenuContext);
 
     let { className, children, title, disabled, icon, ...restProps } = props;
     
@@ -24,8 +26,16 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
         iconNode = renderMenuIcon(icon!);
 
     let handleClick = React.useCallback((event: React.MouseEvent)=> {
-        if(!disabled) setOpen(!opened);
-    }, [ opened, disabled ]);
+        if(!disabled && !horizontal) setOpen(!opened);
+    }, [ opened, disabled, horizontal ]);
+
+    let handleMouseEnter = React.useCallback((event: React.MouseEvent)=>{
+        // if(!disabled && horizontal) setOpen(true);
+    }, [ disabled, horizontal ]);
+
+    let handleMouseLeave = React.useCallback((event: React.MouseEvent)=>{
+        // if(!disabled && horizontal) setOpen(false);
+    }, [ disabled, horizontal ]);
 
     
     clsName = classnames(clsName, {
@@ -35,7 +45,11 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
 
     return (
         <li className={clsName}>
-            <div className={titleClsName} style={styleObj} onClick={handleClick}>
+            <div className={titleClsName} style={styleObj} 
+                onMouseEnter={handleMouseEnter} 
+                onMouseLeave={handleMouseLeave}
+                onClick={handleClick}
+            >
                 {iconNode}
                 {title}
                 <span className={arrowClsName}>{arrowIcon}</span>

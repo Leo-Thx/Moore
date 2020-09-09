@@ -17,28 +17,29 @@ const InternalMenu: React.FC<MenuProps> = props => {
     let { children, mode, className } = props,
         clsPrefix = getClsPrefix(menuPrefix),
         clsName   = classnames(clsPrefix, {
-            [`${clsPrefix}-vertical`]: mode === 'vertical'
+            [`${clsPrefix}-horizontal`]: mode === 'horizontal'
         }, className);
 
-    let context = React.useContext(MenuContext),
-        renderLevel = context.renderLevel,
+    let context      = React.useContext(MenuContext),
+        renderLevel  = context.renderLevel,
         contextValue = {
             ...context,
             renderLevel: renderLevel + 1
         };
-    
 
     return (
         <ul className={clsName}>
             {
-                React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps>>, Child => {
+                React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps>>, (Child, cIndex) => {
                     let nameReg = new RegExp([MenuItem.displayName, SubMenu.displayName].join('|'), 'ig');
             
                     if( nameReg.test( Child.type.displayName! ) ) {
+                        let { index } = Child.props;
                         return <MenuContext.Provider value={contextValue}>
                             {
                                 React.cloneElement(Child, {
-                                    ...Child.props
+                                    ...Child.props,
+                                    index: index ? index: `@@_${menuPrefix}/${contextValue.renderLevel}/${cIndex}`
                                 })
                             }
                         </MenuContext.Provider>
@@ -55,6 +56,9 @@ InternalMenu.displayName = `${displayPrefix}-InternalMenu`;
 export default InternalMenu;
 
 
+/**
+ * 计算当前层级的菜单需要填充的距离
+ */
 export function useMenuPaddingLeft() {
     let context = React.useContext(MenuContext),
         { renderLevel, inlineIndent } = context;
@@ -67,6 +71,10 @@ export function useMenuPaddingLeft() {
 }
 
 
+/**
+ * 渲染图标
+ * @param icon 
+ */
 export function renderMenuIcon(icon: IconComAttrType) {
     let iconNode = null;
     if ( icon ) iconNode = renderIconNode(icon);

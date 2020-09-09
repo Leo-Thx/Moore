@@ -11,14 +11,14 @@ type BaseMenuProps = {
 
 
 type BaseMenuItemProps = {
-    index    : string;
+    index?   : string;
     disabled?: boolean;
     icon?    : IconComAttrType
 };
 
 
-type BaseSubMenuProps   = {
-    index    : string;
+type BaseSubMenuProps = {
+    index?   : string;
     disabled?: boolean;
     icon?    : IconComAttrType;
     title    : string;

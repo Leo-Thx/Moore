@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MenuItemProps } from './Menu.type';
 import classnames from 'classnames';
 import { displayPrefix } from './../_config/_variables';
-import { getClsPrefix, devWarning } from './../_utils/_style.util';
+import { getClsPrefix } from './../_utils/_style.util';
 import MenuContext from './MenuContext';
 import { useMenuPaddingLeft, renderMenuIcon } from './InternalMenu';
 
@@ -13,25 +13,19 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
         clsName = classnames(clsPrefix),
         { className, index, disabled, icon, ...restProps } = props;
     
-    let context = React.useContext(MenuContext),
+    let context  = React.useContext(MenuContext),
         styleObj = useMenuPaddingLeft(),
         iconNode = renderMenuIcon(icon!);
 
     const handleClick: React.MouseEventHandler = () => {
         let { onSelectMenuItem } = context;
-        if( !props.disabled ) onSelectMenuItem!(props.index);
+        if( !props.disabled ) onSelectMenuItem!(index!);
     }
 
     clsName = classnames(clsName, {
         [`${getClsPrefix('active', clsPrefix)}`]: index === context.activeMenu,
         [`${getClsPrefix('disabled', clsPrefix)}`]: disabled
     }, className);
-
-    // let pushSuccess = context._pushIndexToArray(index);
-    // if( !pushSuccess ) {
-    //     devWarning(`the index: ${index} is already exist !`);
-    //     context._removeIndexFromArray(index);
-    // }
 
     return (
         <li className={clsName} 

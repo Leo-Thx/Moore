@@ -15,31 +15,29 @@ import InternalMenu from './InternalMenu';
 //     static MenuItem    = MenuItem;
 //     static SubMenu     = SubMenu;
 //     static MenuGroup   = MenuGroup;
-    
-//     render() {
-//         return (
-//             <MenuContext.Consumer>
-//                 { context => <InternalMenu {...this.props} /> }
-//             </MenuContext.Consumer>
-//         )
-//     }
 // };
 
 /**
  * 
  * @param props 
  * @example
- *  <Menu defaultActive="10">
-        <Menu.MenuItem index="10">10</Menu.MenuItem>
-        <Menu.MenuItem index="20">20</Menu.MenuItem>
-        <Menu.MenuItem index="30" disabled>30</Menu.MenuItem>
-        <Menu.SubMenu index="200" title="这是菜单">
-            <Menu.MenuItem index="40">40</Menu.MenuItem>
-            <Menu.MenuItem index="50">50</Menu.MenuItem>
-            <Menu.SubMenu index="300" title="这是菜单">
-                <Menu.MenuItem index="60">60</Menu.MenuItem>
-                <Menu.MenuItem index="70">70</Menu.MenuItem>
+ *  <Menu defaultActive="1">
+        <Menu.MenuItem icon="check-circle">菜单一</Menu.MenuItem>
+        <Menu.MenuItem index="1">菜单二</Menu.MenuItem>
+        <Menu.MenuItem disabled>菜单三</Menu.MenuItem>
+
+        <Menu.SubMenu title="菜单四" icon="check-circle-fill">
+            <Menu.MenuItem>二级菜单一</Menu.MenuItem>
+            <Menu.MenuItem>二级菜单二</Menu.MenuItem>
+            <Menu.SubMenu title="菜单四一">
+                <Menu.MenuItem>三级菜单一</Menu.MenuItem>
+                <Menu.MenuItem>三级菜单二</Menu.MenuItem>
             </Menu.SubMenu>
+        </Menu.SubMenu>
+        
+        <Menu.SubMenu title="菜单五" disabled>
+            <Menu.MenuItem>二级菜单一</Menu.MenuItem>
+            <Menu.MenuItem>二级菜单二</Menu.MenuItem>
         </Menu.SubMenu>
     </Menu>
  */
@@ -51,9 +49,12 @@ const Menu: MenuTypeDeclaration = props => {
     let contextValue = React.useMemo(()=>{
         return {
             ...context,
-            activeMenu: activeMenu!,
-            inlineIndent: inlineIndent!,
-            onSelectMenuItem: (index: string) => setActive(index)
+            activeMenu      : activeMenu!,
+            inlineIndent    : inlineIndent!,
+            horizontal      : props.mode === 'horizontal',
+            onSelectMenuItem: (index: string) => {
+                setActive(index);
+            }
         }
     }, [activeMenu, inlineIndent]);
 
@@ -66,7 +67,7 @@ const Menu: MenuTypeDeclaration = props => {
 
 
 Menu.defaultProps = {
-    mode: 'horizontal',
+    mode: 'vertical',
     defaultActive: '',
     inlineIndent: 24
 };

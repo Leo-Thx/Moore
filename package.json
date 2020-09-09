@@ -4,9 +4,6 @@
   "description": "none",
   "main": "index.ts",
   "jsnext:main": "",
-  "bin": {
-    "moore": "bin/shell"
-  },
   "scripts": {
     "test": "jest --watchAll --color",
     "dev": "cross-env NODE_ENV=development node ./config/webpack.dev.js",
