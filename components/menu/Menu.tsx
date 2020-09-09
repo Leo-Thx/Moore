@@ -6,7 +6,7 @@ import { MenuProps, MenuTypeDeclaration } from './Menu.type';
 import MenuItem from './MenuItem';
 import SubMenu from './SubMenu';
 import MenuGroup from './MenuGroup';
-import MenuContext from './MenuContext';
+import MenuContext, { MenuContextProps } from './MenuContext';
 import InternalMenu from './InternalMenu';
 
 
@@ -46,7 +46,7 @@ const Menu: MenuTypeDeclaration = props => {
         [activeMenu, setActive] = React.useState(defaultActive);
 
     let context = React.useContext(MenuContext);
-    let contextValue = React.useMemo(()=>{
+    let contextValue: MenuContextProps = React.useMemo(()=>{
         return {
             ...context,
             activeMenu      : activeMenu!,

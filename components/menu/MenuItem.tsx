@@ -8,7 +8,6 @@ import { useMenuPaddingLeft, renderMenuIcon } from './InternalMenu';
 
 const menuItemPrefix  = 'menu-item';
 const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
-
     let clsPrefix = getClsPrefix(menuItemPrefix),
         clsName = classnames(clsPrefix),
         { className, index, disabled, icon, ...restProps } = props;
@@ -17,10 +16,11 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
         styleObj = useMenuPaddingLeft(),
         iconNode = renderMenuIcon(icon!);
 
-    const handleClick: React.MouseEventHandler = () => {
+    const handleClick: React.MouseEventHandler = (event) => {
         let { onSelectMenuItem } = context;
         if( !props.disabled ) onSelectMenuItem!(index!);
-    }
+        event.stopPropagation();
+    };
 
     clsName = classnames(clsName, {
         [`${getClsPrefix('active', clsPrefix)}`]: index === context.activeMenu,

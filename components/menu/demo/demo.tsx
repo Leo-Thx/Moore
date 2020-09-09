@@ -45,8 +45,18 @@ ReactDOM.render(
         <div style={{width: 300}}>
         <Menu defaultActive="1">
             <Menu.MenuItem icon="check-circle">菜单一</Menu.MenuItem>
-            <Menu.MenuItem index="1" >菜单二</Menu.MenuItem>
+            <Menu.MenuItem index="1">菜单二</Menu.MenuItem>
             <Menu.MenuItem disabled>菜单三</Menu.MenuItem>
+
+            <Menu.MenuGroup title="MenuGroup-Two">
+                <Menu.MenuItem>二级菜单一</Menu.MenuItem>
+                <Menu.MenuItem>二级菜单二</Menu.MenuItem>
+            </Menu.MenuGroup>
+
+            <Menu.MenuGroup title="MenuGroup-Three">
+                <Menu.MenuItem>二级菜单一</Menu.MenuItem>
+                <Menu.MenuItem>二级菜单二</Menu.MenuItem>
+            </Menu.MenuGroup>
 
             <Menu.SubMenu title="菜单四" icon="check-circle-fill">
                 <Menu.MenuItem>二级菜单一</Menu.MenuItem>
@@ -54,6 +64,13 @@ ReactDOM.render(
                 <Menu.SubMenu title="菜单四一">
                     <Menu.MenuItem>三级菜单一</Menu.MenuItem>
                     <Menu.MenuItem>三级菜单二</Menu.MenuItem>
+                </Menu.SubMenu>
+            </Menu.SubMenu>
+
+            <Menu.SubMenu title="菜单-SubMenu">
+                <Menu.SubMenu title="SubMenu-one">
+                    <Menu.MenuItem>二级菜单一</Menu.MenuItem>
+                    <Menu.MenuItem>二级菜单二</Menu.MenuItem>
                 </Menu.SubMenu>
             </Menu.SubMenu>
             
@@ -64,7 +81,7 @@ ReactDOM.render(
         </Menu>
         </div>
 
-        <Menu mode="horizontal" defaultActive="1">
+        {/* <Menu mode="horizontal" defaultActive="1">
             {
                 array.map((item, index)=>{
                     let children = item.children;
@@ -72,7 +89,7 @@ ReactDOM.render(
                     else return renderChild(item, index);
                 })
             }
-        </Menu>
+        </Menu> */}
     </div>, 
     document.getElementById('app')
 );

@@ -25,13 +25,16 @@ type BaseSubMenuProps = {
 };
 
 
-type BaseMenuGroupProps = {};
+type BaseMenuGroupProps = {
+    index?   : string;
+    title    : string;
+};
 
 
-type MenuProps      = BaseMenuProps & Omit<React.HTMLAttributes<HTMLUListElement>,    ''>;
+type MenuProps      = BaseMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>,    'children'|'className'>;
 type MenuItemProps  = BaseMenuItemProps & Omit<React.HTMLAttributes<HTMLLIElement>,   ''>;
 type MenuGroupProps = BaseMenuGroupProps & Omit<React.HTMLAttributes<HTMLLIElement>,  ''>;
-type SubMenuProps   = BaseSubMenuProps & Omit<React.HTMLAttributes<HTMLUListElement>, ''>;
+type SubMenuProps   = BaseSubMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>, 'children' | 'className'>;
 
 
 // 菜单类型: 包含内部菜单使用项

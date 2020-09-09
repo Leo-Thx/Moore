@@ -4,10 +4,11 @@ import classnames from 'classnames';
 import { displayPrefix } from './../_config/_variables';
 import { getClsPrefix } from './../_utils/_style.util';
 
-import { SubMenuProps } from './Menu.type';
+import { SubMenuProps, MenuItemProps } from './Menu.type';
 import { renderIconNode } from '../icon/icon';
-import InternalMenu, { useMenuPaddingLeft, renderMenuIcon } from './InternalMenu';
+import InternalMenu, { useMenuPaddingLeft, renderMenuIcon, renderSubOrGroupChild } from './InternalMenu';
 import MenuContext from './MenuContext';
+import MenuItem from './MenuItem';
 
 
 const subMenuPrefix  = 'submenu';
@@ -18,7 +19,7 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
         titleClsName      = getClsPrefix('title', clsPrefix),
         arrowClsName      = getClsPrefix('arrow', clsPrefix),
         [opened, setOpen] = React.useState(false),
-        {horizontal}      = React.useContext(MenuContext);
+        { horizontal}     = React.useContext(MenuContext);
 
     let { className, children, title, disabled, icon, ...restProps } = props;
     
@@ -27,6 +28,7 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
 
     let handleClick = React.useCallback((event: React.MouseEvent)=> {
         if(!disabled && !horizontal) setOpen(!opened);
+        event.stopPropagation();
     }, [ opened, disabled, horizontal ]);
 
     let handleMouseEnter = React.useCallback((event: React.MouseEvent)=>{
@@ -43,18 +45,27 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
         [`${clsName}-open`]    : opened
     }, className);
 
+
+    let availableChildRegexp = new RegExp([
+        SubMenu.displayName, 
+        MenuItem.displayName
+    ].join('|'), 'i');
+
     return (
-        <li className={clsName}>
-            <div className={titleClsName} style={styleObj} 
-                onMouseEnter={handleMouseEnter} 
-                onMouseLeave={handleMouseLeave}
-                onClick={handleClick}
-            >
+        <li className={clsName} 
+            onClick={handleClick}
+        >
+            <div className={titleClsName} style={styleObj} >
                 {iconNode}
                 {title}
                 <span className={arrowClsName}>{arrowIcon}</span>
             </div>
-            <InternalMenu {...restProps}>{children}</InternalMenu>
+
+            <InternalMenu {...restProps}>{
+                renderSubOrGroupChild<MenuItemProps|SubMenuProps>(
+                    children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps>>, 
+                    availableChildRegexp)
+            }</InternalMenu>
         </li>
     );
 };

@@ -10,6 +10,7 @@ import SubMenu from './SubMenu';
 import MenuContext from './MenuContext';
 import { IconComAttrType } from '../icon/icon.type';
 import { renderIconNode } from '../icon/icon';
+import MenuGroup from './MenuGroup';
 
 
 const menuPrefix = 'menu';
@@ -20,33 +21,45 @@ const InternalMenu: React.FC<MenuProps> = props => {
             [`${clsPrefix}-horizontal`]: mode === 'horizontal'
         }, className);
 
-    let context      = React.useContext(MenuContext),
-        renderLevel  = context.renderLevel,
-        contextValue = {
-            ...context,
-            renderLevel: renderLevel + 1
-        };
+    let context  = React.useContext(MenuContext),
+        renderIndex = context.renderIndex,
+        renderLevel = context.renderLevel;
 
+    if( renderLevel === 0 ) renderIndex = `@@_${menuPrefix}/${renderLevel + 1}`;
+
+    const availableChildRegexp = React.useMemo(()=>{
+        return new RegExp([
+            MenuItem.displayName, 
+            SubMenu.displayName,
+            MenuGroup.displayName
+        ].join('|'), 'i')
+    }, []);
+
+    const renderChildren = function() {
+        return React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps>>, (Child, cIndex) => {
+            let { index } = Child.props,
+                childName = Child.type.displayName!;
+    
+            if( availableChildRegexp.test(childName) ) {
+                return <MenuContext.Provider value={{
+                    ...context,
+                    renderLevel: renderLevel + 1,       // 对以下所有的渲染层级
+                    renderIndex: `${renderIndex}/${cIndex+1}`   // 当前渲染的索引
+                }}>{
+                    React.cloneElement(Child, {
+                        ...Child.props,
+                        index: index ? index: `${renderIndex}/${cIndex+1}`
+                    })
+                }</MenuContext.Provider>
+            }
+
+            return null;
+        })
+    };
+    
     return (
         <ul className={clsName}>
-            {
-                React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps>>, (Child, cIndex) => {
-                    let nameReg = new RegExp([MenuItem.displayName, SubMenu.displayName].join('|'), 'ig');
-            
-                    if( nameReg.test( Child.type.displayName! ) ) {
-                        let { index } = Child.props;
-                        return <MenuContext.Provider value={contextValue}>
-                            {
-                                React.cloneElement(Child, {
-                                    ...Child.props,
-                                    index: index ? index: `@@_${menuPrefix}/${contextValue.renderLevel}/${cIndex}`
-                                })
-                            }
-                        </MenuContext.Provider>
-                    }
-                    return null;
-                })
-            }
+            {renderChildren()}
         </ul>
     );
 };
@@ -81,3 +94,17 @@ export function renderMenuIcon(icon: IconComAttrType) {
 
     return iconNode;
 };
+
+
+/**
+ * 渲染SubMenu 或 MenuItem 子节点
+ * @param children 子节点
+ * @param exp 正则表达式
+ */
+export function renderSubOrGroupChild<T>(children: Array<React.FunctionComponentElement<T>>, exp: RegExp) {
+    return React.Children.map(children, Child=>{
+        let ChildElement = Child as React.FunctionComponentElement<T>,
+            name = ChildElement.type.displayName!;
+        return exp.test(name) ? ChildElement: null;
+    });
+}
