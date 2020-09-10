@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { MenuItemProps } from './Menu.type';
 import classnames from 'classnames';
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import { getClsPrefix } from './../_utils/_style.util';
 import MenuContext from './MenuContext';
 import { useMenuPaddingLeft, renderMenuIcon } from './InternalMenu';
 
-const menuItemPrefix  = 'menu-item';
+
 const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
-    let clsPrefix = getClsPrefix(menuItemPrefix),
+    let clsPrefix = getClsPrefix(ComponentPrefix.MENU_ITEM),
         clsName = classnames(clsPrefix),
-        { className, index, disabled, icon, ...restProps } = props;
+        { className, index, disabled, icon, children, ...restProps } = props;
     
     let context  = React.useContext(MenuContext),
         styleObj = useMenuPaddingLeft(),
-        iconNode = renderMenuIcon(icon!);
+        iconNode = renderMenuIcon(icon);
 
     const handleClick: React.MouseEventHandler = (event) => {
         let { onSelectMenuItem } = context;
@@ -33,7 +33,7 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
             onClick={handleClick}
             {...restProps}>
                 {iconNode}
-                {props.children}
+                {children}
             </li>
     );
 }

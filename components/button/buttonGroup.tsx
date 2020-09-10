@@ -2,16 +2,15 @@ import * as React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { getClsPrefix } from './../_utils/_style.util';
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import Button from './button';
 import { ButtonGroupProps, ButtonProps } from './button.type';
 
 
-const btnGroupPrefix = 'btn-group';
 const ButtonGroup: React.FC<ButtonGroupProps> = props => {
     const { vertical, size, className, children, ...restProps } = props;
     
-    const clsPrefix = getClsPrefix(btnGroupPrefix);
+    const clsPrefix = getClsPrefix(ComponentPrefix.BUTTON_GROUP);
     const clsname   = classnames(clsPrefix, {
         [`${clsPrefix}-vertical`]: !!vertical,
         [`${clsPrefix}-${size}`] : !!size

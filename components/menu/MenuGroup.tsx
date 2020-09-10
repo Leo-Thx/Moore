@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { MenuGroupProps, MenuItemProps } from './Menu.type';
 import classnames from 'classnames';
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import { getClsPrefix } from './../_utils/_style.util';
 import MenuItem from './MenuItem';
 import InternalMenu, { renderSubOrGroupChild } from './InternalMenu';
 
-const menuGroupPrefix  = 'menugroup';
-const MenuGroup: React.FunctionComponent<MenuGroupProps> = props => {
-    let clsPrefix = getClsPrefix(menuGroupPrefix),
-        clsName = classnames(clsPrefix),
-        titleCls = getClsPrefix('title', clsName),
-        availableChildRegexp = new RegExp(MenuItem.displayName!, 'i'),
-        { title, children, ...restProps } = props;
+
+const MenuGroup: React.FunctionComponent<MenuGroupProps> = ({title, children, ...restProps}) => {
+    let clsPrefix            = getClsPrefix(ComponentPrefix.MENU_GROUP),
+        clsName              = classnames(clsPrefix),
+        titleCls             = getClsPrefix('title', clsName),
+        availableChildRegexp = new RegExp(MenuItem.displayName!, 'i');
     
     return (
         <li className={clsName}>
@@ -20,7 +19,8 @@ const MenuGroup: React.FunctionComponent<MenuGroupProps> = props => {
             <InternalMenu {...restProps}>{
                 renderSubOrGroupChild<MenuItemProps>(
                     children as Array<React.FunctionComponentElement<MenuItemProps>>, 
-                    availableChildRegexp)
+                    availableChildRegexp
+                )
             }</InternalMenu>
         </li>
     );

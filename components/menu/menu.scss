@@ -11,14 +11,14 @@
     line-height: 40px;
     
     padding: {
-        left: 8px;
-        right: 8px;
+        left: 12px;
+        right: 12px;
     };
 }
 
 @mixin menuNormalIcon {
-    >.#{$cssPrefix}-icon {
-        margin-right: 4px;
+    >i {
+        margin-right: 6px;
     }
 }
 
@@ -67,6 +67,17 @@
     }
 }
 
+// 含有子节点的箭头容器
+.#{$cssPrefix}-submenu-arrow {
+    position: absolute; 
+    right: 0;
+    display: inline-block;
+    i{
+        transition: all .15s ease-in;
+        transform: scale(.9, .65);
+    }
+}
+
 
 .#{$cssPrefix}-submenu {
     white-space: nowrap;
@@ -82,20 +93,10 @@
         @include menuNormalIcon;
     }
 
-    .#{$cssPrefix}-submenu-arrow {
-        position: absolute; 
-        right: 0;
-        display: inline-block;
-        .#{$cssPrefix}-icon {
-            transition: all .15s ease-in;
-            transform: scale(.9, .65);
-        }
-    }
-
     &-open {
         > .#{$cssPrefix}-submenu-title {
             .#{$cssPrefix}-submenu-arrow {
-                .#{$cssPrefix}-icon {
+                i {
                     transform: rotate(180deg) scale(.9, .65);
                 }
             }
@@ -109,6 +110,12 @@
     &-disabled {
         color: $gray-6;
         cursor: not-allowed;
+    }
+
+    &-horizontal {
+        .#{$cssPrefix}-submenu-title {
+            padding-right: 20px;
+        }
     }
 }
 
@@ -126,44 +133,60 @@
 .#{$cssPrefix}-menu-horizontal{
     width: 100%;
 
-    >.#{$cssPrefix}-menu-item, >.#{$cssPrefix}-submenu {
+    .#{$cssPrefix}-menu-item, .#{$cssPrefix}-submenu {
         display: inline-block;
         vertical-align: bottom;
     }
 
-    .#{$cssPrefix}-submenu-arrow {
-        position: static;
-        padding-left: 8px;
+    .#{$cssPrefix}-menu-item {
+        padding: {
+            left: 12px; right: 12px;
+        };
+        
+        &::after{
+            bottom: 0; left: 50%;
+            transform: translateY(0%) translateX(-50%);
+            width: 0;
+            height: 2px;
+        }
+
+        &-active {
+            background-color: transparent;
+            &::after{
+                width: 100%;
+                background-color: $primary;
+            }
+        }
+    }
+}
+
+
+.menu-horizontal-container {
+    position: absolute;
+    left: 0; top: 0;
+    z-index: 1005;
+
+    .moore-submenu {
+        &-open {
+            >.moore-menu{
+                display: block;
+            }
+        }
     }
 
-    .#{$cssPrefix}-menu {
-        position: absolute;
+    .moore-menu {
         border-radius: $border-radius;
+        background: #fff;
+        position: absolute;
+        display: none;
         box-shadow: 
             0px -1px 1px 1px $gray-4,
             1px 0px 2px 1px $gray-4,
             0px 1px 2px 1px $gray-4,
             -1px -1px 2px 1px $gray-4;
-
-        &-item {
-            padding: {
-                left: 16px; right: 16px;
-            };
-            
-            &::after{
-                bottom: 0; left: 50%;
-                transform: translateY(0%) translateX(-50%);
-                width: 0;
-                height: 2px;
-            }
-
-            &-active {
-                background-color: transparent;
-                &::after{
-                    width: 100%;
-                    background-color: $primary;
-                }
-            }
+        
+        &--show {
+            display: block;
         }
     }
 }

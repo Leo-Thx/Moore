@@ -1,7 +1,8 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import classnames from 'classnames';
 
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import { getClsPrefix } from './../_utils/_style.util';
 
 import { SubMenuProps, MenuItemProps } from './Menu.type';
@@ -10,62 +11,108 @@ import InternalMenu, { useMenuPaddingLeft, renderMenuIcon, renderSubOrGroupChild
 import MenuContext from './MenuContext';
 import MenuItem from './MenuItem';
 
+// let handleMouseEnter = React.useCallback((event: React.MouseEvent)=>{
+//     setTimeout(()=>{
+//         if(!disabled && horizontal) setOpen(true);
+//     }, 150)
+//     event.stopPropagation();
+// }, [ disabled, horizontal ]);
 
-const subMenuPrefix  = 'submenu';
-const SubMenu: React.FunctionComponent<SubMenuProps> = props => {
-    let clsPrefix         = getClsPrefix(subMenuPrefix),
-        clsName           = classnames(clsPrefix),
-        arrowIcon         = renderIconNode('down'),
-        titleClsName      = getClsPrefix('title', clsPrefix),
-        arrowClsName      = getClsPrefix('arrow', clsPrefix),
+
+// let handleMouseLeave = React.useCallback((event: React.MouseEvent)=>{
+//     setTimeout(()=>{
+//         if(!disabled && horizontal) setOpen(false);
+//     }, 150)
+//     event.stopPropagation();
+// }, [ disabled, horizontal ]);
+
+
+const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className, ...props}) => {
+    let clsPrefix         = getClsPrefix(ComponentPrefix.SUB_MENU),
+        context           = React.useContext(MenuContext),
         [opened, setOpen] = React.useState(false),
-        { horizontal}     = React.useContext(MenuContext);
+        subMenuRef        = React.createRef<HTMLUListElement>();
 
-    let { className, children, title, disabled, icon, ...restProps } = props;
+    let { children, disabled, index, ...restProps } = props;
+    let { horizontal, renderLevel, subMenuContainer } = context;
     
     let styleObj = useMenuPaddingLeft(),
-        iconNode = renderMenuIcon(icon!);
+        iconNode = renderMenuIcon(icon),
+        arrowIcon = horizontal && renderLevel > 1 ? renderIconNode('right'): renderIconNode('down');
 
     let handleClick = React.useCallback((event: React.MouseEvent)=> {
-        if(!disabled && !horizontal) setOpen(!opened);
-        event.stopPropagation();
-    }, [ opened, disabled, horizontal ]);
+        if(!disabled) {
+            let currentTarget = event.currentTarget,
+                current = subMenuRef.current;
 
-    let handleMouseEnter = React.useCallback((event: React.MouseEvent)=>{
-        // if(!disabled && horizontal) setOpen(true);
-    }, [ disabled, horizontal ]);
+            if( current ) {
+                let style   = currentTarget.getBoundingClientRect(),
+                    clientX = style.left,
+                    height  = style.height,
+                    width   = style.width,
+                    clientY = style.top + height;
 
-    let handleMouseLeave = React.useCallback((event: React.MouseEvent)=>{
-        // if(!disabled && horizontal) setOpen(false);
-    }, [ disabled, horizontal ]);
+                current.style.minWidth = currentTarget.clientWidth + 'px';
+                
+                if( renderLevel === 1 ) {
+                    current.style.top  = clientY + 'px';
+                    current.style.left = clientX + 'px';
+
+                    if( opened ) {
+                        current.classList.remove('moore-menu--show')
+                    } else {
+                        current.classList.add('moore-menu--show')
+                    }
+                } else {        
+                    current.style.top  = height + 'px';
+                    current.style.left = width + 'px';
+                }
+            }
+
+            setOpen(!opened);
+            event.stopPropagation();
+        }
+    }, [ opened, disabled, renderLevel ]);
 
     
-    clsName = classnames(clsName, {
-        [`${clsName}-disabled`]: disabled,
-        [`${clsName}-open`]    : opened
-    }, className);
+    let titleClsName = getClsPrefix('title', clsPrefix),
+        arrowClsName = getClsPrefix('arrow', clsPrefix),
+        clsName      = classnames(classnames(clsPrefix), {
+            [`${clsPrefix}-horizontal`]: horizontal,
+            [`${clsPrefix}-open`]      : opened,
+            [`${clsPrefix}-disabled`]  : disabled
+        }, className);
 
 
-    let availableChildRegexp = new RegExp([
+    const availableChildRegexp = new RegExp([
         SubMenu.displayName, 
         MenuItem.displayName
     ].join('|'), 'i');
 
+
+    const renderVerticalChildren = ()=>{
+        return <InternalMenu {...restProps} ref={subMenuRef}>{
+            renderSubOrGroupChild<MenuItemProps|SubMenuProps>(
+                children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps>>, 
+                availableChildRegexp
+            )
+        }</InternalMenu>
+    };
+
     return (
-        <li className={clsName} 
-            onClick={handleClick}
-        >
+        <li className={clsName} onClick={handleClick}>
             <div className={titleClsName} style={styleObj} >
                 {iconNode}
                 {title}
                 <span className={arrowClsName}>{arrowIcon}</span>
             </div>
 
-            <InternalMenu {...restProps}>{
-                renderSubOrGroupChild<MenuItemProps|SubMenuProps>(
-                    children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps>>, 
-                    availableChildRegexp)
-            }</InternalMenu>
+            { horizontal? // 水平模式
+                renderLevel === 1 ?     // 只渲染第一级
+                    ReactDOM.createPortal(renderVerticalChildren(), subMenuContainer!)
+                    : renderVerticalChildren()
+                : renderVerticalChildren()
+            }
         </li>
     );
 };

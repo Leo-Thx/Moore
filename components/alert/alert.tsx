@@ -1,19 +1,19 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { getClsPrefix } from './../_utils/_style.util';
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 
 import Icon, { renderIconNode, IconKeyType } from '../icon/icon';
 
 import { AlertProps, AlerType } from './alert.type';
 
 
-function getIconType( type: AlerType, withFill: boolean = false ): IconKeyType {
+const getIconType = ( type: AlerType, withFill: boolean = false ): IconKeyType => {
     let map = {
-        info: 'info-circle',
+        info   : 'info-circle',
         success: 'check-circle',
         warning: 'warning-circle',
-        error: 'close-circle'
+        error  : 'close-circle'
     };
 
     let result = map[type];
@@ -22,7 +22,7 @@ function getIconType( type: AlerType, withFill: boolean = false ): IconKeyType {
     return result as IconKeyType;
 }
 
-const alertPrefix = 'alert';
+
 const Alert: React.FC<AlertProps> = props => {
     const { 
         className, 
@@ -36,7 +36,7 @@ const Alert: React.FC<AlertProps> = props => {
         onClose
     } = props;
 
-    let clsPrefix  = getClsPrefix(alertPrefix),
+    let clsPrefix  = getClsPrefix(ComponentPrefix.ALERT),
         alertClass = classnames(clsPrefix, {
             [`${clsPrefix}-${type}`]  : true,
             [`${clsPrefix}-with-icon`]: showIcon,

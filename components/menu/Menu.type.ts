@@ -7,6 +7,7 @@ type BaseMenuProps = {
     inlineIndent? : number;
     accordion?    : boolean;
     defaultActive?: string;
+    ref?          : React.Ref<HTMLUListElement>
 };
 
 
@@ -26,15 +27,17 @@ type BaseSubMenuProps = {
 
 
 type BaseMenuGroupProps = {
-    index?   : string;
-    title    : string;
+    index?: string;
+    title : string;
 };
 
 
-type MenuProps      = BaseMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>,    'children'|'className'>;
-type MenuItemProps  = BaseMenuItemProps & Omit<React.HTMLAttributes<HTMLLIElement>,   ''>;
-type MenuGroupProps = BaseMenuGroupProps & Omit<React.HTMLAttributes<HTMLLIElement>,  ''>;
-type SubMenuProps   = BaseSubMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>, 'children' | 'className'>;
+type MenuProps = BaseMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>, 'className'|'children'|'style'>;
+
+type MenuGroupProps = BaseMenuGroupProps & Pick<React.HTMLAttributes<HTMLLIElement>, 'className'|'children'|'style'>;
+type SubMenuProps   = BaseSubMenuProps & Pick<React.HTMLAttributes<HTMLLIElement>,   'className'|'children'|'style'>;
+
+type MenuItemProps = BaseMenuItemProps & Pick<React.HTMLAttributes<HTMLLIElement>, 'className'|'children'|'style'>;
 
 
 // 菜单类型: 包含内部菜单使用项

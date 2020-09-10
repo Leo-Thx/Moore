@@ -3,13 +3,12 @@ import classnames from 'classnames';
 import { IconKeyType, IconProps } from './icon.type';
 import { IconTypeMap } from './iconType.map';
 import { getClsPrefix } from './../_utils/_style.util';
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 
-const iconPrefix = 'icon';
 const Icon: React.FC<IconProps> = props => {
     let { type, className, children, size, spin, rotate, ...restProps } = props;
 
-    let clsPefix = getClsPrefix(iconPrefix),
+    let clsPefix = getClsPrefix(ComponentPrefix.ICON),
         iCls     = classnames(clsPefix),
         icon     = IconTypeMap[ type as IconKeyType ];
 
@@ -47,6 +46,8 @@ const Icon: React.FC<IconProps> = props => {
     // }, [svg, type]);
 };
 
+Icon.displayName = `${displayPrefix}-Icon`;
+
 
 
 /**
@@ -69,8 +70,6 @@ function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKe
     
     return null;
 }
-
-Icon.displayName = `${displayPrefix}-Icon`;
 
 
 export default Icon;

@@ -15,6 +15,8 @@ export type MenuContextProps = {
 
     // 是否是水平模式
     horizontal: boolean;
+
+    subMenuContainer?: HTMLDivElement|null
 };
 
 

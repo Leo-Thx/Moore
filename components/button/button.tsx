@@ -2,13 +2,11 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { ButtonProps } from './button.type';
 import { getClsPrefix } from '../_utils/_style.util';
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import Icon, { renderIconNode } from '../icon/icon';
 import { IconProps } from '../icon/icon.type';
 
-const iconOnlyPrefix = 'icon-only',
-      btnPrefix      = 'btn';
-
+const iconOnlyPrefix = 'icon-only';
 const Button: React.FC<ButtonProps> = props => {
     const { 
         disabled, 
@@ -27,7 +25,7 @@ const Button: React.FC<ButtonProps> = props => {
     } = props;
 
 
-    let clsPrefix = getClsPrefix(btnPrefix),
+    let clsPrefix = getClsPrefix(ComponentPrefix.BUTTON),
         clsName   = classnames(clsPrefix, {
             [`${clsPrefix}-${type}`]       : !!type && type !== 'default',                     // default不用任何样式
             [`${clsPrefix}-${size}`]       : !!size,
@@ -43,7 +41,7 @@ const Button: React.FC<ButtonProps> = props => {
     }, [ type, onClick ]);
 
 
-    let child: React.ReactNode;
+    let child: React.ReactNode = null;
 
     if( icon ) {    // icon属性
         const iconAttrNode = renderIconNode(icon);  // 处理icon作为属性或者是节点时，需要渲染按钮

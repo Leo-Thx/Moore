@@ -1,6 +1,7 @@
 import * as React from 'react';
+import classnames from 'classnames';
 
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import { MenuProps, MenuTypeDeclaration } from './Menu.type';
 
 import MenuItem from './MenuItem';
@@ -17,46 +18,39 @@ import InternalMenu from './InternalMenu';
 //     static MenuGroup   = MenuGroup;
 // };
 
-/**
- * 
- * @param props 
- * @example
- *  <Menu defaultActive="1">
-        <Menu.MenuItem icon="check-circle">菜单一</Menu.MenuItem>
-        <Menu.MenuItem index="1">菜单二</Menu.MenuItem>
-        <Menu.MenuItem disabled>菜单三</Menu.MenuItem>
 
-        <Menu.SubMenu title="菜单四" icon="check-circle-fill">
-            <Menu.MenuItem>二级菜单一</Menu.MenuItem>
-            <Menu.MenuItem>二级菜单二</Menu.MenuItem>
-            <Menu.SubMenu title="菜单四一">
-                <Menu.MenuItem>三级菜单一</Menu.MenuItem>
-                <Menu.MenuItem>三级菜单二</Menu.MenuItem>
-            </Menu.SubMenu>
-        </Menu.SubMenu>
-        
-        <Menu.SubMenu title="菜单五" disabled>
-            <Menu.MenuItem>二级菜单一</Menu.MenuItem>
-            <Menu.MenuItem>二级菜单二</Menu.MenuItem>
-        </Menu.SubMenu>
-    </Menu>
- */
 const Menu: MenuTypeDeclaration = props => {
     let { inlineIndent, defaultActive, ...restProps } = props,
-        [activeMenu, setActive] = React.useState(defaultActive);
+        [activeMenu, setActive] = React.useState(defaultActive),
+        horizontal = props.mode === 'horizontal';
 
-    let context = React.useContext(MenuContext);
+    let context = React.useContext(MenuContext),
+        wrapper = React.useMemo(()=> horizontal ? document.createElement('div'): null, [horizontal]);
+
+    React.useEffect(()=>{
+        if( horizontal ) {
+            wrapper?.classList.add(classnames({
+                [`${ComponentPrefix.MENU}-horizontal-container`]: horizontal
+            }));
+            document.body.append(wrapper!);
+        }
+        return () => {
+            horizontal && wrapper!.remove();
+        }
+    }, [wrapper, horizontal]);
+
+
     let contextValue: MenuContextProps = React.useMemo(()=>{
         return {
             ...context,
             activeMenu      : activeMenu!,
             inlineIndent    : inlineIndent!,
-            horizontal      : props.mode === 'horizontal',
-            onSelectMenuItem: (index: string) => {
-                setActive(index);
-            }
+            horizontal      : horizontal,
+            subMenuContainer: wrapper,
+            renderIndex     : `@@_${ComponentPrefix.MENU}/1`, //重置首层渲染的index索引值
+            onSelectMenuItem: (index: string) => setActive(index)
         }
-    }, [activeMenu, inlineIndent]);
+    }, [activeMenu, inlineIndent, horizontal]);
 
     return (
         <MenuContext.Provider value={contextValue}>

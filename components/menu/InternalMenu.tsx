@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 import { getClsPrefix } from './../_utils/_style.util';
-import { displayPrefix } from './../_config/_variables';
+import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import { MenuProps, MenuItemProps } from './Menu.type';
 
 import MenuItem from './MenuItem';
@@ -13,38 +13,36 @@ import { renderIconNode } from '../icon/icon';
 import MenuGroup from './MenuGroup';
 
 
-const menuPrefix = 'menu';
-const InternalMenu: React.FC<MenuProps> = props => {
-    let { children, mode, className } = props,
-        clsPrefix = getClsPrefix(menuPrefix),
+const InternalMenu: React.FC<MenuProps> = React.forwardRef<HTMLUListElement, MenuProps>((props, ref) => {
+    let { children, mode, className, ...restProps } = props,
+        clsPrefix = getClsPrefix(ComponentPrefix.MENU),
         clsName   = classnames(clsPrefix, {
             [`${clsPrefix}-horizontal`]: mode === 'horizontal'
         }, className);
 
-    let context  = React.useContext(MenuContext),
+    let context     = React.useContext(MenuContext),
         renderIndex = context.renderIndex,
         renderLevel = context.renderLevel;
 
-    if( renderLevel === 0 ) renderIndex = `@@_${menuPrefix}/${renderLevel + 1}`;
+    const availableChildRegexp = new RegExp([
+        MenuItem.displayName, 
+        SubMenu.displayName,
+        MenuGroup.displayName
+    ].join('|'), 'i');
 
-    const availableChildRegexp = React.useMemo(()=>{
-        return new RegExp([
-            MenuItem.displayName, 
-            SubMenu.displayName,
-            MenuGroup.displayName
-        ].join('|'), 'i')
-    }, []);
 
     const renderChildren = function() {
-        return React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps>>, (Child, cIndex) => {
+        let childArray = children as Array<React.FunctionComponentElement<MenuItemProps>>;
+
+        return React.Children.map(childArray, (Child, cIndex) => {
             let { index } = Child.props,
                 childName = Child.type.displayName!;
     
             if( availableChildRegexp.test(childName) ) {
                 return <MenuContext.Provider value={{
                     ...context,
-                    renderLevel: renderLevel + 1,       // 对以下所有的渲染层级
-                    renderIndex: `${renderIndex}/${cIndex+1}`   // 当前渲染的索引
+                    renderLevel: renderLevel + 1, // 对以下所有的渲染层级
+                    renderIndex: `${renderIndex}/${cIndex+1}`  // 当前渲染的索引，供子级节点使用
                 }}>{
                     React.cloneElement(Child, {
                         ...Child.props,
@@ -58,26 +56,25 @@ const InternalMenu: React.FC<MenuProps> = props => {
     };
     
     return (
-        <ul className={clsName}>
+        <ul className={clsName} {...restProps} ref={ref}>
             {renderChildren()}
         </ul>
     );
-};
+});
 
 InternalMenu.displayName = `${displayPrefix}-InternalMenu`;
 
 export default InternalMenu;
-
 
 /**
  * 计算当前层级的菜单需要填充的距离
  */
 export function useMenuPaddingLeft() {
     let context = React.useContext(MenuContext),
-        { renderLevel, inlineIndent } = context;
+        { renderLevel, inlineIndent, horizontal } = context;
 
     let style = {} as React.CSSProperties;
-    if( renderLevel === 1 ) {}
+    if( renderLevel === 1 || horizontal ) {}
     else style.paddingLeft = (renderLevel - 1) * inlineIndent;
 
     return style;
@@ -88,7 +85,7 @@ export function useMenuPaddingLeft() {
  * 渲染图标
  * @param icon 
  */
-export function renderMenuIcon(icon: IconComAttrType) {
+export function renderMenuIcon(icon?: IconComAttrType) {
     let iconNode = null;
     if ( icon ) iconNode = renderIconNode(icon);
 
