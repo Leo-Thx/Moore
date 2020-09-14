@@ -18,9 +18,8 @@ import InternalMenu from './InternalMenu';
 //     static MenuGroup   = MenuGroup;
 // };
 
-
 const Menu: MenuTypeDeclaration = props => {
-    let { inlineIndent, defaultActive, ...restProps } = props,
+    let { inlineIndent, defaultActive, onSelect, onClick, ...restProps } = props,
         [activeMenu, setActive] = React.useState(defaultActive),
         horizontal = props.mode === 'horizontal';
 
@@ -48,7 +47,12 @@ const Menu: MenuTypeDeclaration = props => {
             horizontal      : horizontal,
             subMenuContainer: wrapper,
             renderIndex     : `@@_${ComponentPrefix.MENU}/1`, //重置首层渲染的index索引值
-            onSelectMenuItem: (index: string) => setActive(index)
+            onSelectMenuItem: (level: number, index: string, event: React.MouseEvent) => {
+                if( typeof onClick === 'function' ) onClick(level, index, event);
+                if( typeof onSelect === 'function' ) onSelect(level, index, event);
+                
+                setActive(index);
+            }
         }
     }, [activeMenu, inlineIndent, horizontal]);
 

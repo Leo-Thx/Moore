@@ -133,7 +133,7 @@
 .#{$cssPrefix}-menu-horizontal{
     width: 100%;
 
-    .#{$cssPrefix}-menu-item, .#{$cssPrefix}-submenu {
+    .#{$cssPrefix}-menu-item, .#{$cssPrefix}-submenu, .#{$cssPrefix}-menugroup {
         display: inline-block;
         vertical-align: bottom;
     }
@@ -166,24 +166,32 @@
     left: 0; top: 0;
     z-index: 1005;
 
-    .moore-submenu {
+    text-align: center;
+
+    .#{$cssPrefix}-submenu {
         &-open {
             >.moore-menu{
                 display: block;
             }
         }
+
+        &-arrow {
+            transform: scale(.85, 1.45);
+            right: 4px;
+        }
     }
 
-    .moore-menu {
+    .#{$cssPrefix}-menu {
         border-radius: $border-radius;
         background: #fff;
         position: absolute;
+        box-sizing: border-box;
         display: none;
         box-shadow: 
-            0px -1px 1px 1px $gray-4,
-            1px 0px 2px 1px $gray-4,
-            0px 1px 2px 1px $gray-4,
-            -1px -1px 2px 1px $gray-4;
+            0px -1px 1px 1px $gray-3,
+            1px 0px 1px 1px $gray-3,
+            0px 1px 1px 1px $gray-3,
+            -1px -1px 1px 1px $gray-3;
         
         &--show {
             display: block;

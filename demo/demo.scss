@@ -1,0 +1,20 @@
+@import './../components/style/variables';
+
+.demo-wrapper {
+    display: flex;
+    height: 100vh;
+    nav {
+        width: 240px;
+        border-right: 1px solid $gray-4;
+        .moore-menu {
+            height: 100%;
+            overflow: auto;
+        }
+    }
+
+    section {
+        flex: 1;
+        box-sizing: border-box;
+        padding: 16px;
+    }
+}

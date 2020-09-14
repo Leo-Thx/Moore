@@ -6,6 +6,7 @@
   "jsnext:main": "",
   "scripts": {
     "test": "jest --watchAll --color",
+    "start": "cross-env NODE_ENV=development node ./config/webpack.all.js",
     "dev": "cross-env NODE_ENV=development node ./config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production node ./config/webpack.prod.js",
     "build:esm": "tsc && tsc -m es6 --outDir lib-esm",

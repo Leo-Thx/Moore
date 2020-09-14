@@ -16,11 +16,14 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = props => {
         styleObj = useMenuPaddingLeft(),
         iconNode = renderMenuIcon(icon);
 
-    const handleClick: React.MouseEventHandler = (event) => {
-        let { onSelectMenuItem } = context;
-        if( !props.disabled ) onSelectMenuItem!(index!);
+    const handleClick: React.MouseEventHandler = React.useCallback((event) => {
+        let { onSelectMenuItem, renderLevel } = context;
+        if( !props.disabled ) {
+            onSelectMenuItem(renderLevel, index!, event);
+        }
         event.stopPropagation();
-    };
+    }, [index, context]);
+
 
     clsName = classnames(clsName, {
         [`${getClsPrefix('active', clsPrefix)}`]: index === context.activeMenu,

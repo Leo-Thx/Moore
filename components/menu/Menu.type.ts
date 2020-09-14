@@ -7,14 +7,17 @@ type BaseMenuProps = {
     inlineIndent? : number;
     accordion?    : boolean;
     defaultActive?: string;
-    ref?          : React.Ref<HTMLUListElement>
+    ref?          : React.Ref<HTMLUListElement>;
+    
+    onClick?      : (level: number, index: string, event: React.MouseEvent) => void;
+    onSelect?     : (level: number, index: string, event: React.MouseEvent) => void;
 };
 
 
 type BaseMenuItemProps = {
     index?   : string;
     disabled?: boolean;
-    icon?    : IconComAttrType
+    icon?    : IconComAttrType;
 };
 
 
@@ -32,12 +35,14 @@ type BaseMenuGroupProps = {
 };
 
 
-type MenuProps = BaseMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>, 'className'|'children'|'style'>;
+type PickType = 'className'|'children'|'style';
 
-type MenuGroupProps = BaseMenuGroupProps & Pick<React.HTMLAttributes<HTMLLIElement>, 'className'|'children'|'style'>;
-type SubMenuProps   = BaseSubMenuProps & Pick<React.HTMLAttributes<HTMLLIElement>,   'className'|'children'|'style'>;
+type MenuProps = BaseMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>, PickType>;
 
-type MenuItemProps = BaseMenuItemProps & Pick<React.HTMLAttributes<HTMLLIElement>, 'className'|'children'|'style'>;
+type MenuGroupProps = BaseMenuGroupProps & Pick<React.HTMLAttributes<HTMLLIElement>, PickType>;
+type SubMenuProps   = BaseSubMenuProps & Pick<React.HTMLAttributes<HTMLLIElement>,   PickType>;
+
+type MenuItemProps = BaseMenuItemProps & Pick<React.HTMLAttributes<HTMLLIElement>, PickType>;
 
 
 // 菜单类型: 包含内部菜单使用项

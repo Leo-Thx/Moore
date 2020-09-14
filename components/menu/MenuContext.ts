@@ -3,8 +3,9 @@ import * as React from 'react';
 export type MenuContextProps = {    
     // 当前激活的按钮
     activeMenu: string;
+
     // 选中列表项
-    onSelectMenuItem?: (activeInde: string) => void;
+    onSelectMenuItem: (level: number, index: string, event: React.MouseEvent) => void;
 
     // 菜单缩进长度
     inlineIndent: number;
@@ -16,6 +17,7 @@ export type MenuContextProps = {
     // 是否是水平模式
     horizontal: boolean;
 
+    // 水平模式下渲染子节点的容器
     subMenuContainer?: HTMLDivElement|null
 };
 

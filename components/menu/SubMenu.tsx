@@ -31,7 +31,8 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
     let clsPrefix         = getClsPrefix(ComponentPrefix.SUB_MENU),
         context           = React.useContext(MenuContext),
         [opened, setOpen] = React.useState(false),
-        subMenuRef        = React.createRef<HTMLUListElement>();
+        subMenuRef        = React.useRef<HTMLUListElement>(null),
+        horizontalCls     = getClsPrefix('menu') + '--show';
 
     let { children, disabled, index, ...restProps } = props;
     let { horizontal, renderLevel, subMenuContainer } = context;
@@ -40,8 +41,8 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         iconNode = renderMenuIcon(icon),
         arrowIcon = horizontal && renderLevel > 1 ? renderIconNode('right'): renderIconNode('down');
 
-    let handleClick = React.useCallback((event: React.MouseEvent)=> {
-        if(!disabled) {
+    let handleEnter = React.useCallback((event: React.MouseEvent)=>{
+        if(!disabled && horizontal) {
             let currentTarget = event.currentTarget,
                 current = subMenuRef.current;
 
@@ -58,21 +59,33 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
                     current.style.top  = clientY + 'px';
                     current.style.left = clientX + 'px';
 
-                    if( opened ) {
-                        current.classList.remove('moore-menu--show')
-                    } else {
-                        current.classList.add('moore-menu--show')
-                    }
+                    if( opened ) current.classList.remove(horizontalCls);
+                    else current.classList.add(horizontalCls);
+                    
                 } else {        
-                    current.style.top  = height + 'px';
-                    current.style.left = width + 'px';
+                    current.style.top  = (height/2) + 'px';
+                    current.style.left = (width + 4) + 'px';
                 }
             }
 
+            setOpen(true);
+        }
+    }, [ opened, horizontal, disabled, renderLevel ]);
+
+
+    let handelLeave = React.useCallback((event: React.MouseEvent)=>{
+        if(!disabled && horizontal) {
+            setOpen(false)
+        }
+    }, [ opened, horizontal, disabled, renderLevel ]);
+
+
+    let handleClick = React.useCallback((event: React.MouseEvent)=> {
+        if(!disabled && !horizontal) {
             setOpen(!opened);
             event.stopPropagation();
         }
-    }, [ opened, disabled, renderLevel ]);
+    }, [ opened, disabled, horizontal ]);
 
     
     let titleClsName = getClsPrefix('title', clsPrefix),
@@ -101,7 +114,7 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
 
     return (
         <li className={clsName} onClick={handleClick}>
-            <div className={titleClsName} style={styleObj} >
+            <div className={titleClsName} style={styleObj} onMouseEnter={handleEnter} onMouseLeave={handelLeave}>
                 {iconNode}
                 {title}
                 <span className={arrowClsName}>{arrowIcon}</span>

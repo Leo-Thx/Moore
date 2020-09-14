@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import { getClsPrefix } from './../_utils/_style.util';
 import { displayPrefix, ComponentPrefix } from './../_config/_variables';
-import { MenuProps, MenuItemProps } from './Menu.type';
+import { MenuProps, MenuItemProps, SubMenuProps, MenuGroupProps } from './Menu.type';
 
 import MenuItem from './MenuItem';
 import SubMenu from './SubMenu';
@@ -14,7 +14,7 @@ import MenuGroup from './MenuGroup';
 
 
 const InternalMenu: React.FC<MenuProps> = React.forwardRef<HTMLUListElement, MenuProps>((props, ref) => {
-    let { children, mode, className, ...restProps } = props,
+    let { children, mode, className, onClick, onSelect, ...restProps } = props,
         clsPrefix = getClsPrefix(ComponentPrefix.MENU),
         clsName   = classnames(clsPrefix, {
             [`${clsPrefix}-horizontal`]: mode === 'horizontal'
@@ -32,7 +32,7 @@ const InternalMenu: React.FC<MenuProps> = React.forwardRef<HTMLUListElement, Men
 
 
     const renderChildren = function() {
-        let childArray = children as Array<React.FunctionComponentElement<MenuItemProps>>;
+        let childArray = children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>;
 
         return React.Children.map(childArray, (Child, cIndex) => {
             let { index } = Child.props,
