@@ -23,19 +23,24 @@ const Wrapper = () => {
                 <Menu.MenuItem index="1">菜单二</Menu.MenuItem>
                 <Menu.MenuItem>菜单三</Menu.MenuItem>
 
-                <Menu.SubMenu title="SubMenu-Two" className="my-submenu">
+                <Menu.SubMenu title="菜单四">
                     <Menu.MenuItem>二级菜单一</Menu.MenuItem>
                     <Menu.MenuItem>二级菜单二</Menu.MenuItem>
-                    <Menu.SubMenu title="二级菜单三">
+                    {/* <Menu.SubMenu title="二级菜单三">
                         <Menu.MenuItem>三级菜单一</Menu.MenuItem>
                         <Menu.MenuItem>三级菜单二</Menu.MenuItem>
-                    </Menu.SubMenu>
+                    </Menu.SubMenu> */}
                 </Menu.SubMenu>
 
                 <Menu.MenuGroup title="MenuGroup-Two">
                     <Menu.MenuItem>二级菜单一</Menu.MenuItem>
                     <Menu.MenuItem>二级菜单二</Menu.MenuItem>
                 </Menu.MenuGroup>
+
+                {/* <Menu.SubMenu title="菜单五">
+                    <Menu.MenuItem>二级菜单一</Menu.MenuItem>
+                    <Menu.MenuItem>二级菜单二</Menu.MenuItem>
+                </Menu.SubMenu> */}
                 
             </Menu> : null}
             <hr />
@@ -49,9 +54,9 @@ export default function MenuDemo() {
         <>
         <Wrapper></Wrapper>
         
-        <Menu defaultActive="1">
+        {/* <Menu defaultActive="1">
             <Menu.MenuItem icon="check-circle">菜单一</Menu.MenuItem>
-            <Menu.MenuItem index="1">菜单二</Menu.MenuItem>
+            <Menu.MenuItem>菜单二</Menu.MenuItem>
             <Menu.MenuItem disabled>菜单三</Menu.MenuItem>
 
             <Menu.MenuGroup title="MenuGroup-Two">
@@ -84,7 +89,7 @@ export default function MenuDemo() {
                 <Menu.MenuItem>二级菜单一</Menu.MenuItem>
                 <Menu.MenuItem>二级菜单二</Menu.MenuItem>
             </Menu.SubMenu>
-        </Menu>
+        </Menu> */}
         </>
     )
 }

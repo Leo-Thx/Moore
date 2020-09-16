@@ -26,6 +26,8 @@ export const ComponentPrefix = {
     MENU        : 'menu',
     MENU_GROUP  : 'menugroup',
     SUB_MENU    : 'submenu',
-    MENU_ITEM   : 'menu-item'
+    MENU_ITEM   : 'menu-item',
+
+    DATE_PICKER : 'date-picker'
     
 };

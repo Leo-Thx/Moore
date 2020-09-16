@@ -3,105 +3,72 @@ import classnames from 'classnames';
 
 import { getClsPrefix } from './../_utils/_style.util';
 import { displayPrefix, ComponentPrefix } from './../_config/_variables';
-import { MenuProps, MenuItemProps, SubMenuProps, MenuGroupProps } from './Menu.type';
+import { MenuProps, MenuItemProps, SubMenuProps, MenuGroupProps, InternalMenuProps } from './Menu.type';
 
-import MenuItem from './MenuItem';
-import SubMenu from './SubMenu';
 import MenuContext from './MenuContext';
-import { IconComAttrType } from '../icon/icon.type';
-import { renderIconNode } from '../icon/icon';
-import MenuGroup from './MenuGroup';
+import { getAllMenuChildRegexp } from './Menu.helper';
 
 
-const InternalMenu: React.FC<MenuProps> = React.forwardRef<HTMLUListElement, MenuProps>((props, ref) => {
+const InternalMenu: React.FC<InternalMenuProps> = React.forwardRef<HTMLUListElement, MenuProps>((props, ref) => {
     let { children, mode, className, onClick, onSelect, ...restProps } = props,
         clsPrefix = getClsPrefix(ComponentPrefix.MENU),
+        childRegexp = getAllMenuChildRegexp(),
         clsName   = classnames(clsPrefix, {
             [`${clsPrefix}-horizontal`]: mode === 'horizontal'
         }, className);
 
     let context     = React.useContext(MenuContext),
-        renderIndex = context.renderIndex,
-        renderLevel = context.renderLevel;
+        openedKey   = context.openedKey,
+        dispatchKey = context.dispatchOpen,
+        renderKey   = context._key,          // 当前层级唯一
+        renderIndex = context.renderIndex,   // 当前层级索引
+        renderLevel = context.renderLevel;   // 当前渲染等级
 
-    const availableChildRegexp = new RegExp([
-        MenuItem.displayName, 
-        SubMenu.displayName,
-        MenuGroup.displayName
-    ].join('|'), 'i');
+    const handleEnter: React.MouseEventHandler = React.useCallback(event=>{
+        if( renderLevel ) { // 非首级
+            console.info('InternalMenu.mouseEnter--3', renderKey, renderLevel);
+            dispatchKey({type: 'add', payload: {key: renderKey, level: renderLevel + 1}});
+        }
+    }, [ renderKey, renderLevel ]);
 
+    const handleLeave: React.MouseEventHandler = React.useCallback(event=>{
+        if( !renderLevel ) {    // 菜单首层-直接清空
+            dispatchKey({type: 'clear', payload: {key: '', level: 0}});
+            console.info('InternalMenu.moueseLeave-clear', openedKey.slice());
+            return ;
+        } else {
+            dispatchKey({type: 'remove', payload: renderKey});
+            console.info('InternalMenu.moueseLeave2', openedKey.slice());
+        }
 
-    const renderChildren = function() {
-        let childArray = children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>;
+    }, [renderLevel, openedKey]);
 
-        return React.Children.map(childArray, (Child, cIndex) => {
-            let { index } = Child.props,
-                childName = Child.type.displayName!;
-    
-            if( availableChildRegexp.test(childName) ) {
-                return <MenuContext.Provider value={{
-                    ...context,
-                    renderLevel: renderLevel + 1, // 对以下所有的渲染层级
-                    renderIndex: `${renderIndex}/${cIndex+1}`  // 当前渲染的索引，供子级节点使用
-                }}>{
-                    React.cloneElement(Child, {
-                        ...Child.props,
-                        index: index ? index: `${renderIndex}/${cIndex+1}`
-                    })
-                }</MenuContext.Provider>
-            }
-
-            return null;
-        })
-    };
-    
     return (
-        <ul className={clsName} {...restProps} ref={ref}>
-            {renderChildren()}
+        <ul data-level={renderLevel} data-key={renderKey} data-index={renderIndex} 
+            className={clsName} {...restProps} ref={ref} 
+            onMouseEnter={handleEnter} >
+            {
+                React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>, (Child, cIndex) => {
+                    const { index } = Child.props, childName = Child.type.displayName!;
+                    if( !childRegexp.test(childName) ) return null;
+                        
+                    return <MenuContext.Provider value={{
+                        ...context,
+                        _key: `${renderKey}/${cIndex+1}`,
+                        renderLevel: renderLevel + 1,
+                        renderIndex: `${renderIndex}/${cIndex+1}`
+                    }}>{
+                        React.cloneElement(Child, {
+                            ...Child.props,
+                            index: index ? index: `${renderIndex}/${cIndex+1}`
+                        })
+                    }</MenuContext.Provider>
+                })
+            }
         </ul>
     );
 });
 
+
 InternalMenu.displayName = `${displayPrefix}-InternalMenu`;
-
 export default InternalMenu;
-
-/**
- * 计算当前层级的菜单需要填充的距离
- */
-export function useMenuPaddingLeft() {
-    let context = React.useContext(MenuContext),
-        { renderLevel, inlineIndent, horizontal } = context;
-
-    let style = {} as React.CSSProperties;
-    if( renderLevel === 1 || horizontal ) {}
-    else style.paddingLeft = (renderLevel - 1) * inlineIndent;
-
-    return style;
-}
-
-
-/**
- * 渲染图标
- * @param icon 
- */
-export function renderMenuIcon(icon?: IconComAttrType) {
-    let iconNode = null;
-    if ( icon ) iconNode = renderIconNode(icon);
-
-    return iconNode;
-};
-
-
-/**
- * 渲染SubMenu 或 MenuItem 子节点
- * @param children 子节点
- * @param exp 正则表达式
- */
-export function renderSubOrGroupChild<T>(children: Array<React.FunctionComponentElement<T>>, exp: RegExp) {
-    return React.Children.map(children, Child=>{
-        let ChildElement = Child as React.FunctionComponentElement<T>,
-            name = ChildElement.type.displayName!;
-        return exp.test(name) ? ChildElement: null;
-    });
-}

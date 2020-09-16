@@ -7,10 +7,9 @@ type BaseMenuProps = {
     inlineIndent? : number;
     accordion?    : boolean;
     defaultActive?: string;
-    ref?          : React.Ref<HTMLUListElement>;
     
-    onClick?      : (level: number, index: string, event: React.MouseEvent) => void;
-    onSelect?     : (level: number, index: string, event: React.MouseEvent) => void;
+    onClick? : (level: number, index: string, event: React.MouseEvent) => void;
+    onSelect?: (level: number, index: string, event: React.MouseEvent) => void;
 };
 
 
@@ -38,6 +37,7 @@ type BaseMenuGroupProps = {
 type PickType = 'className'|'children'|'style';
 
 type MenuProps = BaseMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>, PickType>;
+type InternalMenuProps = MenuProps & { ref? : React.Ref<HTMLUListElement>; }
 
 type MenuGroupProps = BaseMenuGroupProps & Pick<React.HTMLAttributes<HTMLLIElement>, PickType>;
 type SubMenuProps   = BaseSubMenuProps & Pick<React.HTMLAttributes<HTMLLIElement>,   PickType>;
@@ -54,9 +54,11 @@ type MenuTypeDeclaration = React.FunctionComponent<MenuProps> & {
 
 
 export {
-    MenuProps,
+    MenuProps, InternalMenuProps, MenuTypeDeclaration,
+    
     MenuItemProps,
+
     MenuGroupProps,
-    SubMenuProps,
-    MenuTypeDeclaration
+    
+    SubMenuProps
 }

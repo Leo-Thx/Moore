@@ -4,8 +4,9 @@ import classnames from 'classnames';
 import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import { getClsPrefix } from './../_utils/_style.util';
 import MenuItem from './MenuItem';
-import InternalMenu, { renderSubOrGroupChild } from './InternalMenu';
+import InternalMenu from './InternalMenu';
 import MenuContext from './MenuContext';
+import { renderMenuSubOrGroupChild } from './Menu.helper';
 
 
 const MenuGroup: React.FunctionComponent<MenuGroupProps> = ({title, children, index, ...restProps}) => {
@@ -15,15 +16,15 @@ const MenuGroup: React.FunctionComponent<MenuGroupProps> = ({title, children, in
         context   = React.useContext(MenuContext);
         
     let availableChildRegexp = new RegExp(MenuItem.displayName!, 'i'),
-        { horizontal, renderLevel } = context;
+        { horizontal, renderLevel, _key, renderIndex } = context;
 
     if( horizontal && renderLevel === 1 ) return null;
 
     return (
-        <li className={clsName}>
+        <li data-level={renderLevel} data-key={_key} data-index={renderIndex} className={clsName}>
             <div className={titleCls}>{title}</div>
             <InternalMenu {...restProps}>{
-                renderSubOrGroupChild<MenuItemProps>(
+                renderMenuSubOrGroupChild<MenuItemProps>(
                     children as Array<React.FunctionComponentElement<MenuItemProps>>, 
                     availableChildRegexp
                 )

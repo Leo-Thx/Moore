@@ -19,14 +19,14 @@ export default function ButtonDemo() {
                 <Button type="link" href="http://www.baidu.com">baidu.com</Button>
                 <Button type="link">link</Button>
                 <Button type="text">text</Button>
-            </div>
+            </div><br />
 
             <div>
                 <Button type="primary" ghost>primary</Button>
                 <Button type="danger" ghost>danger</Button>
                 <Button type="text" danger>text</Button>
                 <Button type="link" danger>link</Button>
-            </div>
+            </div><br />
             
             <div>
                 <Button disabled>disabled</Button>
@@ -34,7 +34,7 @@ export default function ButtonDemo() {
                 <Button type="danger" disabled>danger-disabled</Button>
                 <Button type="link" disabled>link-disabled</Button>
                 <Button type="text" disabled>text-disabled</Button>
-            </div>
+            </div><br />
 
             <div>
                 <Button type="primary" size="lg">Primary</Button>
@@ -44,7 +44,7 @@ export default function ButtonDemo() {
                 <Button type="primary" size="sm">Default</Button>
                 <Button size="sm" icon="close">Default</Button>
                 <Button disabled block>block</Button>
-            </div>
+            </div><br />
             
             <div>
                 <ButtonGroup>
@@ -60,7 +60,7 @@ export default function ButtonDemo() {
                     <Button size="lg">default</Button>
                     <Button icon="check-circle"></Button>
                 </ButtonGroup>
-                <br />
+                <br /><br />
 
                 <ButtonGroup size="lg" vertical>
                     <Button type="primary">primary</Button>
@@ -69,7 +69,7 @@ export default function ButtonDemo() {
                     <Button type="danger">danger</Button>
                     <Button size="lg">default</Button>
                     <Button size="lg">default</Button>
-                </ButtonGroup>
+                </ButtonGroup>&nbsp;
 
                 <ButtonGroup vertical>
                     <Button type="primary">primary</Button>
@@ -77,14 +77,14 @@ export default function ButtonDemo() {
                     <Button type="danger">danger</Button>
                     <Button size="lg">default</Button>
                     <Button size="lg">default</Button>
-                </ButtonGroup>
+                </ButtonGroup>&nbsp;
 
                 <ButtonGroup size="sm" vertical>
                     <Button type="primary">primary</Button>
                     <Button>default</Button>
                     <Button type="danger">danger</Button>
-                    <Button size="lg">default</Button>
                     <Button size="lg" icon="close">default</Button>
+                    <Button size="lg">default</Button>
                 </ButtonGroup>
             </div>
         </>
