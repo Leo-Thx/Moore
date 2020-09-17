@@ -37,7 +37,11 @@ type BaseMenuGroupProps = {
 type PickType = 'className'|'children'|'style';
 
 type MenuProps = BaseMenuProps & Pick<React.HTMLAttributes<HTMLUListElement>, PickType>;
-type InternalMenuProps = MenuProps & { ref? : React.Ref<HTMLUListElement>; }
+type InternalMenuProps = Omit<MenuProps, 'onClick'|'onSelect'> & { 
+    ref? : React.Ref<HTMLUListElement>; 
+    onShowSubMenu?: (key: string, level: number) => void;
+    onHideSubMenu?: (key?: string, level?: number) => void;
+}
 
 type MenuGroupProps = BaseMenuGroupProps & Pick<React.HTMLAttributes<HTMLLIElement>, PickType>;
 type SubMenuProps   = BaseSubMenuProps & Pick<React.HTMLAttributes<HTMLLIElement>,   PickType>;

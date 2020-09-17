@@ -19,14 +19,12 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         context           = React.useContext(MenuContext),
         [opened, setOpen] = React.useState(false),
         subMenuRef        = React.useRef<HTMLUListElement>(null),
-        subMenuPropsRef   = React.useRef<{height?: number;}>({}),       // 记录弹出菜单高度
-        timer             = React.useRef<{leave: number}>({leave: -1});
+        subMenuPropsRef   = React.useRef<{height?: number;}>({}),
+        timerRef          = React.useRef(-1);
 
     let { children, disabled, index, ...restProps }   = props,
         { horizontal, renderLevel, subMenuContainer } = context,
-        { openedKey, dispatchOpen, _key }          = context;
-
-    // let [isRender, setRender] = React.useState(false);
+        { openedKey, dispatchOpenKey, _key }          = context;
     
     let paddingLeft = useMenuPaddingLeft(),
         iconNode    = renderMenuIcon(icon),
@@ -44,11 +42,11 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
     const availableChildRegexp = new RegExp([ SubMenu.displayName,  MenuItem.displayName ].join('|'), 'i');
     if( paddingLeft ) styleObject.paddingLeft = paddingLeft;
 
-    const showOrHide = function(show: boolean) {
+    const showOrHide = function(show: boolean) {    // 只处理第一级
         let current = subMenuRef.current;
 
-        if( show ) current?.classList.add(horizontalShow);
-        else current?.classList.remove(horizontalShow);
+        if( show ) current!.classList.add(horizontalShow);
+        else current!.classList.remove(horizontalShow);
 
         setOpen(!!show);
         current!.style.display = show? '': 'none';
@@ -59,18 +57,29 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         if( current ) current.style.display = 'none';
     }, []);
 
-    React.useEffect(()=>{
-        // let current = subMenuRef.current;
-        // let hasIn = openedKey.find(i=>i===_key);
+    // React.useEffect(()=> {
+    //     let length = openedKey.length;
+    //     if( length === 0 ) {
+    //         setOpen(false);
+    //         showOrHide(false);
+    //     }
+    // }, [openedKey.length, setOpen, showOrHide]);
+
+    const showSubMenu = React.useCallback((subKey: string, subLevel: number) => {
+        clearTimeout(timerRef.current);
+        timerRef.current = 0;
+
+        if( subLevel === 1 ) showOrHide(true);
+        else setOpen(true);
         
-        // if( current && !hasIn ) {
-        //     current.classList.remove(horizontalShow);
-        //     current.style.display = 'none';
-        //     setOpen(false);
-        // }
-        console.info(openedKey);
-    }, [ openedKey ]);
-    
+        dispatchOpenKey({type: 'add', payload: _key});
+    }, [_key]);
+
+    const hideSubMenu = React.useCallback((subKey?: string, subLevel?: number)=>{
+        if( subLevel === 1 ) showOrHide(false);
+        else setOpen(false);
+        dispatchOpenKey({type: 'remove', payload: _key});
+    }, [_key]);
 
     const handleEnter = React.useCallback((event: React.MouseEvent)=>{
         if( disabled || !horizontal ) return false;
@@ -84,50 +93,44 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
                 _style.top  = (top + height) + 'px';
                 _style.left = left + 'px';
                 showOrHide(true);
-                dispatchOpen({type: 'add', payload: {key: _key, level: renderLevel}});  // 存入当前展开项
+                dispatchOpenKey({type: 'add', payload: _key});
+
             } else {        
-                _style.top     = (height / 2) + 'px';
-                _style.left    = (width + 8) + 'px';
+                _style.top     = '0px';
+                _style.left    = width + 'px';
                 _style.display = '';
 
                 setOpen(true);
-                dispatchOpen({type: 'add', payload: {key: _key, level: renderLevel}});
+                dispatchOpenKey({type: 'add', payload: _key});
             }
         }
+        event.stopPropagation();
     }, [ horizontal, disabled, renderLevel, _key ]);
 
     const handelLeave = React.useCallback((event: React.MouseEvent)=>{
         if( disabled || !horizontal ) return false;
-        
-        let current = subMenuRef.current,
-            _timer = timer.current;
-        
+        if( timerRef.current ) {
+            clearTimeout(timerRef.current);
+            timerRef.current = 0;
+        }
         if( renderLevel === 1 ) {   // 一层
-            setTimeout(()=>{
-                let { currentLevel } = openedKey;
-                if( currentLevel <= renderLevel ) {
-                    dispatchOpen({type: 'remove', payload: {key: _key, level: renderLevel}});
-                    showOrHide(false);
-                }
-            }, 1000);
+            let timer = setTimeout(()=>{
+                dispatchOpenKey({type: 'remove', payload: _key});
+                showOrHide(false);
+            }, 50);
+            timerRef.current = timer as unknown as number;
             return event.stopPropagation();    //防冒泡到InternalMenu
         }
 
-        if( current ) { // 非一层
-            setTimeout(()=>{
-                // let hasIn = openedKey?.find(i=>i===_key);
-                // if(!hasIn) {
-                //     current!.classList.remove(horizontalShow);
-                //     current!.style.display = 'none';
-                //     setOpen(false);
-                //     console.info('SubMenu.moueseLeave1', openedKey.slice());
-                // }
-            }, 20);
-            showOrHide(false);
-            return event.stopPropagation();
+        if( subMenuRef.current ) { // 非一层
+            let timer = setTimeout(()=>{
+                setOpen(false);
+                dispatchOpenKey({type: 'remove', payload: _key});
+            }, 50);
+            timerRef.current = timer as unknown as number;
         }
 
-    }, [ _key, horizontal, disabled, renderLevel, openedKey ]);
+    }, [ _key, horizontal, disabled, renderLevel ]);
 
     const handleClick = React.useCallback((event: React.MouseEvent)=> {
         if( disabled || horizontal ) return false;
@@ -139,15 +142,13 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         if( !opened ) { // 如果没有展开
             style.display = '';
             style.height = 'auto';
-
             subMenuProps.height = subMenuNode!.offsetHeight;
             style.height = '0';
-
             setTimeout(()=>{
                 style.height = subMenuProps.height + 'px';
-                setTimeout(()=>style.height='', 150);   //动画完成之后防止下属菜单高度限制
+                setTimeout(()=>style.height='', 200);   //动画完成之后防止下属菜单高度限制
             });
-            dispatchOpen({type: 'add', payload: {key: _key}});
+            dispatchOpenKey({type: 'add', payload: _key});
         } else {
             style.height = subMenuProps.height + 'px';
             setTimeout(()=>{
@@ -155,18 +156,18 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
                 setTimeout(()=>{
                     style.height = '';
                     style.display = 'none';
-                }, 150);
+                }, 200);
             });
-            dispatchOpen({type: 'remove', payload: {key: _key}});
+            dispatchOpenKey({type: 'remove', payload: _key});
         }
 
         setOpen(!opened);
         event.stopPropagation();
 
     }, [ opened, disabled, horizontal, _key ]);
-
+    
     const renderVerticalChildren = () => {
-        return <InternalMenu {...restProps} ref={subMenuRef}>{
+        return <InternalMenu {...restProps} ref={subMenuRef} onShowSubMenu={showSubMenu} onHideSubMenu={hideSubMenu}>{
             renderMenuSubOrGroupChild<MenuItemProps|SubMenuProps>(
                 children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps>>, 
                 availableChildRegexp

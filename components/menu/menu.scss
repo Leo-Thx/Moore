@@ -86,12 +86,13 @@
     
     .#{$cssPrefix}-menu {
         overflow: hidden;
-        transition: all .15s ease-in-out;
+        transition: all .2s ease-in-out;
     }
 
     &-title {
         @include menuItemNormal;
         @include menuNormalIcon;
+        &:hover{ color: $primary; }
     }
 
     &-open {

@@ -1,15 +1,8 @@
 import * as React from 'react';
 
-export type OpenMenuKeyType = { 
-    keys: Array<string>, 
-    currentLevel: number; 
-}
 export type DispatchMenuOpen = {
-    type: 'add'|'remove'|'clear', 
-    payload: {
-        key: string, 
-        level?: number
-    }
+    type: 'add'|'remove'|'clear';
+    payload: string;
 };
 
 export type MenuContextProps = {    
@@ -37,8 +30,8 @@ export type MenuContextProps = {
     // lazy: boolean;
 
     // 当前已经打开的subMenu
-    openedKey   : OpenMenuKeyType;
-    dispatchOpen: React.Dispatch<DispatchMenuOpen>;
+    openedKey      : Array<string>;
+    dispatchOpenKey: React.Dispatch<DispatchMenuOpen>;
 };
 
 
@@ -52,7 +45,7 @@ export default React.createContext<MenuContextProps>({
     _key        : '',
     horizontal  : false,
 
-    openedKey: {keys: [], currentLevel: 0},
-    dispatchOpen: () => {}
+    openedKey: [],
+    dispatchOpenKey: () => {}
 });
 

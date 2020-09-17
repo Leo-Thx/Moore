@@ -7,7 +7,7 @@ import { MenuProps, MenuTypeDeclaration, MenuItemProps, SubMenuProps, MenuGroupP
 import MenuItem from './MenuItem';
 import SubMenu from './SubMenu';
 import MenuGroup from './MenuGroup';
-import MenuContext, { OpenMenuKeyType, DispatchMenuOpen } from './MenuContext';
+import MenuContext, { DispatchMenuOpen } from './MenuContext';
 import { getClsPrefix } from './../_utils/_style.util';
 import { getAllMenuChildRegexp, renderMenuChild } from './Menu.helper';
 
@@ -19,22 +19,22 @@ import { getAllMenuChildRegexp, renderMenuChild } from './Menu.helper';
 //     static MenuGroup   = MenuGroup;
 // };
 
-const openKeyReducer = (state: OpenMenuKeyType, action: DispatchMenuOpen) => {
-    let { keys, currentLevel } = state,
-        { key, level } = action.payload,
-        index = keys.findIndex(s=>s===key);
-
+const openKeyReducer = (state: Array<string>, action: DispatchMenuOpen) => {
+    let index = state.findIndex(s=>s===action.payload);
     switch(action.type) {
         case 'add':
-            if( !~index ) keys.push( key );
-            return { keys: [...keys], currentLevel: level!=undefined? level: currentLevel };
+            if( !~index ) state.push(action.payload);
+            break;
 
         case 'remove':
-            return { keys: [...keys], currentLevel: level!=undefined? level: currentLevel };
+            if( !!~index ) state.splice(index, 1);
+            break;
         
         case 'clear': 
-            return { keys: [], currentLevel: 0 };
+            state.splice(0);
+            break;
     }
+    return state;
 };
 const openLevelReducer = (state: number = 0, action: number) => state = action;
 
@@ -65,7 +65,7 @@ const Menu: MenuTypeDeclaration = ({inlineIndent, defaultActive, onSelect, onCli
 
         [activeMenu, setActive]  = React.useState(defaultActive),
         wrapper                  = useHorizontalContainer(horizontal),
-        [openedKey, dispatchKey] = React.useReducer(openKeyReducer, {keys: [], currentLevel: 0});
+        [openedKey, dispatchKey] = React.useReducer(openKeyReducer, []);
     
     const ctxConstValue = React.useMemo(()=>({
         inlineIndent: inlineIndent!,
@@ -83,7 +83,7 @@ const Menu: MenuTypeDeclaration = ({inlineIndent, defaultActive, onSelect, onCli
         ...ctxConstValue,
         activeMenu,
         openedKey,
-        dispatchOpen: dispatchKey,
+        dispatchOpenKey: dispatchKey,
         onSelectMenuItem: (level: number, index: string, event: React.MouseEvent) => {
             if( typeof onClick === 'function' ) onClick(level, index, event);
             if( typeof onSelect === 'function' ) onSelect(level, index, event);
@@ -127,8 +127,7 @@ const Menu: MenuTypeDeclaration = ({inlineIndent, defaultActive, onSelect, onCli
 Menu.defaultProps = {
     mode: 'vertical',
     defaultActive: '',
-    inlineIndent: 24,
-    // lazy: false
+    inlineIndent: 24
 };
 
 Menu.displayName = `${displayPrefix}-Menu`;
@@ -139,4 +138,4 @@ Menu.MenuGroup = MenuGroup;
 
 
 export { MenuProps };
-export default Menu
+export default Menu;
