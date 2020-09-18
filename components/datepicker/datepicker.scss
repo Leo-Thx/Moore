@@ -1,0 +1,23 @@
+@import './../style/variables';
+
+.#{$cssPrefix}-datepicker {
+    display: inline-block;
+    width: 220px;
+    box-sizing: border-box;
+
+    &-input {
+        width: 100%;
+        padding: 4px;
+        border: 1px solid $gray-5;
+        border-radius: $border-radius;
+        outline: 0;
+        // 0 0 0 2px rgba(45,140,240,.2)
+        &:hover{
+            border-color: $gray-6;
+        }
+
+        &:focus {
+            border-color: $primary;
+        }
+    }
+}

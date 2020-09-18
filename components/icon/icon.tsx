@@ -56,12 +56,12 @@ Icon.displayName = `${displayPrefix}-Icon`;
  *  @type icon: string | Icon
  * @return null | React.ReactNode<Icon>
  */
-function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKeyType | undefined): React.ReactNode {
+function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKeyType | undefined, props?: Omit<IconProps, 'type'>): React.ReactNode {
     if( !icon ) return null;
         
     // 如果icon是作为属性传入的 [ string ]
-    if( typeof icon === 'string' ) {        
-        return <Icon type={icon}></Icon>;
+    if( typeof icon === 'string' ) {
+        return icon in IconTypeMap && <Icon type={icon} {...props}></Icon>;
     
     // 如果是作为节点传入
     } else if( (icon as React.FunctionComponentElement<IconProps>).type === Icon ){
@@ -73,4 +73,4 @@ function renderIconNode(icon: React.FunctionComponentElement<IconProps> | IconKe
 
 
 export default Icon;
-export { renderIconNode, IconKeyType };
+export { renderIconNode, IconKeyType, IconTypeMap };

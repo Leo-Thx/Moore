@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './../../index.scss';
-import MenuDemo from './index';
+import DatePickerDemo from './index';
+
 
 ReactDOM.render(
-    <MenuDemo></MenuDemo>, 
+    <DatePickerDemo />, 
     document.getElementById('app')
 );
 

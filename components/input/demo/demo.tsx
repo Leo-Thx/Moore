@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './../../index.scss';
-import MenuDemo from './index';
+import Demo from './index';
+
 
 ReactDOM.render(
-    <MenuDemo></MenuDemo>, 
+    <Demo></Demo>, 
     document.getElementById('app')
 );
-
 

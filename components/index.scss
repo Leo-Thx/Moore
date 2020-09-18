@@ -14,13 +14,22 @@
 
 // 图标
 @import './icon/icon.scss';
+
 // 按钮
 @import './button/button.scss';
 @import './button/buttonGroup.scss';
+
 // Alert提示消息
 @import './alert/alert.scss';
+
 // 菜单
 @import './menu/menu.scss';
+
+// Input输入框
+@import './input/input.scss';
+
+// 日期
+@import './datepicker/datepicker.scss';
 
 
 html, body {

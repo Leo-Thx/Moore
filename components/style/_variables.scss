@@ -46,4 +46,20 @@ $error-active: #cf1322 !default;
 $border-radius: 3px !default;
 $border-width : 1px !default;
 
+// 字体
+$fontSize-sm     : 12px;
+$fontSize-default: 14px;
+$fontSize-lg     : 16px;
+$fontSize: (sm: $fontSize-sm, default: $fontSize-default, lg: $fontSize-lg);
 
+// 高度
+$height-sm: 24px;
+$height-default: 32px;
+$height-lg: 40px;
+$height: (sm: $height-sm, default: $height-default, lg: $height-lg);
+
+// 内填充
+$padding-sm: 8px;
+$padding-default: 12px;
+$padding-lg: 16px;
+$padding: (sm: $padding-sm,default: $padding-default,lg: $padding-lg);

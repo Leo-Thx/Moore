@@ -1,0 +1,13 @@
+@import './variables';
+
+@mixin m_FontSize($size: default) {
+    font-size: map-get($fontSize, $size);
+}
+
+@mixin m_Height($size: default) {
+    height: map-get($height, $size);
+}
+
+@mixin m_Padding($dir, $size: default) {
+    padding-#{$dir}: map-get($padding, $size);
+}

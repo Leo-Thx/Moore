@@ -28,6 +28,7 @@ export const ComponentPrefix = {
     SUB_MENU    : 'submenu',
     MENU_ITEM   : 'menu-item',
 
-    DATE_PICKER : 'date-picker'
+    DATE_PICKER : 'datepicker',
     
+    INPUT: 'input'
 };

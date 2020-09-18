@@ -1,0 +1,135 @@
+@import './../style/variables';
+@import './../style/mixins';
+
+@mixin m_inputSize($size: default) {
+    @include m_FontSize($size);
+    @include m_Padding(left, $size);
+    @include m_Padding(right, $size);
+    box-sizing: border-box;
+}
+
+.#{$cssPrefix}-input{
+    width: 270px; margin-bottom: 16px; margin-right: 16px;
+
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: $border-radius;
+
+    @include m_Height();
+
+    input {
+        height: 100%; width: 100%;
+        flex: 1;
+        border: $border-width solid $gray-5;
+        border-radius: $border-radius;
+        outline: 0;
+        resize: none;
+
+        color: $gray-8;
+        transition: all .15s ease-out;
+
+        @include m_inputSize();
+
+        &::placeholder {
+            color: $gray-6;
+        }
+    
+        &:hover {
+            border-color: $gray-6;
+        }
+    
+        &:focus {
+            border-color: $primary;
+            box-shadow: 0 0 0 2px rgba($primary, .15);
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    
+    &-clearable {
+        input {
+            padding-right: 24px;
+        }
+        &-icon {
+            color: $gray-5;
+            
+            position: absolute;
+            right: 8px; top: 50%;
+            transform: translateY(-50%);
+
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+            &:hover{
+                color: $gray-7;
+            }
+        }
+    }
+    
+    &--prefix, &--suffix {
+        @include m_Height();
+        @include m_FontSize();
+        @include m_Padding(left);
+        @include m_Padding(right);
+        
+        line-height: $height-default;
+        background-color: $gray-4;
+    }
+
+    &--prefix {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+    }
+
+    &--suffix {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+    }
+
+    &-prefix {
+        input {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        } 
+    }
+
+    &-suffix {
+        input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    &-sm {
+        @include m_Height(sm);
+        input {
+            @include m_inputSize(sm);
+        }
+
+        .#{$cssPrefix}-input--prefix, .#{$cssPrefix}-input--suffix {
+            @include m_Height(sm);
+            @include m_FontSize(sm);
+            @include m_Padding(left, sm);
+            @include m_Padding(right, sm);
+            line-height: $height-sm;
+        }
+    }
+    &-lg {
+        @include m_Height(lg);
+        input {
+            @include m_inputSize(lg);
+        }
+        .#{$cssPrefix}-input--prefix, .#{$cssPrefix}-input--suffix {
+            @include m_Height(lg);
+            @include m_FontSize(lg);
+            @include m_Padding(left, lg);
+            @include m_Padding(right, lg);
+            line-height: $height-lg;
+            
+        }
+    }
+}

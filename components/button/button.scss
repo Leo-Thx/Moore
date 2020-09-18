@@ -1,25 +1,15 @@
 @import './../style/variables';
+@import './../style/mixins';
 
 $dangerActive: $error-active;
 
-@mixin mix_btnSize {
-    font-size: 14px;
-    height   : 32px;
-    padding  : 0px 12px;
+@mixin mix_btnSize($size: default) {
+    @include m_FontSize($size);
+    @include m_Height($size);
+    @include m_Padding(left, $size);
+    @include m_Padding(right, $size);
     // $lineHeight: round((22/14) * 10000) / 10000;
     // line-height: 1.57;
-}
-
-@mixin mix_btnSmSize {
-    font-size: 12px;
-    height   : 24px;
-    padding  : 0px 8px;
-}
-
-@mixin mix_btnlgSize {
-    font-size: 16px;
-    height   : 40px;
-    padding  : 0px 16px;
 }
 
 // 主色，激活色
@@ -66,24 +56,24 @@ $dangerActive: $error-active;
 
     outline: 0 ;
     background-color: white;
-    color: rgba(0,0,0,.65);
-    box-shadow: 0 2px 0 rgba(0,0,0,.015);
+    color: $gray-9;
 
-    transition: all .2s cubic-bezier(.645,.045,.355,1);
+    transition: all .2s ease-in-out;
     
-    i+span{ margin-left: 4px; }
+    i+span{ margin-left: 4px; } // 图标后面的文字
     > span { display: inline-block; }
-
+    
     @include mix_btnSize;
+
     &-lg { 
-        @include mix_btnlgSize;
+        @include mix_btnSize(lg);
         &.#{$cssPrefix}-btn-icon-only{
             width: 40px; height: 40px;
         }
         i+span{ margin-left: 8px; }
     }
     &-sm { 
-        @include mix_btnSmSize;
+        @include mix_btnSize(sm);
         &.#{$cssPrefix}-btn-icon-only{
             width: 24px; height: 24px;
         }
@@ -101,7 +91,7 @@ $dangerActive: $error-active;
         border-color: $primary-7;
     }
 
-    &:focus { box-shadow: 0 0 0 2px rgba($primary, .2); }
+    // &:focus { box-shadow: 0 0 0 2px rgba($primary, .2); }
     
     &-primary {
         @include mix_fillButton($primary, $primary-7);
@@ -109,9 +99,9 @@ $dangerActive: $error-active;
 
     &-danger {
         @include mix_fillButton($error, $dangerActive);
-        &:focus {
-            box-shadow: 0 0 0 2px rgba($error, .2);
-        }
+        // &:focus {
+        //     box-shadow: 0 0 0 2px rgba($error, .2);
+        // }
     }
 
     &-text {
@@ -126,7 +116,7 @@ $dangerActive: $error-active;
             color: $primary-7;
             background-color: $gray-4;
         }
-        &:focus { box-shadow: none; }
+        // &:focus { box-shadow: none; }
 
         &.#{$cssPrefix}-btn-text-danger {
             color: $error;
@@ -142,7 +132,7 @@ $dangerActive: $error-active;
         text-decoration: underline;
         &:hover{ border-color: transparent; }
         &:active { color: $primary-7; }
-        &:focus { box-shadow: none; }
+        // &:focus { box-shadow: none; }
         &.#{$cssPrefix}-btn-link-danger {
             color: $error;
         }
@@ -173,7 +163,6 @@ $dangerActive: $error-active;
         border-radius: 50%;
         padding: 0px;
         width: 32px; 
-        height: 32px; 
-        box-sizing: border-box;
+        height: 32px;
     }
 }
