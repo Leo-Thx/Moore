@@ -52,35 +52,6 @@ export function renderMenuSubOrGroupChild<T>(children: Array<React.FunctionCompo
 }
 
 
-/**
- * 渲染菜单下子节点，并提供对应的context
- * @param children 菜单下的子节点
- * @param childRegexp 需要排除的子节点
- */
-export function renderMenuChild(children: Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>, childRegexp: RegExp) {
-    let context     = React.useContext(MenuContext),
-        renderKey   = context._key,          // 当前层级唯一
-        renderIndex = context.renderIndex,   // 当前层级索引
-        renderLevel = context.renderLevel;   // 当前渲染等级
-
-    return React.Children.map(children, (Child, cIndex) => {
-        const { index } = Child.props, childName = Child.type.displayName!;
-        if( !childRegexp.test(childName) ) return null;
-            
-        return <MenuContext.Provider value={{
-            ...context,
-            _key: `${renderKey}/${cIndex+1}`,
-            renderLevel: renderLevel + 1,
-            renderIndex: `${renderIndex}/${cIndex+1}`
-        }}>{
-            React.cloneElement(Child, {
-                ...Child.props,
-                index: index ? index: `${renderIndex}/${cIndex+1}`
-            })
-        }</MenuContext.Provider>
-    })
-}
-
 
 /**
  * 获取全部可用子节点

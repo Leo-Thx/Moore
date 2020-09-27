@@ -29,10 +29,10 @@ const Wrapper = () => {
                     <Menu.SubMenu title="二级菜单三">
                         <Menu.MenuItem>三级菜单一</Menu.MenuItem>
                         <Menu.MenuItem>三级菜单二</Menu.MenuItem>
-                        {/* <Menu.SubMenu title="三级级菜单三">
+                        <Menu.SubMenu title="三级级菜单三">
                             <Menu.MenuItem>三级菜单一</Menu.MenuItem>
                             <Menu.MenuItem>三级菜单二</Menu.MenuItem>
-                        </Menu.SubMenu> */}
+                        </Menu.SubMenu>
                     </Menu.SubMenu>
                 </Menu.SubMenu>
 
@@ -56,9 +56,9 @@ const Wrapper = () => {
 export default function MenuDemo() {
     return (
         <>
-        {/* <Wrapper></Wrapper> */}
+        <Wrapper></Wrapper>
         
-        <Menu defaultActive="1">
+        {/* <Menu defaultActive="1">
             <Menu.MenuItem icon="check-circle">菜单一</Menu.MenuItem>
             <Menu.MenuItem>菜单二</Menu.MenuItem>
             <Menu.MenuItem disabled>菜单三</Menu.MenuItem>
@@ -93,7 +93,7 @@ export default function MenuDemo() {
                 <Menu.MenuItem>二级菜单一</Menu.MenuItem>
                 <Menu.MenuItem>二级菜单二</Menu.MenuItem>
             </Menu.SubMenu>
-        </Menu>
+        </Menu> */}
         </>
     )
 }

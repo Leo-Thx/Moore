@@ -9,7 +9,7 @@ import SubMenu from './SubMenu';
 import MenuGroup from './MenuGroup';
 import MenuContext, { DispatchMenuOpen } from './MenuContext';
 import { getClsPrefix } from './../_utils/_style.util';
-import { getAllMenuChildRegexp, renderMenuChild } from './Menu.helper';
+import { getAllMenuChildRegexp } from './Menu.helper';
 
 
 // export default class Menu extends React.Component<MenuProps> {
@@ -22,23 +22,18 @@ import { getAllMenuChildRegexp, renderMenuChild } from './Menu.helper';
 const openKeyReducer = (state: Array<string>, action: DispatchMenuOpen) => {
     let index = state.findIndex(s=>s===action.payload);
     switch(action.type) {
-        case 'add':
-            if( !~index ) state.push(action.payload);
-            break;
-
-        case 'remove':
-            if( !!~index ) state.splice(index, 1);
-            break;
-        
-        case 'clear': 
-            state.splice(0);
-            break;
+        case 'add': if( !~index ) state.push(action.payload); break;
+        case 'remove': if( !!~index ) state.splice(index, 1); break;
+        case 'clear': state.splice(0); break;
     }
     return state;
 };
-const openLevelReducer = (state: number = 0, action: number) => state = action;
 
-
+/**
+ * 如果是水平方向，则渲染一个容器用来存放二级及之后的菜单
+ * @param horizontal 是否是水平模式
+ * @returns HTMLDivElement 一个div容器节点[未挂载]
+ */
 function useHorizontalContainer(horizontal: boolean) {
     let wrapper = React.useMemo(()=> horizontal ? document.createElement('div'): null, [ horizontal ]);
     React.useEffect(()=>{
@@ -63,8 +58,8 @@ const Menu: MenuTypeDeclaration = ({inlineIndent, defaultActive, onSelect, onCli
             [`${clsPrefix}-horizontal`]: horizontal
         }, className),
 
-        [activeMenu, setActive]  = React.useState(defaultActive),
         wrapper                  = useHorizontalContainer(horizontal),
+        [activeMenu, setActive]  = React.useState(defaultActive),
         [openedKey, dispatchKey] = React.useReducer(openKeyReducer, []);
     
     const ctxConstValue = React.useMemo(()=>({
@@ -97,11 +92,12 @@ const Menu: MenuTypeDeclaration = ({inlineIndent, defaultActive, onSelect, onCli
           renderLevel = contextValue.renderLevel,   // 当前渲染等级
           childRegexp = getAllMenuChildRegexp();
     
+    type ChildType = Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>;
     return (
         <MenuContext.Provider value={contextValue}>
             <ul data-level={renderLevel} data-key={renderKey} data-index={renderIndex} className={clsName} {...restProps}>
                 {
-                    React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>, (Child, cIndex) => {
+                    React.Children.map(children as ChildType, (Child, cIndex) => {
                         const { index } = Child.props, childName = Child.type.displayName!;
                         if( !childRegexp.test(childName) ) return null;
                         

@@ -18,8 +18,8 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         horizontalShow    = getClsPrefix(ComponentPrefix.MENU) + '--show',
         context           = React.useContext(MenuContext),
         [opened, setOpen] = React.useState(false),
-        subMenuRef        = React.useRef<HTMLUListElement>(null),
-        subMenuPropsRef   = React.useRef<{height?: number;}>({}),
+        subMenuRef        = React.useRef<HTMLUListElement>(null),   // InternalMenu节点
+        subMenuPropsRef   = React.useRef<{height?: number;}>({}),   // 存放展开时所需要的高度
         timerRef          = React.useRef(-1);
 
     let { children, disabled, index, ...restProps }   = props,
@@ -40,19 +40,19 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         }, className);
 
     const availableChildRegexp = new RegExp([ SubMenu.displayName,  MenuItem.displayName ].join('|'), 'i');
-    if( paddingLeft ) styleObject.paddingLeft = paddingLeft;
+    if( paddingLeft ) styleObject.paddingLeft = paddingLeft;    // 缩进
 
     const showOrHide = function(show: boolean) {    // 只处理第一级
-        let current = subMenuRef.current;
+        let current = subMenuRef.current!;
 
-        if( show ) current!.classList.add(horizontalShow);
-        else current!.classList.remove(horizontalShow);
+        if( show ) current.classList.add(horizontalShow);
+        else current.classList.remove(horizontalShow);
 
         setOpen(!!show);
-        current!.style.display = show? '': 'none';
+        current.style.display = show? '': 'none';
     };
 
-    React.useEffect(()=>{   //初始化一次不显示
+    React.useEffect(()=>{   //初始化一次不显示,挂载后直接执行
         let current = subMenuRef.current;
         if( current ) current.style.display = 'none';
     }, []);
@@ -81,10 +81,9 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         dispatchOpenKey({type: 'remove', payload: _key});
     }, [_key]);
 
-    const handleEnter = React.useCallback((event: React.MouseEvent)=>{
+    const handleEnter = React.useCallback((event: React.MouseEvent)=>{  // 鼠标进入事件，只由标题触发
         if( disabled || !horizontal ) return false;
         let currentTarget = event.currentTarget, current = subMenuRef.current;
-
         if( current ) {
             let {left, height, width, top} = currentTarget.getBoundingClientRect(),
                 _style = current.style; // 需要显示的子菜单
@@ -95,7 +94,7 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
                 showOrHide(true);
                 dispatchOpenKey({type: 'add', payload: _key});
 
-            } else {        
+            } else {        // 其他菜单，则直接基因父级菜单显示即可
                 _style.top     = '0px';
                 _style.left    = width + 'px';
                 _style.display = '';
@@ -107,14 +106,15 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         event.stopPropagation();
     }, [ horizontal, disabled, renderLevel, _key ]);
 
-    const handelLeave = React.useCallback((event: React.MouseEvent)=>{
+    const handelLeave = React.useCallback((event: React.MouseEvent)=>{  // 标题触发的鼠标离开事件
         if( disabled || !horizontal ) return false;
         if( timerRef.current ) {
             clearTimeout(timerRef.current);
             timerRef.current = 0;
         }
+        
         if( renderLevel === 1 ) {   // 一层
-            let timer = setTimeout(()=>{
+            let timer = setTimeout(()=>{    // 延迟50ms后关闭
                 dispatchOpenKey({type: 'remove', payload: _key});
                 showOrHide(false);
             }, 50);
@@ -133,18 +133,18 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
     }, [ _key, horizontal, disabled, renderLevel ]);
 
     const handleClick = React.useCallback((event: React.MouseEvent)=> {
-        if( disabled || horizontal ) return false;
+        if( disabled || horizontal ) return false;  // 不处理平行菜单
 
-        let subMenuNode = subMenuRef.current,
-            subMenuProps = subMenuPropsRef.current,
-            style = subMenuNode!.style;
+        let subMenuNode  = subMenuRef.current!,       // 外部容器
+            subMenuProps = subMenuPropsRef.current,   // 二级菜单属性引用
+            style        = subMenuNode.style;   // 菜单样式
         
         if( !opened ) { // 如果没有展开
             style.display = '';
             style.height = 'auto';
-            subMenuProps.height = subMenuNode!.offsetHeight;
-            style.height = '0';
-            setTimeout(()=>{
+            subMenuProps.height = subMenuNode.offsetHeight;    //获取当前菜单最终需要展开的高度
+            style.height = '0'; // 重置为0
+            setTimeout(()=>{    // 触发渲染
                 style.height = subMenuProps.height + 'px';
                 setTimeout(()=>style.height='', 200);   //动画完成之后防止下属菜单高度限制
             });
@@ -162,7 +162,7 @@ const SubMenu: React.FunctionComponent<SubMenuProps> = ({icon, title, className,
         }
 
         setOpen(!opened);
-        event.stopPropagation();
+        event.stopPropagation();    // 防止派发到上级菜单, 触发收起
 
     }, [ opened, disabled, horizontal, _key ]);
     

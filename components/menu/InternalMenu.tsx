@@ -27,6 +27,7 @@ const InternalMenu: React.FC<InternalMenuProps> = React.forwardRef<HTMLUListElem
 
     const handleEnter: React.MouseEventHandler = React.useCallback(event=>{
         if( !horizontal ) return ;
+
         dispatchKey({type: 'add', payload: renderKey});
         console.info('InternalMenu.mouseEnter--3', renderKey, renderLevel, openedKey.slice());
         
@@ -39,6 +40,7 @@ const InternalMenu: React.FC<InternalMenuProps> = React.forwardRef<HTMLUListElem
 
     const handleLeave: React.MouseEventHandler = React.useCallback(event=>{
         if( !horizontal ) return ;
+
         dispatchKey({type: 'remove', payload: renderKey});
         console.info('InternalMenu.moueseLeave2', renderKey, renderLevel, openedKey.slice());
 
@@ -49,11 +51,13 @@ const InternalMenu: React.FC<InternalMenuProps> = React.forwardRef<HTMLUListElem
         event.stopPropagation();
     }, [renderKey, renderLevel, horizontal]);
 
+    type ChildType = Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>;
     return (
         <ul data-level={renderLevel} data-key={renderKey} data-index={renderIndex} 
             className={clsName} {...restProps} ref={ref} 
             onMouseEnter={handleEnter} onMouseLeave={handleLeave}>{
-            React.Children.map(children as Array<React.FunctionComponentElement<MenuItemProps|SubMenuProps|MenuGroupProps>>, (Child, cIndex) => {
+
+            React.Children.map(children as ChildType, (Child, cIndex) => {
                 const { index } = Child.props, childName = Child.type.displayName!;
                 if( !childRegexp.test(childName) ) return null;
                     
