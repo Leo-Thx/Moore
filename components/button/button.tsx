@@ -5,25 +5,12 @@ import { getClsPrefix } from '../_utils/_style.util';
 import { displayPrefix, ComponentPrefix } from './../_config/_variables';
 import Icon, { renderIconNode } from '../icon/icon';
 import { IconProps } from '../icon/icon.type';
+import Ripple from '../ripple/Ripple';
+
 
 const iconOnlyPrefix = 'icon-only';
-const Button: React.FC<ButtonProps> = props => {
-    const { 
-        disabled, 
-        ghost, 
-        size, 
-        danger, 
-        className, 
-        type, 
-        href, 
-        block, 
-        icon,
-        children,
-        htmlType, 
-        onClick, 
-        ...restProps 
-    } = props;
-
+const Button: React.FC<ButtonProps> = ({disabled, ghost, size, danger, type, href, block, icon, ...props}) => {
+    const { className, children, htmlType,  onClick, ...restProps  } = props;
 
     let clsPrefix = getClsPrefix(ComponentPrefix.BUTTON),
         clsName   = classnames(clsPrefix, {
@@ -33,15 +20,12 @@ const Button: React.FC<ButtonProps> = props => {
             [`${clsPrefix}-ghost`]         : ghost,
             [`${clsPrefix}-block`]         : block
     });
+    let child: React.ReactNode = null, 
+        handleClick = React.useCallback((event: React.MouseEvent)=>{
+            if( type === 'link' && href ) return window.open( href );
+            else if( typeof onClick === 'function' )  onClick!(event);
+        }, [ type, onClick ]);
 
-
-    const handleClick = React.useCallback((event: React.MouseEvent)=>{
-        if( type === 'link' && href ) return window.open( href );
-        else if( typeof onClick === 'function' )  onClick!(event);
-    }, [ type, onClick ]);
-
-
-    let child: React.ReactNode = null;
 
     if( icon ) {    // icon属性
         const iconAttrNode = renderIconNode(icon);  // 处理icon作为属性或者是节点时，需要渲染按钮
@@ -62,13 +46,15 @@ const Button: React.FC<ButtonProps> = props => {
             child = children;
             if( children && (children as React.FunctionComponentElement<IconProps>).type === Icon ) {
                 clsName = classnames(clsName, getClsPrefix(iconOnlyPrefix, clsPrefix));
-            } else child = <span>{children}</span>
+            } else child = child? <span>{children}</span>: null
         }
     }
 
     clsName = classnames(clsName, className);
+    if( !child ) return null;
+    
     return (
-        <button role="button" 
+        <button role="button"
             type={htmlType} 
             disabled={disabled} 
             className={clsName} 

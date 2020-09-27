@@ -1,0 +1,33 @@
+@import './../style/variables';
+
+@keyframes moore_ripple_enter {
+    0% {
+        opacity: .3;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+.#{$cssPrefix}-ripple {
+    &-root {
+        position: absolute;
+        left: 0; top: 0; right: 0; bottom: 0;
+        overflow: hidden;
+    }
+
+    &-enter {
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        left: -1px; top: -1px;
+    
+        animation-name: moore_ripple_enter;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        animation-iteration-count: 1;
+        animation-duration: .5s; 
+        animation-fill-mode: forwards;
+    }
+}

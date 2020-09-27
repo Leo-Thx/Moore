@@ -48,7 +48,7 @@ ButtonGroup.propTypes = {
     ])
 };
 
-Button.displayName = `${displayPrefix}-ButtonGroup`;
+ButtonGroup.displayName = `${displayPrefix}-ButtonGroup`;
 
 
 export default ButtonGroup;
